@@ -38,25 +38,25 @@ export default function SelectForm({ data, set }) {
 
   return (
     <div className="mt-4">
-      <label className="block text-sm font-medium text-gray-700">
-        Category
-      </label>
+      <label className="block text-sm font-medium">Category</label>
       <select
-        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        className="mt-1 block w-full p-2 cursor-pointer rounded-md bg-gray-800 shadow shadow-[#766df4] focus:outline-none"
         onChange={handleCategorySelect}
       >
-        <option value="">Select a category</option>
+        <option value="" className="focus:outline-none">
+          Select a category
+        </option>
         {category.map((cat) => (
           <option key={cat._id} value={cat.category}>
             {cat.category}
           </option>
         ))}
       </select>
-      <div className="mt-2">
+      <div className="mt-4">
         {data.category.map((category, index) => (
           <span
             key={index}
-            className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+            className="inline-block bg-gray-800 text-gray-200 shadow shadow-[#766df4] border-0 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
           >
             {category}
             <button

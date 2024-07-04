@@ -2,10 +2,11 @@ import React from "react";
 
 export default function InputForm({
   title,
+  type = "text",
   target,
   data,
   set,
-  disable,
+  disable = false,
   style,
 }) {
   const handleChange = (e) => {
@@ -15,14 +16,14 @@ export default function InputForm({
 
   return (
     <div className={style}>
-      <label className="block text-sm font-medium text-gray-700">{title}</label>
+      <label className="block text-sm font-medium">{title}</label>
       <input
-        type="text"
+        type={type}
         name={target}
         value={data[target]}
         onChange={handleChange}
-        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        disabled={disable ? true : false}
+        className="mt-1 block w-full p-2 bg-gray-800 shadow shadow-[#766df4] text-neutral-50 rounded-md focus:outline-none"
+        disabled={disable}
       />
     </div>
   );

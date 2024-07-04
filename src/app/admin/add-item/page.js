@@ -1,5 +1,5 @@
 import AdminLayout from "@/components/AdminLayout";
-import AddItems from "@/components/AdminLayout/AddItems";
+import AddItems from "@/components/AdminLayout/AddItems/AddItems";
 import React from "react";
 
 export default function Page() {

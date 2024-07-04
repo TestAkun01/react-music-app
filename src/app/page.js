@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 
 export default async function Page() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/dbsong`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song?latest=1&limit=10`,
     { next: { revalidate: 20 } }
   );
 

@@ -7,8 +7,8 @@ const CardList = ({ data }) => {
       {data.map((song) => {
         return (
           <Link
-            href={`/${song.id}`}
-            key={song.id}
+            href={`/${song._id}`}
+            key={song._id}
             className="max-w-sm rounded text-neutral-50 flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-shadow duration-300"
           >
             <Image src={song.cover} alt={song.title} width={400} height={400} />
