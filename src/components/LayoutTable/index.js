@@ -2,17 +2,28 @@
 
 import Link from "next/link";
 import React from "react";
-
-export default function LayoutTable({ data }) {
+import FetchData from "../FetchData/FetchData";
+export default function LayoutTable({ data, reloadData }) {
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
 
-  const handleDelete = (id) => {
-    confirm(`Delete ${id} ?`);
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      window.location.reload();
-    });
+  const handleDelete = async (id) => {
+    const confirmDelete = confirm(`Delete item with ID ${id}?`);
+    if (confirmDelete) {
+      try {
+        const response = await FetchData(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`,
+          "DELETE"
+        );
+        if (response) {
+          reloadData();
+        } else {
+          throw new Error("Failed to delete item");
+        }
+      } catch (error) {
+        console.error("Error deleting item:", error);
+        alert("Failed to delete item. Please try again.");
+      }
+    }
   };
 
   return (

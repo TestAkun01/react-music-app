@@ -1,13 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import CategoryButtons from "../CategoryButtons/CategoryButtons";
+import { useRouter } from "next/navigation";
 
 const CardList = ({ data }) => {
+  const router = useRouter();
+  const goToCategory = (category) => {
+    router.push(`/category/${category}`);
+  };
   return (
     <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
       {data.map((song) => {
         return (
           <Link
-            href={`/${song._id}`}
+            href={`/song/${song._id}`}
             key={song._id}
             className="max-w-sm rounded text-neutral-50 flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-shadow duration-300"
           >
@@ -18,14 +24,10 @@ const CardList = ({ data }) => {
               </div>
             </div>
             <div className="px-6 pt-4 pb-2">
-              {song.category.map((category, index) => (
-                <span
-                  key={index}
-                  className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >
-                  #{category}
-                </span>
-              ))}
+              <CategoryButtons
+                categories={song.category}
+                handle={goToCategory}
+              ></CategoryButtons>
             </div>
           </Link>
         );

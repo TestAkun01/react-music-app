@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import InputForm from "../InputForm";
 import SelectForm from "../SelectForm";
 import InputList from "../InputList";
+import fetchData from "@/components/FetchData/FetchData";
 
 export default function AddItems() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,9 @@ export default function AddItems() {
     cover: "",
     list: [],
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,25 +32,36 @@ export default function AddItems() {
       alert("Harap lengkapi semua field sebelum mengirimkan data.");
       return;
     }
+
+    setIsSubmitting(true);
+    setMessage("");
+
     try {
-      const response = await fetch(
+      const response = await fetchData(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+        "POST",
+        formData
       );
-      console.log(formData);
-      if (!response.ok) {
+
+      if (!response) {
         throw new Error("Network response was not ok");
       }
-      alert("Succes Add Song");
-      console.log("Song added successfully!");
+
+      alert("Song added successfully!");
+      setFormData({
+        title: "",
+        artist: "",
+        release_date: "",
+        category: [],
+        cover: "",
+        list: [],
+      });
+      setMessage("Song added successfully!");
     } catch (error) {
       console.error("Error adding song:", error);
+      setMessage("Error adding song. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -57,37 +72,39 @@ export default function AddItems() {
         target={"title"}
         data={formData}
         set={setFormData}
-      ></InputForm>
+      />
       <InputForm
         title={"Artist"}
         target={"artist"}
         data={formData}
         set={setFormData}
-      ></InputForm>
+      />
       <InputForm
         title={"Release date"}
         target={"release_date"}
         type="date"
         data={formData}
         set={setFormData}
-      ></InputForm>
-      <SelectForm data={formData} set={setFormData}></SelectForm>
+      />
+      <SelectForm data={formData} set={setFormData} />
       <InputForm
         title={"Cover Url"}
         target={"cover"}
         type="url"
         data={formData}
         set={setFormData}
-      ></InputForm>
-      <InputList data={formData} set={setFormData}></InputList>
+      />
+      <InputList data={formData} set={setFormData} />
       <div>
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          disabled={isSubmitting}
         >
-          Add Item
+          {isSubmitting ? "Submitting..." : "Add Item"}
         </button>
       </div>
+      {message && <p>{message}</p>}
     </form>
   );
 }

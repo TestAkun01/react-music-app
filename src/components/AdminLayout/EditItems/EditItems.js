@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import InputForm from "../InputForm";
 import SelectForm from "../SelectForm";
 import InputList from "../InputList";
+import FetchData from "@/components/FetchData/FetchData";
 
 export default function EditItems({ id }) {
   const [formData, setFormData] = useState({
@@ -15,10 +16,12 @@ export default function EditItems({ id }) {
     list: [],
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
+
   useEffect(() => {
     if (id) {
-      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`)
-        .then((response) => response.json())
+      FetchData(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`)
         .then((data) => setFormData(data))
         .catch((error) => console.error("Error fetching item:", error));
     }
@@ -38,27 +41,27 @@ export default function EditItems({ id }) {
       return;
     }
 
+    setIsSubmitting(true);
+    setMessage("");
+
     try {
-      const response = await fetch(
+      const response = await FetchData(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+        "PUT",
+        formData
       );
 
-      if (response.ok) {
-        alert("Item updated successfully");
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to update item: ${errorData.message}`);
+      if (!response) {
+        throw new Error("Network response was not ok");
       }
+
+      alert("Item updated successfully");
+      setMessage("Item updated successfully");
     } catch (error) {
       console.error("Error updating item:", error);
-      alert("Failed to update item");
+      setMessage("Failed to update item. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -69,37 +72,39 @@ export default function EditItems({ id }) {
         target={"title"}
         data={formData}
         set={setFormData}
-      ></InputForm>
+      />
       <InputForm
         title={"Artist"}
         target={"artist"}
         data={formData}
         set={setFormData}
-      ></InputForm>
+      />
       <InputForm
         title={"Release date"}
         target={"release_date"}
         type="date"
         data={formData}
         set={setFormData}
-      ></InputForm>
-      <SelectForm data={formData} set={setFormData}></SelectForm>
+      />
+      <SelectForm data={formData} set={setFormData} />
       <InputForm
         title={"Cover Url"}
         target={"cover"}
         type="url"
         data={formData}
         set={setFormData}
-      ></InputForm>
-      <InputList data={formData} set={setFormData}></InputList>
+      />
+      <InputList data={formData} set={setFormData} />
       <div>
         <button
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          disabled={isSubmitting}
         >
-          Save Changes
+          {isSubmitting ? "Submitting..." : "Save Changes"}
         </button>
       </div>
+      {message && <p>{message}</p>}
     </form>
   );
 }
