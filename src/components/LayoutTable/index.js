@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import FetchData from "../FetchData/FetchData";
+
 export default function LayoutTable({ data, reloadData }) {
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
 
@@ -32,11 +33,11 @@ export default function LayoutTable({ data, reloadData }) {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             {columns.map((column, index) => (
-              <th key={index} scope="col" className="px-2 py-2">
+              <th key={index} scope="col" className="px-2 py-2 w-[140px]">
                 {column}
               </th>
             ))}
-            <th scope="col" className="px-2 py-2">
+            <th scope="col" className="px-2 py-2 w-[140px]">
               Actions
             </th>
           </tr>
@@ -47,12 +48,12 @@ export default function LayoutTable({ data, reloadData }) {
               {columns.map((column, columnIndex) => (
                 <td
                   key={columnIndex}
-                  className="px-2 py-2 overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="px-2 py-2 w-[140px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
                   {row[column]}
                 </td>
               ))}
-              <td className="px-2 py-2 flex justify-between flex-wrap gap-y-2">
+              <td className="px-2 py-2 flex justify-between flex-wrap gap-y-2 w-[140px]">
                 <Link
                   href={`/admin/edit-item/${row._id}`}
                   className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 font-medium rounded-full text-sm px-3 py-1"
