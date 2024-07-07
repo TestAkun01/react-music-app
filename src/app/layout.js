@@ -1,7 +1,12 @@
+// RootLayout.js
+
 import { Poppins } from "next/font/google";
 import "@/style/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer/Footer";
+import MusicController from "@/components/MusicController/MusicController";
+
+import { AudioProvider } from "@/components/MusicController/AudioContext";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
@@ -12,12 +17,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${poppins.className} bg-gray-950`}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-      </body>
-    </html>
+    <AudioProvider>
+      <html lang="en">
+        <body className={`${poppins.className} bg-gray-950`}>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <MusicController />
+        </body>
+      </html>
+    </AudioProvider>
   );
 }

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 const CardList = ({ data }) => {
   const router = useRouter();
-  const goToCategory = (category) => {
+  const handleRedirect = (category) => {
     router.push(`/category/${category}`);
   };
   return (
@@ -26,7 +26,7 @@ const CardList = ({ data }) => {
             <div className="px-6 pt-4 pb-2">
               <CategoryButtons
                 categories={song.category}
-                handle={goToCategory}
+                handle={handleRedirect}
               ></CategoryButtons>
             </div>
           </Link>
