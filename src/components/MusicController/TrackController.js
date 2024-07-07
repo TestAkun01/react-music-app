@@ -53,7 +53,11 @@ const TrackController = ({ track }) => {
   };
 
   return (
-    <div className="track-controller bg-gray-700 p-2 rounded-lg mb-2">
+    <div
+      className={`track-controller p-2 rounded-lg mb-2${
+        currentTrack?._id === track._id ? " bg-gray-700" : ""
+      }`}
+    >
       <div className="flex items-center justify-between">
         <span className="text-white">{track.title}</span>
       </div>
@@ -66,12 +70,13 @@ const TrackController = ({ track }) => {
             type="range"
             min="0"
             max={duration}
+            step={0.01}
             value={tempCurrentTime}
             onChange={handleSeekChange}
             onMouseDown={handleSeekMouseDown}
             onMouseUp={handleSeekMouseUp}
             ref={seekBarRef}
-            className="w-full mx-2"
+            className="w-full mx-2 h-1"
           />
           <span className="text-white min-w-[57px] text-center">
             {formatTime(duration)}

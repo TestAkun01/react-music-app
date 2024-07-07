@@ -49,7 +49,7 @@ export default function Page({ params }) {
               <p className="mb-4">Artist: {data.artist}</p>
               <p className="mb-4">Release Date: {data.release_date}</p>
               <div className="mb-4">
-                <p>Category:</p>
+                <p className="mb-2">Category:</p>
                 <CategoryButtons
                   categories={data.category}
                   handle={handleRedirect}
@@ -59,13 +59,15 @@ export default function Page({ params }) {
           </div>
           <div>
             <h2 className="mb-2">Track List</h2>
-            <ul>
-              {data.list.map((track) => (
-                <li key={track.id} className="mb-2">
-                  <TrackController track={track} />
-                </li>
-              ))}
-            </ul>
+            <div className="overflow-y-auto max-h-96">
+              <ul>
+                {data.list.map((track) => (
+                  <li key={track.id} className="mb-2">
+                    <TrackController track={track} />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       ) : (

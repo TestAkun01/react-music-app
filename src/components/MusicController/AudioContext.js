@@ -5,7 +5,7 @@ import React, { useState, createContext, useRef, useEffect } from "react";
 export const AudioContext = createContext();
 
 export const AudioProvider = ({ children }) => {
-  const [currentTrack, setCurrentTrack] = useState({});
+  const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -30,9 +30,10 @@ export const AudioProvider = ({ children }) => {
 
     const handleEnded = () => {
       if (loopMode === "none") {
-        if (playlist.length > 0 && playlistIndex < playlist.length) {
+        if (playlist.length > 0 && playlistIndex + 1 < playlist.length) {
           playNext();
         } else {
+          console.log("test");
           setIsPlaying(false);
         }
       } else if (loopMode === "playlist") {

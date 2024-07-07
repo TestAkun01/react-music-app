@@ -73,23 +73,25 @@ const MusicController = () => {
   const togglePlaylist = () => {
     setIsPlaylistOpen(!isPlaylistOpen);
   };
-
   return (
     <div className="relative">
       {currentTrack && (
-        <div className="fixed bottom-0 left-0 w-full bg-gray-800 ">
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            value={tempCurrentTime}
-            onChange={handleSeekChange}
-            onMouseDown={handleSeekMouseDown}
-            onMouseUp={handleSeekMouseUp}
-            ref={seekBarRef}
-            className="w-full m-0 p-0"
-          />
-          <div className="flex items-center justify-between mx-8 pb-4">
+        <div className="fixed bottom-0 left-0 w-full bg-gray-800 z-10">
+          <div className="w-full  m-0 p-0">
+            <input
+              type="range"
+              min="0"
+              max={duration}
+              value={tempCurrentTime}
+              step={"0.01"}
+              onChange={handleSeekChange}
+              onMouseDown={handleSeekMouseDown}
+              onMouseUp={handleSeekMouseUp}
+              ref={seekBarRef}
+              className="h-1 w-full cursor-pointer m-0 p-0 absolute"
+            />
+          </div>
+          <div className="flex items-center justify-between mx-8 py-4">
             <div id="Left_bar" className="flex gap-8 items-center">
               <button onClick={playPrev} className="text-white">
                 <SkipPreviousIcon />
@@ -134,7 +136,7 @@ const MusicController = () => {
                   step="0.01"
                   value={volume}
                   onChange={handleVolumeChange}
-                  className={`mx-4 ${
+                  className={`mx-4 h-1 ${
                     isVolumeHovered ? "opacity-100" : "opacity-0"
                   } transition-opacity duration-200`}
                 />
@@ -165,15 +167,19 @@ const MusicController = () => {
                 )}
               </div>
             </div>
-            {isPlaylistOpen && (
-              <div className="absolute right-0 -top-[500px]">
-                <Playlist
-                  tracks={playlist}
-                  isOpen={isPlaylistOpen}
-                  togglePlaylist={togglePlaylist}
-                />
-              </div>
-            )}
+          </div>
+          <div
+            className={`absolute z-0 right-5 duration-500 ease-in-out ${
+              isPlaylistOpen
+                ? "translate-y-0 bottom-[100px]"
+                : "translate-y-full bottom-[-1000px]"
+            }`}
+          >
+            <Playlist
+              tracks={playlist}
+              isOpen={isPlaylistOpen}
+              togglePlaylist={togglePlaylist}
+            />
           </div>
         </div>
       )}
