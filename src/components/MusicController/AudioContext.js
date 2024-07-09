@@ -12,7 +12,7 @@ export const AudioProvider = ({ children }) => {
   const [volume, setVolume] = useState(1);
   const [playlist, setPlaylist] = useState([]);
   const [playlistIndex, setPlaylistIndex] = useState(0);
-  const [loopMode, setLoopMode] = useState("song");
+  const [loopMode, setLoopMode] = useState("none");
   const audioRef = useRef(null);
 
   useEffect(() => {

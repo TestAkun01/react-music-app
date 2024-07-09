@@ -16,7 +16,7 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-900">
       <div className="px-8">
-        <div className="relative flex h-16 items-center justify-between">
+        <div className="relative flex h-16 items-center md:justify-between justify-center">
           <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
             <button
               type="button"
