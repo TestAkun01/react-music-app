@@ -10,19 +10,11 @@ export default function LayoutTable({ data, reloadData }) {
   const handleDelete = async (id) => {
     const confirmDelete = confirm(`Delete item with ID ${id}?`);
     if (confirmDelete) {
-      try {
-        const response = await FetchData(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`,
-          "DELETE"
-        );
-        if (response) {
-          reloadData();
-        } else {
-          throw new Error("Failed to delete item");
-        }
-      } catch (error) {
-        console.error("Error deleting item:", error);
-        alert("Failed to delete item. Please try again.");
+      const response = await FetchData(`api/song/${id}`, "", "DELETE");
+      if (response) {
+        reloadData();
+      } else {
+        throw new Error("Failed to delete item");
       }
     }
   };

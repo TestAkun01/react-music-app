@@ -4,6 +4,7 @@ import Search from "@/components/Navbar/InputSearch";
 import LinkNavbar from "@/components/Navbar/LinkNavbar";
 import Logo from "@/components/Navbar/Logo";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import UserActionButton from "./UserActionButton";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-900">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div className="px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
             <button
@@ -29,7 +30,7 @@ export default function Navbar() {
               <MenuRoundedIcon className="block h-6 w-6" />
             </button>
           </div>
-          <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
+          <div className="flex items-center justify-center md:items-stretch md:justify-start">
             <Logo></Logo>
             <div className="hidden sm:ml-6 md:block my-auto">
               <div className="flex space-x-4">
@@ -37,8 +38,11 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          <div className="md:block hidden">
+          <div className="md:flex hidden gap-8 justify-center items-center w-auto">
             <Search></Search>
+            <div className="flex-shrink-0">
+              <UserActionButton></UserActionButton>
+            </div>
           </div>
         </div>
       </div>
@@ -49,6 +53,9 @@ export default function Navbar() {
       >
         <div className="flex px-2 pb-3 pt-2">
           <Search></Search>
+        </div>
+        <div className="flex-shrink-0">
+          <UserActionButton></UserActionButton>
         </div>
         <div className="flex flex-col space-y-1 px-2 pb-3 pt-2">
           <LinkNavbar></LinkNavbar>

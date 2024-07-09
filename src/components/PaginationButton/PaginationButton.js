@@ -8,21 +8,32 @@ export default function PaginationButton({
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
+      scrollToTop();
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       onPageChange(currentPage + 1);
+      scrollToTop();
     }
   };
 
   const handleFirstPage = () => {
     onPageChange(1);
+    scrollToTop();
   };
 
   const handleLastPage = () => {
     onPageChange(totalPages);
+    scrollToTop();
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const renderPageNumbers = () => {
@@ -50,7 +61,10 @@ export default function PaginationButton({
       pageNumbers.push(
         <button
           key={i}
-          onClick={() => onPageChange(i)}
+          onClick={() => {
+            onPageChange(i);
+            scrollToTop();
+          }}
           className={`px-4 py-2 mx-1 rounded text-white ${
             currentPage === i
               ? "bg-blue-800 cursor-default"

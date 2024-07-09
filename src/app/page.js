@@ -16,11 +16,9 @@ export default function Page() {
     const fetchInitialData = async () => {
       const [latestSongs, initialCategorySongs, categoryList] =
         await Promise.all([
-          FetchData(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song?latest=1&limit=5`
-          ),
-          FetchData(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song?limit=5`),
-          FetchData(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/category`),
+          FetchData(`api/song`, `latest=1&limit=5`),
+          FetchData(`api/song`, `limit=5`),
+          FetchData(`api/category`),
         ]);
 
       setLatest(latestSongs.data);
@@ -33,13 +31,12 @@ export default function Page() {
 
   const handleCategorySelect = async (category) => {
     setCategorySelected(category);
-    try {
-      const categoryURL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song?category=${category}&limit=5`;
-      const categorySongs = await FetchData(categoryURL);
-      setCategorySong(categorySongs.data);
-    } catch (error) {
-      console.error("Error fetching category data:", error);
-    }
+
+    const categorySongs = await FetchData(
+      "api/song",
+      `category=${category}&limit=5`
+    );
+    setCategorySong(categorySongs.data);
   };
   return (
     <div className="mb-16 min-h-screen">

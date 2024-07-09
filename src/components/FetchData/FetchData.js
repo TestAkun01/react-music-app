@@ -1,4 +1,9 @@
-export default async function FetchData(url, method = "GET", data = null) {
+export default async function FetchData(
+  path,
+  query = "",
+  method = "GET",
+  data = null
+) {
   try {
     const options = {
       method,
@@ -11,8 +16,14 @@ export default async function FetchData(url, method = "GET", data = null) {
     if (data) {
       options.body = JSON.stringify(data);
     }
+    if (query) {
+      query = "?" + query;
+    }
 
-    const response = await fetch(url, options);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/${path}${query}`,
+      options
+    );
 
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);

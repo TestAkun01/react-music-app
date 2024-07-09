@@ -12,7 +12,7 @@ export const AudioProvider = ({ children }) => {
   const [volume, setVolume] = useState(1);
   const [playlist, setPlaylist] = useState([]);
   const [playlistIndex, setPlaylistIndex] = useState(0);
-  const [loopMode, setLoopMode] = useState("none");
+  const [loopMode, setLoopMode] = useState("song");
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -33,7 +33,6 @@ export const AudioProvider = ({ children }) => {
         if (playlist.length > 0 && playlistIndex + 1 < playlist.length) {
           playNext();
         } else {
-          console.log("test");
           setIsPlaying(false);
         }
       } else if (loopMode === "playlist") {
@@ -52,7 +51,7 @@ export const AudioProvider = ({ children }) => {
       audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
       audioRef.current.removeEventListener("ended", handleEnded);
     };
-  }, [playlistIndex, playlist]);
+  }, [playlistIndex, playlist, loopMode]);
 
   const playTrack = (track) => {
     setCurrentTrack(track);
@@ -151,7 +150,6 @@ export const AudioProvider = ({ children }) => {
         break;
     }
   };
-
   return (
     <AudioContext.Provider
       value={{

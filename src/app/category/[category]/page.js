@@ -5,7 +5,7 @@ import CategoryButtons from "@/components/CategoryButtons/CategoryButtons";
 import FetchData from "@/components/FetchData/FetchData";
 import Header from "@/components/Header/Header";
 import PaginationButton from "@/components/PaginationButton/PaginationButton";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }) {
@@ -16,27 +16,25 @@ export default function Page({ params }) {
   const [categories, setCategories] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
-  let urlCategory = "";
+  let path = "";
+  let q = "";
   if (category === "All") {
-    urlCategory = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song?page=${page}`;
+    path = `api/song`;
+    q = `page=${page}`;
   } else {
-    urlCategory = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song?category=${category}&page=${page}`;
+    path = `api/song`;
+    q = `category=${category}&page=${page}`;
   }
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [dataSong, dataCategories] = await Promise.all([
-          FetchData(urlCategory),
-          FetchData(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/category`),
-        ]);
-        setSongs(dataSong.data);
-        setTotalPages(dataSong.pagination.totalPages);
-        setCategories(dataCategories.map((cat) => cat.category));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setSongs([]);
-      }
+      const [dataSong, dataCategories] = await Promise.all([
+        FetchData(path, q),
+        FetchData(`api/category`),
+      ]);
+      setSongs(dataSong.data);
+      setTotalPages(dataSong.pagination.totalPages);
+      setCategories(dataCategories.map((cat) => cat.category));
     };
 
     fetchData();

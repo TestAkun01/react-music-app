@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
+import FetchData from "../FetchData/FetchData";
 
 export default function SelectForm({ data, set }) {
   const [category, setCategory] = useState([]);
   useEffect(() => {
     const fetchCategories = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/category`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-        const data = await response.json();
-        setCategory(data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
+      const response = await FetchData(`api/category`);
+
+      setCategory(response);
     };
 
     fetchCategories();

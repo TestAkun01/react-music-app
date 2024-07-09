@@ -21,7 +21,7 @@ export default function EditItems({ id }) {
 
   useEffect(() => {
     if (id) {
-      FetchData(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`)
+      FetchData(`api/song/${id}`)
         .then((data) => setFormData(data))
         .catch((error) => console.error("Error fetching item:", error));
     }
@@ -45,11 +45,7 @@ export default function EditItems({ id }) {
     setMessage("");
 
     try {
-      const response = await FetchData(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`,
-        "PUT",
-        formData
-      );
+      const response = await FetchData(`api/song/${id}`, "", "PUT", formData);
 
       if (!response) {
         throw new Error("Network response was not ok");

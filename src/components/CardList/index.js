@@ -17,7 +17,13 @@ const CardList = ({ data }) => {
             key={song._id}
             className="max-w-sm rounded text-neutral-50 flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-shadow duration-300"
           >
-            <Image src={song.cover} alt={song.title} width={400} height={400} />
+            <Image
+              src={song.cover}
+              alt={song.title}
+              width={500}
+              height={500}
+              className="card-list"
+            />
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-2">
                 <div className="line-clamp-2">{song.title}</div>

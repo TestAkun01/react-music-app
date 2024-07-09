@@ -4,7 +4,6 @@
 
 import CategoryButtons from "@/components/CategoryButtons/CategoryButtons";
 import FetchData from "@/components/FetchData/FetchData";
-import MusicController from "@/components/MusicController/MusicController";
 import TrackController from "@/components/MusicController/TrackController";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -17,9 +16,8 @@ export default function Page({ params }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await FetchData(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song/${id}`
-      );
+      const path = `api/song/${id}`;
+      const data = await FetchData(path);
       setData(data);
     };
 
@@ -61,11 +59,20 @@ export default function Page({ params }) {
             <h2 className="mb-2">Track List</h2>
             <div className="overflow-y-auto max-h-96">
               <ul>
-                {data.list.map((track) => (
-                  <li key={track.id} className="mb-2">
-                    <TrackController track={track} />
-                  </li>
-                ))}
+                {data.list.map(
+                  (track) => (
+                    (track = {
+                      ...track,
+                      cover: data.cover,
+                      id_parent: data._id,
+                    }),
+                    (
+                      <li key={track.id} className="mb-2">
+                        <TrackController track={track} />
+                      </li>
+                    )
+                  )
+                )}
               </ul>
             </div>
           </div>

@@ -15,6 +15,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeDownIcon from "@mui/icons-material/VolumeDown";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const MusicController = () => {
   const {
@@ -33,6 +34,7 @@ const MusicController = () => {
     loopMode,
   } = useContext(AudioContext);
   const seekBarRef = useRef(null);
+  const router = useRouter();
   const [tempCurrentTime, setTempCurrentTime] = useState(currentTime);
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
@@ -73,6 +75,10 @@ const MusicController = () => {
   const togglePlaylist = () => {
     setIsPlaylistOpen(!isPlaylistOpen);
   };
+  const handleRedirect = () => {
+    router.push(`/song/${currentTrack.id_parent}`);
+  };
+
   return (
     <div className="relative">
       {currentTrack && (
@@ -117,10 +123,20 @@ const MusicController = () => {
               </div>
             </div>
 
-            <div id="Center_bar" className="flex items-center">
-              <span className="text-white font-medium text-[20px]">
+            <div id="Center_bar" className="flex items-center gap-5">
+              <Image
+                src={currentTrack.cover}
+                alt={currentTrack.title}
+                width={300}
+                height={300}
+                className="h-[45px] w-auto"
+              ></Image>
+              <button
+                onClick={handleRedirect}
+                className="text-white font-medium text-[20px] hover:underline"
+              >
                 {currentTrack.title}
-              </span>
+              </button>
             </div>
 
             <div id="Right_bar" className=" flex items-center gap-8">

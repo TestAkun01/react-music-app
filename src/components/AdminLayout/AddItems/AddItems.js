@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import InputForm from "../InputForm";
 import SelectForm from "../SelectForm";
 import InputList from "../InputList";
-import fetchData from "@/components/FetchData/FetchData";
+import FetchData from "@/components/FetchData/FetchData";
 
 export default function AddItems() {
   const [formData, setFormData] = useState({
@@ -37,11 +37,7 @@ export default function AddItems() {
     setMessage("");
 
     try {
-      const response = await fetchData(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song`,
-        "POST",
-        formData
-      );
+      const response = await FetchData(`api/song`, "", "POST", formData);
 
       if (!response) {
         throw new Error("Network response was not ok");

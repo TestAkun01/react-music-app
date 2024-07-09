@@ -51,7 +51,7 @@ const Playlist = ({ tracks }) => {
                 onClick={() => handleRemoveTrack(track._id)}
                 className="text-white"
               >
-                <RemoveIcon className="hover:bg-red-500 transition-colors duration-100" />
+                <RemoveIcon className="hover:bg-red-500 transition-colors duration-100 rounded-[50%]" />
               </button>
             </div>
           </li>

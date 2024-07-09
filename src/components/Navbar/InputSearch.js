@@ -8,7 +8,7 @@ const Search = () => {
   function handleSearch(event) {
     if (event.key === "Enter" || event.type === "click") {
       event.preventDefault();
-      const search = searchRef.current.value;
+      const search = searchRef.current.value.trim();
       if (search) router.push(`/search/${search}`);
     }
   }

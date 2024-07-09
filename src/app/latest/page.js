@@ -14,9 +14,9 @@ export default function Page() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
-      const latestSongs = await FetchData(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/song?latest=1&page=${page}`
-      );
+      const q = `latest=1&page=${page}`;
+      const latestSongs = await FetchData(`api/song`, q);
+      console.log(latestSongs);
       setLatest(latestSongs.data);
       setTotalPages(latestSongs.pagination.totalPages);
     };

@@ -13,6 +13,11 @@ export default function LinkNavbar() {
     },
     { name: "About", href: "/about", current: pathName === "/about" },
     { name: "Admin", href: "/admin", current: pathName.startsWith("/admin") },
+    {
+      name: "Dasboard",
+      href: "/user/dashboard",
+      current: pathName.startsWith("/user"),
+    },
   ];
 
   return (

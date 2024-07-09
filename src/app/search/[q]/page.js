@@ -11,8 +11,7 @@ export default function Page({ params }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const searchURL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/search?q=${q}`;
-      const result = await FetchData(searchURL);
+      const result = await FetchData(`api/search`, `q=${q}`);
       setFilteredSong(result.data);
     };
 

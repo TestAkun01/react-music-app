@@ -1,10 +1,13 @@
-import Loading from "@/components/Loading/Loading";
+"use client";
+
 import React from "react";
 
-export default function loading() {
+export default function Loading() {
   return (
     <div>
-      <Loading></Loading>;
+      <div className="min-h-screen flex justify-center items-center">
+        <div className="loading"></div>
+      </div>
     </div>
   );
 }
