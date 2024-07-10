@@ -1,4 +1,4 @@
-import ytdl from "ytdl-core";
+import ytdl from "@distube/ytdl-core";
 
 export async function GET(request) {
   const url = new URL(request.url).searchParams.get("url");

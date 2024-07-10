@@ -76,7 +76,7 @@ const TrackController = ({ track }) => {
             onMouseDown={handleSeekMouseDown}
             onMouseUp={handleSeekMouseUp}
             ref={seekBarRef}
-            className="w-full mx-2 h-1"
+            className="w-full mx-2 h-1 cursor-pointer"
           />
           <span className="text-white min-w-[57px] text-center">
             {formatTime(duration)}
