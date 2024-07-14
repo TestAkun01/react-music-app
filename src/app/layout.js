@@ -7,9 +7,9 @@ import Footer from "@/components/Footer/Footer";
 import MusicController from "@/components/MusicController/MusicController";
 import { AudioProvider } from "@/components/MusicController/AudioContext";
 import { NextAuthProvider } from "@/components/NextAuthProvider/NextAuthProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
 import Loading from "./loading";
-
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
 export const metadata = {
@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
             <MusicController />
           </AudioProvider>
         </NextAuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
