@@ -1,5 +1,6 @@
 import { connectToDatabase } from "@/service/db";
-import Song from "@/service/models/Song";
+import Album from "@/service/models/Album";
+import Track from "@/service/models/Track";
 
 export async function GET(request) {
   await connectToDatabase();
@@ -11,7 +12,7 @@ export async function GET(request) {
   const categories = url.searchParams.get("category") || "";
 
   try {
-    let query = Song.find({});
+    let query = Album.find({});
 
     if (latest) {
       query = query.sort({ release_date: -1 });
@@ -22,7 +23,7 @@ export async function GET(request) {
     }
 
     const skip = (page - 1) * limit;
-    const totalSongs = await Song.countDocuments(query);
+    const totalAlbums = await Album.countDocuments(query);
 
     if (limit !== -1) {
       query = query.skip(skip).limit(limit);
@@ -30,17 +31,17 @@ export async function GET(request) {
       query = query.skip(skip);
     }
 
-    const songs = await query.exec();
+    const albums = await query.populate("list").exec();
 
-    const totalPages = Math.ceil(totalSongs / limit);
+    const totalPages = Math.ceil(totalAlbums / limit);
 
     const pagination = {
       currentPage: page,
       totalPages: Math.abs(totalPages),
-      totalItems: totalSongs,
+      totalItems: totalAlbums,
     };
 
-    return new Response(JSON.stringify({ pagination, data: songs }), {
+    return new Response(JSON.stringify({ pagination, data: albums }), {
       status: 200,
     });
   } catch (error) {
@@ -56,17 +57,35 @@ export async function POST(request) {
     await request.json();
 
   try {
-    const newSong = new Song({
+    const newAlbum = new Album({
       title,
       artist,
       release_date,
       category,
       cover,
-      list,
+      list: [],
     });
-    const savedSong = await newSong.save();
-    return new Response(JSON.stringify(savedSong), { status: 201 });
+
+    const savedAlbum = await newAlbum.save();
+
+    const trackPromises = list.map(async (trackData) => {
+      const newTrack = new Track({
+        ...trackData,
+        cover: savedAlbum.cover,
+        artist: savedAlbum.artist,
+        album_id: savedAlbum._id,
+      });
+      const savedTrack = await newTrack.save();
+      savedAlbum.list.push(savedTrack._id);
+      return savedTrack;
+    });
+
+    await Promise.all(trackPromises);
+    await savedAlbum.save();
+
+    return new Response(JSON.stringify(savedAlbum), { status: 200 });
   } catch (error) {
+    console.error("Error:", error.message);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
     });

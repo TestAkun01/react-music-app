@@ -57,7 +57,6 @@ export const AudioProvider = ({ children }) => {
   }, [playlistIndex, playlist, loopMode]);
 
   const handleHistory = (track) => {
-    console.log(track);
     FetchData("api/history-watch", "", "POST", {
       userId: session.user.email,
       trackId: track._id,
@@ -72,7 +71,7 @@ export const AudioProvider = ({ children }) => {
     audioRef.current.play();
     setIsPlaying(true);
     setPlaylist([track]);
-    handleHistory(track);
+    session ? handleHistory(track) : null;
   };
 
   const playTrackFromPlaylist = (track) => {
@@ -84,7 +83,7 @@ export const AudioProvider = ({ children }) => {
     setIsPlaying(true);
     const index = playlist.findIndex((item) => item._id === track._id);
     setPlaylistIndex(index);
-    handleHistory();
+    session ? handleHistory(track) : null;
   };
 
   const playNext = () => {

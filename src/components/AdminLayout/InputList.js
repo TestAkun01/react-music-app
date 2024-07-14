@@ -4,7 +4,6 @@ import InputForm from "./InputForm";
 export default function InputList({ data, set }) {
   const handleAddItem = () => {
     const newItem = {
-      id: data.list.length + 1,
       title: "",
       duration: "",
       file_url: "",
@@ -18,9 +17,6 @@ export default function InputList({ data, set }) {
   const handleRemoveItem = (index) => {
     const updatedList = [...data.list];
     updatedList.splice(index, 1);
-    updatedList.forEach((item, idx) => {
-      item.id = idx + 1;
-    });
     set({ ...data, list: updatedList });
   };
 
@@ -32,17 +28,6 @@ export default function InputList({ data, set }) {
           key={index}
           className="xl:grid xl:grid-cols-6 flex flex-col gap-4 py-2"
         >
-          <InputForm
-            title={`Item ${index + 1} ID (Disable)`}
-            target={"id"}
-            data={item}
-            set={(updatedItem) => {
-              const updatedList = [...data.list];
-              updatedList[index] = updatedItem;
-              set({ ...data, list: updatedList });
-            }}
-            disable={true}
-          />
           <InputForm
             title={`Item ${index + 1} Title`}
             target={"title"}

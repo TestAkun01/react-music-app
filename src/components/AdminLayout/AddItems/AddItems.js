@@ -37,7 +37,7 @@ export default function AddItems() {
     setMessage("");
 
     try {
-      const response = await FetchData(`api/song`, "", "POST", formData);
+      const response = await FetchData(`api/album`, "", "POST", formData);
 
       if (!response) {
         throw new Error("Network response was not ok");

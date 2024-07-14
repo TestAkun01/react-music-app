@@ -21,7 +21,7 @@ export default function EditItems({ id }) {
 
   useEffect(() => {
     if (id) {
-      FetchData(`api/song/${id}`)
+      FetchData(`api/album/${id}`)
         .then((data) => setFormData(data))
         .catch((error) => console.error("Error fetching item:", error));
     }
@@ -45,7 +45,7 @@ export default function EditItems({ id }) {
     setMessage("");
 
     try {
-      const response = await FetchData(`api/song/${id}`, "", "PUT", formData);
+      const response = await FetchData(`api/album/${id}`, "", "PUT", formData);
 
       if (!response) {
         throw new Error("Network response was not ok");

@@ -8,6 +8,7 @@ const CardList = ({ data }) => {
   const handleRedirect = (category) => {
     router.push(`/category/${category}`);
   };
+
   return (
     <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
       {data.map((song) => {

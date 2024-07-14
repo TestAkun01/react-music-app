@@ -1,4 +1,3 @@
-// src/utils/db.js
 import mongoose from "mongoose";
 
 const uri = `${process.env.NEXT_PUBLIC_CONNECTION_STRING}`;

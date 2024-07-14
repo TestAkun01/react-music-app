@@ -19,10 +19,10 @@ export default function Page({ params }) {
   let path = "";
   let q = "";
   if (category === "All") {
-    path = `api/song`;
+    path = `api/album`;
     q = `page=${page}`;
   } else {
-    path = `api/song`;
+    path = `api/album`;
     q = `category=${category}&page=${page}`;
   }
 

@@ -8,10 +8,10 @@ export async function GET(request) {
 
   try {
     const mostPlayed = await WatchHistory.aggregate([
-      { $match: { user_id: userId } },
-      { $group: { _id: "$track_id", play_count: { $sum: 1 } } },
+      { $match: { userId: userId } },
+      { $group: { _id: "$trackId", play_count: { $sum: 1 } } },
       { $sort: { play_count: -1 } },
-      { $limit: 10 },
+      { $limit: 5 },
     ]);
     return new Response(JSON.stringify(mostPlayed), { status: 200 });
   } catch (error) {

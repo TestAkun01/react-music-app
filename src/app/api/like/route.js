@@ -8,7 +8,12 @@ export async function GET(request) {
   const trackId = searchParams.get("trackId");
 
   try {
-    const likes = await Like.find({ userId: userId, trackId: trackId });
+    const query = { userId: userId };
+    if (trackId) {
+      query.trackId = trackId;
+    }
+
+    const likes = await Like.find(query).limit(5);
     return new Response(JSON.stringify(likes), { status: 200 });
   } catch (error) {
     console.error("Error:", error.message);

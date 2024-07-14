@@ -8,7 +8,6 @@ export async function GET(request) {
       throw new Error("Invalid YouTube URL");
     }
 
-    // Buffer the audio stream
     const audioStream = ytdl(url, {
       filter: "audioonly",
       quality: "highestaudio",

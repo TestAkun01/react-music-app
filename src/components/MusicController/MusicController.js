@@ -2,6 +2,11 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { AudioContext } from "./AudioContext";
 import Playlist from "./Playlist";
+import LikeButton from "./likeButton";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
@@ -13,10 +18,6 @@ import PauseIcon from "@mui/icons-material/Pause";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeDownIcon from "@mui/icons-material/VolumeDown";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import LikeButton from "./likeButton";
-import { useSession } from "next-auth/react";
 
 const MusicController = () => {
   const {
@@ -78,7 +79,7 @@ const MusicController = () => {
     setIsPlaylistOpen(!isPlaylistOpen);
   };
   const handleRedirect = () => {
-    router.push(`/song/${currentTrack.id_parent}`);
+    router.push(`/song/${currentTrack.album_id}`);
   };
 
   return (

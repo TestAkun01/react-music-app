@@ -10,7 +10,7 @@ export default function LayoutTable({ data, reloadData }) {
   const handleDelete = async (id) => {
     const confirmDelete = confirm(`Delete item with ID ${id}?`);
     if (confirmDelete) {
-      const response = await FetchData(`api/song/${id}`, "", "DELETE");
+      const response = await FetchData(`api/album/${id}`, "", "DELETE");
       if (response) {
         reloadData();
       } else {

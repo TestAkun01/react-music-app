@@ -16,8 +16,8 @@ export default function Page() {
     const fetchInitialData = async () => {
       const [latestSongs, initialCategorySongs, categoryList] =
         await Promise.all([
-          FetchData(`api/song`, `latest=1&limit=5`),
-          FetchData(`api/song`, `limit=5`),
+          FetchData(`api/album`, `latest=1&limit=5`),
+          FetchData(`api/album`, `limit=5`),
           FetchData(`api/category`),
         ]);
 
@@ -33,7 +33,7 @@ export default function Page() {
     setCategorySelected(category);
 
     const categorySongs = await FetchData(
-      "api/song",
+      "api/album",
       `category=${category}&limit=5`
     );
     setCategorySong(categorySongs.data);

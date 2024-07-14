@@ -17,7 +17,7 @@ export default function Page({ params }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const path = `api/song/${id}`;
+      const path = `api/album/${id}`;
       const data = await FetchData(path);
       setData(data);
     };
@@ -60,20 +60,11 @@ export default function Page({ params }) {
             <h2 className="mb-2">Track List</h2>
             <div className="overflow-y-auto max-h-96">
               <ul>
-                {data.list.map(
-                  (track) => (
-                    (track = {
-                      ...track,
-                      cover: data.cover,
-                      id_parent: data._id,
-                    }),
-                    (
-                      <li key={track.id} className="mb-2">
-                        <TrackController track={track} />
-                      </li>
-                    )
-                  )
-                )}
+                {data.list.map((track) => (
+                  <li key={track._id} className="mb-2">
+                    <TrackController track={track} />
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

@@ -11,10 +11,12 @@ export default function LikeButton({ userId, trackId }) {
   useEffect(() => {
     const checkLiked = async () => {
       try {
+        console.log(userId, trackId);
         const response = await FetchData(
           `api/like`,
           `userId=${userId}&trackId=${trackId}`
         );
+        console.log(response);
         setLiked(response.length > 0);
       } finally {
         setLoading(false);

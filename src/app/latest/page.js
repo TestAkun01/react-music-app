@@ -15,7 +15,7 @@ export default function Page() {
   useEffect(() => {
     const fetchInitialData = async () => {
       const q = `latest=1&page=${page}`;
-      const latestSongs = await FetchData(`api/song`, q);
+      const latestSongs = await FetchData(`api/album`, q);
       setLatest(latestSongs.data);
       setTotalPages(latestSongs.pagination.totalPages);
     };
