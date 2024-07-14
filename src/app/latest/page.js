@@ -16,7 +16,6 @@ export default function Page() {
     const fetchInitialData = async () => {
       const q = `latest=1&page=${page}`;
       const latestSongs = await FetchData(`api/song`, q);
-      console.log(latestSongs);
       setLatest(latestSongs.data);
       setTotalPages(latestSongs.pagination.totalPages);
     };

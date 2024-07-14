@@ -6,7 +6,6 @@ export default function SelectForm({ data, set }) {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await FetchData(`api/category`);
-
       setCategory(response);
     };
 
@@ -38,11 +37,13 @@ export default function SelectForm({ data, set }) {
         <option value="" className="focus:outline-none">
           Select a category
         </option>
-        {category.map((cat) => (
-          <option key={cat._id} value={cat.category}>
-            {cat.category}
-          </option>
-        ))}
+        {category
+          .filter((cat) => cat.category !== "All")
+          .map((cat) => (
+            <option key={cat._id} value={cat.category}>
+              {cat.category}
+            </option>
+          ))}
       </select>
       <div className="mt-4">
         {data.category.map((category, index) => (

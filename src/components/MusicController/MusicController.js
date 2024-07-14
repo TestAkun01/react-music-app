@@ -1,4 +1,3 @@
-// components/MusicController.js
 "use client";
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { AudioContext } from "./AudioContext";
@@ -16,6 +15,8 @@ import VolumeDownIcon from "@mui/icons-material/VolumeDown";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import LikeButton from "./likeButton";
+import { useSession } from "next-auth/react";
 
 const MusicController = () => {
   const {
@@ -35,6 +36,7 @@ const MusicController = () => {
   } = useContext(AudioContext);
   const seekBarRef = useRef(null);
   const router = useRouter();
+  const { data: session } = useSession();
   const [tempCurrentTime, setTempCurrentTime] = useState(currentTime);
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
@@ -137,6 +139,12 @@ const MusicController = () => {
               >
                 {currentTrack.title}
               </button>
+              {session ? (
+                <LikeButton
+                  userId={session.user.email}
+                  trackId={currentTrack._id}
+                ></LikeButton>
+              ) : null}
             </div>
 
             <div id="Right_bar" className=" flex items-center gap-8">

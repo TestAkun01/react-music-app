@@ -2,6 +2,7 @@
 
 "use client";
 
+import Loading from "@/app/loading";
 import CategoryButtons from "@/components/CategoryButtons/CategoryButtons";
 import FetchData from "@/components/FetchData/FetchData";
 import TrackController from "@/components/MusicController/TrackController";
@@ -78,7 +79,7 @@ export default function Page({ params }) {
           </div>
         </div>
       ) : (
-        <div>Loading...</div>
+        <Loading></Loading>
       )}
     </div>
   );

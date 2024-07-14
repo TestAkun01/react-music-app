@@ -1,6 +1,8 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import React, { useState, createContext, useRef, useEffect } from "react";
+import FetchData from "../FetchData/FetchData";
 
 export const AudioContext = createContext();
 
@@ -13,6 +15,7 @@ export const AudioProvider = ({ children }) => {
   const [playlist, setPlaylist] = useState([]);
   const [playlistIndex, setPlaylistIndex] = useState(0);
   const [loopMode, setLoopMode] = useState("none");
+  const { data: session } = useSession();
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -53,6 +56,14 @@ export const AudioProvider = ({ children }) => {
     };
   }, [playlistIndex, playlist, loopMode]);
 
+  const handleHistory = (track) => {
+    console.log(track);
+    FetchData("api/history-watch", "", "POST", {
+      userId: session.user.email,
+      trackId: track._id,
+    });
+  };
+
   const playTrack = (track) => {
     setCurrentTrack(track);
     if (audioRef.current.src !== track.file_url) {
@@ -61,6 +72,7 @@ export const AudioProvider = ({ children }) => {
     audioRef.current.play();
     setIsPlaying(true);
     setPlaylist([track]);
+    handleHistory(track);
   };
 
   const playTrackFromPlaylist = (track) => {
@@ -72,6 +84,7 @@ export const AudioProvider = ({ children }) => {
     setIsPlaying(true);
     const index = playlist.findIndex((item) => item._id === track._id);
     setPlaylistIndex(index);
+    handleHistory();
   };
 
   const playNext = () => {
