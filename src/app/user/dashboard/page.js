@@ -7,24 +7,36 @@ import Loading from "@/app/loading";
 import FetchData from "@/components/FetchData/FetchData";
 import SongCard from "@/components/CardForUser/CardSong";
 
-const fetchDataAndSongs = async (endpoint, query, setData, addSongs) => {
+const fetchDataAndSongs = async (endpoints, query, setStates, addSongs) => {
   try {
-    const data = await FetchData(endpoint, query);
-    setData(data);
-
-    const songPromises = data.map((item) =>
-      FetchData(`api/track/${item.trackId || item._id}`)
+    const [historyData, likeData, mostPlayedData] = await Promise.all(
+      endpoints.map((endpoint) => FetchData(endpoint, query))
     );
-    const songDataArray = await Promise.all(songPromises);
 
-    const songsObject = songDataArray.reduce((acc, song, index) => {
-      acc[data[index].trackId || data[index]._id] = song;
+    setStates.history(historyData);
+    setStates.like(likeData);
+    setStates.mostPlayed(mostPlayedData);
+
+    const allTrackIds = [
+      ...new Set([
+        ...historyData.map((item) => item.trackId || item._id),
+        ...likeData.map((item) => item.trackId || item._id),
+        ...mostPlayedData.map((item) => item.trackId || item._id),
+      ]),
+    ];
+
+    const songDataArray = await FetchData(`api/track`, "", "POST", {
+      ids: allTrackIds,
+    });
+
+    const songsObject = songDataArray.reduce((acc, song) => {
+      acc[song._id] = song;
       return acc;
     }, {});
 
     addSongs(songsObject);
   } catch (error) {
-    console.error(`Failed to fetch data from ${endpoint}:`, error);
+    console.error("Failed to fetch data:", error);
   }
 };
 
@@ -42,12 +54,10 @@ export default function Page() {
   useEffect(() => {
     if (session) {
       const userIdQuery = `userId=${session.user.email}`;
-      fetchDataAndSongs("api/history-watch", userIdQuery, setHistory, addSongs);
-      fetchDataAndSongs("api/like", userIdQuery, setLike, addSongs);
       fetchDataAndSongs(
-        "api/most-played",
+        ["api/history-watch", "api/like", "api/most-played"],
         userIdQuery,
-        setMostPlayed,
+        { history: setHistory, like: setLike, mostPlayed: setMostPlayed },
         addSongs
       );
     }

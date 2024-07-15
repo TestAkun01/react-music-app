@@ -9,11 +9,10 @@ export default function Page() {
   const [data, setData] = useState([]);
 
   const reloadData = async () => {
-    const newData = await FetchData(`api/song`, `limit=-1`);
+    const newData = await FetchData(`api/album`, `limit=-1`);
 
     const modifiedData = newData.data.map((item) => ({
       ...item,
-      list: item.list.length,
     }));
     setData(modifiedData);
   };

@@ -38,22 +38,21 @@
   }
 }
 
-/* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: transparent;
   border-radius: 5px;
+  margin: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #474747;
+  background: #c1c1c1;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #474747bc;
+  background: #c1c1c1bc;
 }

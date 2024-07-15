@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import InputForm from "./InputForm";
+import { Login } from "@mui/icons-material";
 
-export default function InputList({ data, set }) {
+export default function InputList({ data, set, setDeletedData, deletedData }) {
   const handleAddItem = () => {
     const newItem = {
       title: "",
@@ -16,7 +17,10 @@ export default function InputList({ data, set }) {
 
   const handleRemoveItem = (index) => {
     const updatedList = [...data.list];
-    updatedList.splice(index, 1);
+    const deletedItem = updatedList.splice(index, 1);
+    deletedItem[0].title == ""
+      ? null
+      : setDeletedData([...deletedData, deletedItem[0]._id]);
     set({ ...data, list: updatedList });
   };
 
@@ -28,6 +32,17 @@ export default function InputList({ data, set }) {
           key={index}
           className="xl:grid xl:grid-cols-6 flex flex-col gap-4 py-2"
         >
+          <InputForm
+            title={`Item ${index + 1} _ID`}
+            target={"_id"}
+            data={item}
+            set={(updatedItem) => {
+              const updatedList = [...data.list];
+              updatedList[index] = updatedItem;
+              set({ ...data, list: updatedList });
+            }}
+            disable={true}
+          />
           <InputForm
             title={`Item ${index + 1} Title`}
             target={"title"}

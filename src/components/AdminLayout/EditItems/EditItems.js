@@ -15,16 +15,20 @@ export default function EditItems({ id }) {
     cover: "",
     list: [],
   });
-
+  const [deletedData, setDeletedData] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
+  function setForm() {
     if (id) {
       FetchData(`api/album/${id}`)
         .then((data) => setFormData(data))
         .catch((error) => console.error("Error fetching item:", error));
     }
+  }
+
+  useEffect(() => {
+    setForm();
   }, [id]);
 
   async function handleSubmit(e) {
@@ -45,8 +49,13 @@ export default function EditItems({ id }) {
     setMessage("");
 
     try {
+      const deleteTrack = await FetchData("api/track", "", "DELETE", {
+        ids: deletedData,
+      });
+      if (!deleteTrack) {
+        throw new Error("Network response was not ok");
+      }
       const response = await FetchData(`api/album/${id}`, "", "PUT", formData);
-
       if (!response) {
         throw new Error("Network response was not ok");
       }
@@ -58,6 +67,7 @@ export default function EditItems({ id }) {
       setMessage("Failed to update item. Please try again.");
     } finally {
       setIsSubmitting(false);
+      setForm();
     }
   }
 
@@ -90,7 +100,12 @@ export default function EditItems({ id }) {
         data={formData}
         set={setFormData}
       />
-      <InputList data={formData} set={setFormData} />
+      <InputList
+        data={formData}
+        set={setFormData}
+        setDeletedData={setDeletedData}
+        deletedData={deletedData}
+      />
       <div>
         <button
           type="submit"

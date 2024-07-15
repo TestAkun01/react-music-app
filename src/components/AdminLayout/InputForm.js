@@ -20,7 +20,7 @@ export default function InputForm({
       <input
         type={type}
         name={target}
-        value={data[target]}
+        value={data[target] ? data[target] : ""}
         onChange={handleChange}
         className="mt-1 block w-full p-2 bg-gray-800 shadow shadow-[#766df4] text-neutral-50 rounded-md focus:outline-none"
         disabled={disable}
