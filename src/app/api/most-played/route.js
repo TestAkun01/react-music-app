@@ -11,7 +11,6 @@ export async function GET(request) {
       { $match: { userId: userId } },
       { $group: { _id: "$trackId", play_count: { $sum: 1 } } },
       { $sort: { play_count: -1 } },
-      { $limit: 5 },
     ]);
     return new Response(JSON.stringify(mostPlayed), { status: 200 });
   } catch (error) {

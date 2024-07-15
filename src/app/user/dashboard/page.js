@@ -46,6 +46,7 @@ export default function Page() {
   const [like, setLike] = useState([]);
   const [mostPlayed, setMostPlayed] = useState([]);
   const [songs, setSongs] = useState({});
+  const [isDisplaying, setIsDisplaying] = useState("rencentlyPlayed");
 
   const addSongs = (newSongs) => {
     setSongs((prevSongs) => ({ ...prevSongs, ...newSongs }));
@@ -62,72 +63,95 @@ export default function Page() {
       );
     }
   }, [session]);
-
+  const handleIsDisplaying = (display) => {
+    setIsDisplaying(display);
+  };
   if (status === "loading") {
     return <Loading />;
   }
 
   return (
-    <div className="p-4 min-h-screen text-white xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5">
-      <h1 className="text-2xl font-bold mb-4">User Dashboard</h1>
+    <div className="mt-8 min-h-screen text-white xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5">
       {session ? (
-        <>
-          <div className="flex gap-8">
+        <div className="flex md:flex-row flex-col md:gap-16 gap-8">
+          <div className="md:mt-16 md:block flex gap-2">
             <Image
               src={session.user.image}
               alt={session.user.name}
               width={200}
               height={200}
-              className="w-32 h-32 rounded-[50%]"
+              className="md:w-[270px] w-[150px] md:h-[270px] h-[150px] rounded-[50%] border border-2 border-gray-700 md:mb-16"
             />
-            <div className="flex flex-col justify-center gap-4">
-              <p className="text-3xl font-bold">
+            <div className="md:block flex flex-col justify-center">
+              <p className="md:text-3xl text-xl font-bold">
                 Welcome, {session.user.name}!
               </p>
               <p>{session.user.email}</p>
             </div>
           </div>
-          <main className="flex-1 p-4 bg-gray-950">
+          <main className="flex-1 p-4">
             <section>
-              <h2 className="text-2xl mb-4">Recently Played</h2>
-              <div className="grid grid-cols-5 gap-4">
-                {mostPlayed.map((item) => (
-                  <SongCard
-                    key={item._id}
-                    song={songs[item._id]}
-                    totalPlay={item.play_count}
-                  />
-                ))}
+              <div className="flex mb-4 ">
+                <button
+                  className={`text-2xl px-4 pt-2 shrink-0 font-medium border-white ${
+                    isDisplaying === "rencentlyPlayed"
+                      ? "border border-b-0"
+                      : "border-b"
+                  } `}
+                  onClick={() => handleIsDisplaying("rencentlyPlayed")}
+                >
+                  Recently
+                </button>
+                <button
+                  className={`text-2xl px-4 pt-2 font-medium border-white ${
+                    isDisplaying === "like" ? "border border-b-0" : "border-b"
+                  }`}
+                  onClick={() => handleIsDisplaying("like")}
+                >
+                  Like
+                </button>
+                <button
+                  className={`text-2xl px-4 pt-2 font-medium border-white border-b ${
+                    isDisplaying === "history"
+                      ? "border border-b-0"
+                      : "border-b"
+                  }`}
+                  onClick={() => handleIsDisplaying("history")}
+                >
+                  History
+                </button>
+                <div className="w-full border-b boredr-white"></div>
               </div>
-            </section>
-
-            <section className="mt-8">
-              <h2 className="text-2xl mb-4">Likes</h2>
-              <div className="grid grid-cols-5 gap-4">
-                {like.map((item) => (
-                  <SongCard
-                    key={item._id}
-                    song={songs[item.trackId]}
-                    date={item.likedAt}
-                  />
-                ))}
-              </div>
-            </section>
-
-            <section className="mt-8">
-              <h2 className="text-2xl mb-4">History</h2>
-              <div className="grid grid-cols-5 gap-4">
-                {history.map((item) => (
-                  <SongCard
-                    key={item._id}
-                    song={songs[item._id]}
-                    date={item.watchedAt}
-                  />
-                ))}
+              <div className="flex flex-col gap-4">
+                {isDisplaying == "rencentlyPlayed"
+                  ? mostPlayed.map((item) => (
+                      <SongCard
+                        key={item._id}
+                        song={songs[item._id]}
+                        totalPlay={item.play_count}
+                      />
+                    ))
+                  : isDisplaying == "like"
+                  ? like.map((item) => (
+                      <SongCard
+                        key={item._id}
+                        song={songs[item.trackId]}
+                        date={item.likedAt}
+                      />
+                    ))
+                  : isDisplaying == "history"
+                  ? history.map((item) => (
+                      <SongCard
+                        key={item._id}
+                        song={songs[item._id]}
+                        date={item.watchedAt}
+                      />
+                    ))
+                  : null}
               </div>
             </section>
           </main>
-        </>
+        </div>
       ) : (
         <p>You are not logged in. Please log in to access the dashboard.</p>
       )}

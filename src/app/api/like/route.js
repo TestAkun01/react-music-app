@@ -13,7 +13,9 @@ export async function GET(request) {
       query.trackId = trackId;
     }
 
-    const likes = await Like.find(query).limit(5);
+    const likes = await Like.find(query).sort({
+      likedAt: -1,
+    });
     return new Response(JSON.stringify(likes), { status: 200 });
   } catch (error) {
     console.error("Error:", error.message);

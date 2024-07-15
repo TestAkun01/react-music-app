@@ -17,7 +17,6 @@ export async function GET(request) {
           userId: { $first: "$userId" },
         },
       },
-      { $limit: 5 },
     ]);
     return new Response(JSON.stringify(data), { status: 200 });
   } catch (error) {

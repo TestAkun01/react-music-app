@@ -12,18 +12,18 @@ const SongCard = ({ song, date, totalPlay }) => {
   }
 
   return (
-    <div className="bg-gray-800 text-white p-4 rounded shadow">
+    <div className="text-white rounded shadow flex items-center gap-4">
       <Image
         src={song.cover}
         alt={song.title}
-        className="w-full h-auto object-cover rounded mb-2"
+        className="w-auto h-12 object-cover"
         width={300}
         height={300}
       />
-      <p>Title : {song.title}</p>
-      <p>Artist : {song.artist}</p>
-      {date && <p>Date: {new Date(date).toLocaleString().split(",")[0]}</p>}
-      {totalPlay && <p>Total Plays: {totalPlay}</p>}
+      <div className="flex flex-col justify-center">
+        <p>{song.title}</p>
+        <p className="text-gray-400">{song.artist}</p>
+      </div>
     </div>
   );
 };
