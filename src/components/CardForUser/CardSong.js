@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 
-const SongCard = ({ song, date, totalPlay }) => {
+const SongCard = ({ song }) => {
   if (!song) {
     return (
       <div className="bg-white p-4 rounded shadow">
@@ -10,7 +10,7 @@ const SongCard = ({ song, date, totalPlay }) => {
       </div>
     );
   }
-
+  console.log(song);
   return (
     <div className="text-white rounded shadow flex items-center gap-4">
       <Image
@@ -22,7 +22,9 @@ const SongCard = ({ song, date, totalPlay }) => {
       />
       <div className="flex flex-col justify-center">
         <p>{song.title}</p>
-        <p className="text-gray-400">{song.artist}</p>
+        <p className="text-gray-400">
+          {song.artist.map((data) => data.artist).join(" & ")}
+        </p>
       </div>
     </div>
   );

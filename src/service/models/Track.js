@@ -7,10 +7,21 @@ const trackSchema = new mongoose.Schema(
       ref: "Album",
     },
     cover: { type: String },
-    artist: { type: String },
-    title: { type: String },
-    duration: { type: String },
-    file_url: { type: String },
+    artist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Artist",
+      },
+    ],
+    title: {
+      type: String,
+    },
+    duration: {
+      type: String,
+    },
+    file_url: {
+      type: String,
+    },
   },
   { versionKey: false }
 );

@@ -1,30 +1,38 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import InputForm from "../InputForm";
-import SelectForm from "../SelectForm";
-import InputList from "../InputList";
 import FetchData from "@/components/FetchData/FetchData";
+import AlbumForm from "./AlbumForm";
+import TrackForm from "./TrackForm";
 
-export default function EditItems({ id }) {
-  const [formData, setFormData] = useState({
-    title: "",
-    artist: "",
-    release_date: "",
-    category: [],
-    cover: "",
-    list: [],
-  });
+export default function EditItems({ id, type }) {
+  const [formData, setFormData] = useState(
+    type === "album"
+      ? {
+          title: "",
+          artist: [],
+          release_date: "",
+          category: [],
+          cover: "",
+          list: [],
+        }
+      : {
+          title: "",
+          artist: [],
+          album_id: "",
+          cover: "",
+          duration: "",
+          file_url: "",
+        }
+  );
   const [deletedData, setDeletedData] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
-  function setForm() {
-    if (id) {
-      FetchData(`api/album/${id}`)
-        .then((data) => setFormData(data))
-        .catch((error) => console.error("Error fetching item:", error));
-    }
+  async function setForm() {
+    const response = await FetchData(`api/${type}/${id}`);
+    const data = response.data ? response.data : response;
+    setFormData(data);
   }
 
   useEffect(() => {
@@ -34,12 +42,19 @@ export default function EditItems({ id }) {
   async function handleSubmit(e) {
     e.preventDefault();
     if (
-      !formData.title ||
-      !formData.artist ||
-      !formData.release_date ||
-      formData.category.length === 0 ||
-      !formData.cover ||
-      formData.list.length === 0
+      (type === "album" &&
+        (!formData.title ||
+          formData.artist.length === 0 ||
+          !formData.release_date ||
+          formData.category.length === 0 ||
+          !formData.cover ||
+          formData.list.length === 0)) ||
+      (type === "track" &&
+        (!formData.title ||
+          !formData.artist ||
+          !formData.album_id ||
+          !formData.cover ||
+          !formData.file_url))
     ) {
       alert("Harap lengkapi semua field sebelum mengirimkan data.");
       return;
@@ -49,13 +64,12 @@ export default function EditItems({ id }) {
     setMessage("");
 
     try {
-      const deleteTrack = await FetchData("api/track", "", "DELETE", {
-        ids: deletedData,
-      });
-      if (!deleteTrack) {
-        throw new Error("Network response was not ok");
-      }
-      const response = await FetchData(`api/album/${id}`, "", "PUT", formData);
+      const response = await FetchData(
+        `api/${type}/${id}`,
+        "",
+        "PUT",
+        formData
+      );
       if (!response) {
         throw new Error("Network response was not ok");
       }
@@ -72,50 +86,26 @@ export default function EditItems({ id }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <InputForm
-        title={"Title"}
-        target={"title"}
-        data={formData}
-        set={setFormData}
-      />
-      <InputForm
-        title={"Artist"}
-        target={"artist"}
-        data={formData}
-        set={setFormData}
-      />
-      <InputForm
-        title={"Release date"}
-        target={"release_date"}
-        type="date"
-        data={formData}
-        set={setFormData}
-      />
-      <SelectForm data={formData} set={setFormData} />
-      <InputForm
-        title={"Cover Url"}
-        target={"cover"}
-        type="url"
-        data={formData}
-        set={setFormData}
-      />
-      <InputList
-        data={formData}
-        set={setFormData}
-        setDeletedData={setDeletedData}
-        deletedData={deletedData}
-      />
-      <div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Submitting..." : "Save Changes"}
-        </button>
-      </div>
-      {message && <p>{message}</p>}
-    </form>
+    <>
+      {type === "album" ? (
+        <AlbumForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          message={message}
+          deletedData={deletedData}
+          setDeletedData={setDeletedData}
+        />
+      ) : (
+        <TrackForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          message={message}
+        />
+      )}
+    </>
   );
 }

@@ -34,7 +34,7 @@ export default function Page({ params }) {
       ]);
       setSongs(dataSong.data);
       setTotalPages(dataSong.pagination.totalPages);
-      setCategories(dataCategories.map((cat) => cat.category));
+      setCategories(dataCategories);
     };
 
     fetchData();

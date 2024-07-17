@@ -12,10 +12,11 @@ export default function AdminLayout({ children }) {
               Dashboard
             </p>
           </Link>
-          <Link href="/admin/edit-item">
-            <p className="block py-2 px-4 rounded hover:bg-gray-700">
-              Edit Item
-            </p>
+          <Link href="/admin/album">
+            <p className="block py-2 px-4 rounded hover:bg-gray-700">Album</p>
+          </Link>
+          <Link href="/admin/track">
+            <p className="block py-2 px-4 rounded hover:bg-gray-700">Track</p>
           </Link>
         </div>
         <div className="p-4">{children}</div>

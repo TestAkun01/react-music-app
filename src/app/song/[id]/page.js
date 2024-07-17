@@ -45,7 +45,10 @@ export default function Page({ params }) {
             </div>
             <div className=" w-full">
               <h1 className="text-3xl mb-2">{data.title}</h1>
-              <p className="mb-4">Artist: {data.artist}</p>
+              <p className="mb-4">
+                Artist:{" "}
+                {data.artist.map((dataArtist) => dataArtist.artist).join(" & ")}
+              </p>
               <p className="mb-4">Release Date: {data.release_date}</p>
               <div className="mb-4">
                 <p className="mb-2">Category:</p>

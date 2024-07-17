@@ -5,7 +5,7 @@ export async function GET(request, { params }) {
   await connectToDatabase();
 
   try {
-    const response = await Track.findById(params.id);
+    const response = await Track.findById(params.id).populate("artist");
     if (!response) {
       return new Response("Track not found", { status: 404 });
     }

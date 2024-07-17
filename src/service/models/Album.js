@@ -5,15 +5,21 @@ const albumSchema = new mongoose.Schema(
     title: {
       type: String,
     },
-    artist: {
-      type: String,
-    },
+    artist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Artist",
+      },
+    ],
     release_date: {
       type: String,
     },
-    category: {
-      type: [String],
-    },
+    category: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
     cover: {
       type: String,
     },

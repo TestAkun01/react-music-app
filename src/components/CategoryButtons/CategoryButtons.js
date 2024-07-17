@@ -4,7 +4,9 @@ export default function CategoryButtons({ categories, handle }) {
     handle(category);
   }
 
-  let sortedCategories = [...categories].sort((a, b) => a.localeCompare(b));
+  let sortedCategories = categories
+    .map((data) => data.category)
+    .sort((a, b) => a.localeCompare(b));
 
   return (
     <div className="mb-3">

@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema(
   {
-    category: String,
+    category: {
+      type: String,
+    },
   },
   { versionKey: false }
 );

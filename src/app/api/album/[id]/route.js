@@ -6,7 +6,10 @@ export async function GET(request, { params }) {
   await connectToDatabase();
 
   try {
-    const album = await Album.findById(params.id).populate("list");
+    const album = await Album.findById(params.id)
+      .populate("list")
+      .populate("artist")
+      .populate("category");
     if (!album) {
       return new Response("Album not found", { status: 404 });
     }

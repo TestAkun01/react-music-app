@@ -1,5 +1,6 @@
 import { connectToDatabase } from "@/service/db";
 import Album from "@/service/models/Album";
+import Category from "@/service/models/Category";
 import Track from "@/service/models/Track";
 
 export async function GET(request) {
@@ -18,10 +19,13 @@ export async function GET(request) {
       query = query.sort({ release_date: -1 });
     }
 
-    if (categories && !categories.includes("All")) {
-      query = query.where("category").equals(categories);
+    if (categories && categories !== "All") {
+      const category = await Category.findOne({ category: categories });
+      if (!category) {
+        return new Response("Category not found", { status: 404 });
+      }
+      query = query.where("category").in(category._id);
     }
-
     const skip = (page - 1) * limit;
     const totalAlbums = await Album.countDocuments(query);
 
@@ -31,7 +35,11 @@ export async function GET(request) {
       query = query.skip(skip);
     }
 
-    const albums = await query.populate("list").exec();
+    const albums = await query
+      .populate("list")
+      .populate("artist")
+      .populate("category")
+      .exec();
 
     const totalPages = Math.ceil(totalAlbums / limit);
 

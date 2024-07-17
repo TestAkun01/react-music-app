@@ -53,7 +53,12 @@ export default function PaginationButton({
         </button>
       );
       if (startPage > 2) {
-        pageNumbers.push(<span key="dots-start">...</span>);
+        pageNumbers.push(
+          <span key="dots-start" className="text-white">
+            {" "}
+            . . .{" "}
+          </span>
+        );
       }
     }
 
@@ -78,7 +83,12 @@ export default function PaginationButton({
 
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
-        pageNumbers.push(<span key="dots-end">...</span>);
+        pageNumbers.push(
+          <span key="dots-end" className="text-white">
+            {" "}
+            . . .{" "}
+          </span>
+        );
       }
       pageNumbers.push(
         <button

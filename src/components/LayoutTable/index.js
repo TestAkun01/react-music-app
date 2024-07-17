@@ -3,25 +3,36 @@
 import Link from "next/link";
 import React from "react";
 import FetchData from "../FetchData/FetchData";
-import { fetchData } from "next-auth/client/_utils";
 
-export default function LayoutTable({ data, reloadData }) {
+export default function LayoutTable({ data, reloadData, type }) {
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
 
   const handleDelete = async (id, list) => {
     const confirmDelete = confirm(`Delete item with ID ${id}?`);
     if (confirmDelete) {
-      const ids = list.map((item) => item._id);
-      const deleteTrack = await FetchData("api/track", "", "DELETE", { ids });
-      if (!deleteTrack) {
-        throw new Error("Failed to delete item");
-      }
-
-      const response = await FetchData(`api/album/${id}`, "", "DELETE");
-      if (response) {
-        reloadData();
-      } else {
-        throw new Error("Failed to delete item");
+      try {
+        if (type === "album") {
+          const response = await FetchData(`api/album/${id}`, "", "DELETE");
+          if (response) {
+            reloadData();
+          } else {
+            throw new Error("Failed to delete album");
+          }
+        } else if (type === "track") {
+          const deleteTrack = await FetchData(`api/track/${id}`, "", "DELETE");
+          if (deleteTrack) {
+            reloadData();
+          } else {
+            throw new Error("Failed to delete track");
+          }
+        }
+      } catch (error) {
+        console.error("Error deleting item:", error);
+        alert(
+          `Failed to delete ${
+            type === "album" ? "album" : "track"
+          }. Please try again.`
+        );
       }
     }
   };
@@ -49,12 +60,12 @@ export default function LayoutTable({ data, reloadData }) {
                   key={columnIndex}
                   className="px-2 py-2 w-[140px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
-                  {column == "list" ? row[column].length : row[column]}
+                  {column === "list" ? row[column].length : row[column]}
                 </td>
               ))}
               <td className="px-2 py-2 flex justify-between flex-wrap gap-y-2 w-[140px]">
                 <Link
-                  href={`/admin/edit-item/${row._id}`}
+                  href={`/admin/${type}/${row._id}`}
                   className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 font-medium rounded-full text-sm px-3 py-1"
                 >
                   Edit

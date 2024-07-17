@@ -1,61 +1,66 @@
 import React, { useEffect, useState } from "react";
 import FetchData from "../FetchData/FetchData";
 
-export default function SelectForm({ data, set }) {
-  const [category, setCategory] = useState([]);
+export default function SelectForm({ data, set, type, label }) {
+  const [items, setItems] = useState([]);
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await FetchData(`api/category`);
-      setCategory(response);
+    const fetchItems = async () => {
+      const response = await FetchData(`api/${type}`);
+      setItems(response);
     };
+    fetchItems();
+  }, [type]);
 
-    fetchCategories();
-  }, []);
-
-  const handleCategorySelect = (e) => {
+  const handleSelect = (e) => {
     const { value } = e.target;
     if (!value) return;
-    if (!data.category.includes(value)) {
+
+    const selectedItem = items.find((i) => i._id === value);
+    if (!selectedItem) return;
+
+    const isDuplicate = data[type].some(
+      (item) => item._id === selectedItem._id
+    );
+    if (!isDuplicate) {
       set({
         ...data,
-        category: [...data.category, value],
+        [type]: [...data[type], selectedItem],
       });
     }
   };
-  const handleCategoryRemove = (category) => {
-    const updatedCategories = data.category.filter((cat) => cat !== category);
-    set({ ...data, category: updatedCategories });
-  };
 
+  const handleRemove = (item) => {
+    const updatedItems = data[type].filter((i) => i._id !== item._id);
+    set({ ...data, [type]: updatedItems });
+  };
   return (
     <div className="mt-4">
-      <label className="block text-sm font-medium">Category</label>
+      <label className="block text-sm font-medium">{label}</label>
       <select
         className="mt-1 block w-full p-2 cursor-pointer rounded-md bg-gray-800 shadow shadow-[#766df4] focus:outline-none"
-        onChange={handleCategorySelect}
+        onChange={handleSelect}
       >
         <option value="" className="focus:outline-none">
-          Select a category
+          Select a {label.toLowerCase()}
         </option>
-        {category
-          .filter((cat) => cat.category !== "All")
-          .map((cat) => (
-            <option key={cat._id} value={cat.category}>
-              {cat.category}
-            </option>
-          ))}
+        {items.map((item) => (
+          <option key={item._id} value={item._id}>
+            {item.artist || item.category}
+          </option>
+        ))}
       </select>
       <div className="mt-4">
-        {data.category.map((category, index) => (
+        {data[type].map((item, index) => (
           <span
             key={index}
             className="inline-block bg-gray-800 text-gray-200 shadow shadow-[#766df4] border-0 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
           >
-            {category}
+            {item.artist || item.category}
             <button
               type="button"
               className="ml-2"
-              onClick={() => handleCategoryRemove(category)}
+              onClick={() => handleRemove(item)}
             >
               &#10005;
             </button>
