@@ -58,7 +58,7 @@ export default function Page({ params }) {
             Refresh Data
           </button>
           <Link
-            href={`/admin/add-${type}`}
+            href={`/admin/add-item`}
             className="block bg-blue-500 text-white px-10 py-1 rounded-full"
           >
             Add {type?.charAt(0).toUpperCase() + type?.slice(1)}

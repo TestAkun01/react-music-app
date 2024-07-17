@@ -19,9 +19,11 @@ export default function SelectForm({ data, set, type, label }) {
     const selectedItem = items.find((i) => i._id === value);
     if (!selectedItem) return;
 
-    const isDuplicate = data[type].some(
-      (item) => item._id === selectedItem._id
-    );
+    let isDuplicate =
+      data[type] != []
+        ? data[type].some((item) => item._id === selectedItem._id)
+        : null;
+
     if (!isDuplicate) {
       set({
         ...data,
@@ -51,21 +53,23 @@ export default function SelectForm({ data, set, type, label }) {
         ))}
       </select>
       <div className="mt-4">
-        {data[type].map((item, index) => (
-          <span
-            key={index}
-            className="inline-block bg-gray-800 text-gray-200 shadow shadow-[#766df4] border-0 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
-          >
-            {item.artist || item.category}
-            <button
-              type="button"
-              className="ml-2"
-              onClick={() => handleRemove(item)}
-            >
-              &#10005;
-            </button>
-          </span>
-        ))}
+        {data[type] != []
+          ? data[type].map((item, index) => (
+              <span
+                key={index}
+                className="inline-block bg-gray-800 text-gray-200 shadow shadow-[#766df4] border-0 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
+              >
+                {item.artist || item.category}
+                <button
+                  type="button"
+                  className="ml-2"
+                  onClick={() => handleRemove(item)}
+                >
+                  &#10005;
+                </button>
+              </span>
+            ))
+          : null}
       </div>
     </div>
   );

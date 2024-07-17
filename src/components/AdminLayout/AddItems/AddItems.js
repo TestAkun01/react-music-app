@@ -46,7 +46,7 @@ export default function AddItems() {
       alert("Song added successfully!");
       setFormData({
         title: "",
-        artist: "",
+        artist: [],
         release_date: "",
         category: [],
         cover: "",
@@ -69,11 +69,11 @@ export default function AddItems() {
         data={formData}
         set={setFormData}
       />
-      <InputForm
-        title={"Artist"}
-        target={"artist"}
+      <SelectForm
         data={formData}
         set={setFormData}
+        type="artist"
+        label="Artist"
       />
       <InputForm
         title={"Release date"}
@@ -82,7 +82,12 @@ export default function AddItems() {
         data={formData}
         set={setFormData}
       />
-      <SelectForm data={formData} set={setFormData} />
+      <SelectForm
+        data={formData}
+        set={setFormData}
+        type="category"
+        label="Category"
+      />
       <InputForm
         title={"Cover Url"}
         target={"cover"}

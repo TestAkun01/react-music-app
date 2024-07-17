@@ -22,7 +22,7 @@ export default function Page() {
 
       setLatest(latestSongs.data);
       setCategorySong(initialCategorySongs.data);
-      setCategories(categoryList.map((cat) => cat.category));
+      setCategories(categoryList);
     };
 
     fetchInitialData();
