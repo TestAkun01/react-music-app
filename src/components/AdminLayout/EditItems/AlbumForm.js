@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import InputForm from "../InputForm";
 import SelectForm from "../SelectForm";
-import InputList from "../InputList";
 
 export default function AlbumForm({
   formData,
@@ -11,9 +10,13 @@ export default function AlbumForm({
   handleSubmit,
   isSubmitting,
   message,
-  deletedData,
-  setDeletedData,
 }) {
+  const [selectedArtist, setSelectedArtist] = useState("");
+  useEffect(() => {
+    const artist = formData.artist.map((artist) => artist.artist).join(",");
+    setSelectedArtist(artist);
+  }, [formData.artist]);
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <InputForm
@@ -41,18 +44,19 @@ export default function AlbumForm({
         type="category"
         label="Category"
       />
+      <SelectForm
+        data={formData}
+        set={setFormData}
+        type="track"
+        label="Tracks"
+        dependentData={selectedArtist}
+      />
       <InputForm
         title={"Cover Url"}
         target={"cover"}
         type="url"
         data={formData}
         set={setFormData}
-      />
-      <InputList
-        data={formData}
-        set={setFormData}
-        setDeletedData={setDeletedData}
-        deletedData={deletedData}
       />
       <div>
         <button

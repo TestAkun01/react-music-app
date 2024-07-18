@@ -18,6 +18,9 @@ export default function AdminLayout({ children }) {
           <Link href="/admin/track">
             <p className="block py-2 px-4 rounded hover:bg-gray-700">Track</p>
           </Link>
+          <Link href="/admin/artist">
+            <p className="block py-2 px-4 rounded hover:bg-gray-700">Artist</p>
+          </Link>
         </div>
         <div className="p-4">{children}</div>
       </main>

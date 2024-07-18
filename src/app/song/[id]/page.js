@@ -63,7 +63,7 @@ export default function Page({ params }) {
             <h2 className="mb-2">Track List</h2>
             <div className="overflow-y-auto max-h-96">
               <ul>
-                {data.list.map((track) => (
+                {data.track.map((track) => (
                   <li key={track._id} className="mb-2">
                     <TrackController track={track} />
                   </li>

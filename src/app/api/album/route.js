@@ -36,7 +36,7 @@ export async function GET(request) {
     }
 
     const albums = await query
-      .populate("list")
+      .populate("track")
       .populate("artist")
       .populate("category")
       .exec();
@@ -61,41 +61,25 @@ export async function GET(request) {
 export async function POST(request) {
   await connectToDatabase();
 
-  const { title, artist, release_date, category, cover, list } =
-    await request.json();
-
   try {
-    const newAlbum = new Album({
-      title,
-      artist,
-      release_date,
-      category,
-      cover,
-      list: [],
-    });
+    const body = await request.json();
 
-    const savedAlbum = await newAlbum.save();
+    const { track: trackIds, cover: albumCover } = body;
 
-    const trackPromises = list.map(async (trackData) => {
-      const newTrack = new Track({
-        ...trackData,
-        cover: savedAlbum.cover,
-        artist: savedAlbum.artist,
-        album_id: savedAlbum._id,
-      });
-      const savedTrack = await newTrack.save();
-      savedAlbum.list.push(savedTrack._id);
-      return savedTrack;
-    });
+    const newAlbum = new Album(body);
+    await newAlbum.save();
+    const albumId = newAlbum._id;
 
-    await Promise.all(trackPromises);
-    await savedAlbum.save();
+    if (Array.isArray(trackIds) && trackIds.length > 0) {
+      await Track.updateMany(
+        { _id: { $in: trackIds } },
+        { $set: { cover: albumCover, album_id: albumId } }
+      );
+    }
 
-    return new Response(JSON.stringify(savedAlbum), { status: 200 });
+    return new Response(JSON.stringify(newAlbum), { status: 201 });
   } catch (error) {
     console.error("Error:", error.message);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-    });
+    return new Response("Something went wrong", { status: 500 });
   }
 }

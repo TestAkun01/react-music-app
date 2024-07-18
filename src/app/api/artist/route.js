@@ -12,3 +12,19 @@ export async function GET(request) {
     return new Response("Something went wrong", { status: 500 });
   }
 }
+
+export async function POST(request) {
+  await connectToDatabase();
+
+  try {
+    const body = await request.json();
+    const newArtist = new Artist(body);
+    console.log(body);
+    await newArtist.save();
+
+    return new Response(JSON.stringify(newArtist), { status: 201 });
+  } catch (error) {
+    console.error("Error:", error.message);
+    return new Response("Something went wrong", { status: 500 });
+  }
+}

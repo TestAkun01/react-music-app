@@ -23,7 +23,7 @@ const albumSchema = new mongoose.Schema(
     cover: {
       type: String,
     },
-    list: [
+    track: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Track",

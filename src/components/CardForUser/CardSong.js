@@ -5,7 +5,7 @@ import Image from "next/image";
 const SongCard = ({ song }) => {
   if (!song) {
     return (
-      <div className="bg-white p-4 rounded shadow">
+      <div className="bg-gray-800 text-white p-4 rounded shadow">
         <p>Loading song details...</p>
       </div>
     );

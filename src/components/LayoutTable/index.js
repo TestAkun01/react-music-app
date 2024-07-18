@@ -7,24 +7,15 @@ import FetchData from "../FetchData/FetchData";
 export default function LayoutTable({ data, reloadData, type }) {
   const columns = data.length > 0 ? Object.keys(data[0]) : [];
 
-  const handleDelete = async (id, list) => {
+  const handleDelete = async (id) => {
     const confirmDelete = confirm(`Delete item with ID ${id}?`);
     if (confirmDelete) {
       try {
-        if (type === "album") {
-          const response = await FetchData(`api/album/${id}`, "", "DELETE");
-          if (response) {
-            reloadData();
-          } else {
-            throw new Error("Failed to delete album");
-          }
-        } else if (type === "track") {
-          const deleteTrack = await FetchData(`api/track/${id}`, "", "DELETE");
-          if (deleteTrack) {
-            reloadData();
-          } else {
-            throw new Error("Failed to delete track");
-          }
+        const response = await FetchData(`api/${type}/${id}`, "", "DELETE");
+        if (response) {
+          reloadData();
+        } else {
+          throw new Error("Failed to delete album");
         }
       } catch (error) {
         console.error("Error deleting item:", error);
@@ -60,7 +51,7 @@ export default function LayoutTable({ data, reloadData, type }) {
                   key={columnIndex}
                   className="px-2 py-2 w-[140px] overflow-hidden text-ellipsis whitespace-nowrap"
                 >
-                  {column === "list" ? row[column].length : row[column]}
+                  {column === "track" ? row[column].length : row[column]}
                 </td>
               ))}
               <td className="px-2 py-2 flex justify-between flex-wrap gap-y-2 w-[140px]">
@@ -72,7 +63,7 @@ export default function LayoutTable({ data, reloadData, type }) {
                 </Link>
                 <button
                   className="focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-full text-sm px-3 py-1"
-                  onClick={() => handleDelete(row._id, row.list)}
+                  onClick={() => handleDelete(row._id)}
                 >
                   Delete
                 </button>

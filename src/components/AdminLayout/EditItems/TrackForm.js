@@ -14,6 +14,13 @@ export default function TrackForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <InputForm
+        title={"Album ID"}
+        target={"album_id"}
+        data={formData}
+        set={setFormData}
+        disable={true}
+      />
+      <InputForm
         title={"Title"}
         target={"title"}
         data={formData}
@@ -24,13 +31,6 @@ export default function TrackForm({
         set={setFormData}
         type="artist"
         label="Artist"
-      />
-      <InputForm
-        title={"Album ID"}
-        target={"album_id"}
-        data={formData}
-        set={setFormData}
-        disable={true}
       />
       <InputForm
         title={"Duration"}

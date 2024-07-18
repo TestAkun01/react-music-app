@@ -11,7 +11,8 @@ export default function Page({ params }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await FetchData(`api/search`, `q=${q}`);
+      const result = await FetchData(`api/search?q=${q}`);
+
       setFilteredSong(result.data);
     };
 

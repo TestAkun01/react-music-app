@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from "react";
 import FetchData from "../FetchData/FetchData";
+import Select from "react-select";
 
-export default function SelectForm({ data, set, type, label }) {
+export default function SelectForm({ data, set, type, label, dependentData }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await FetchData(`api/${type}`);
+      let url = `api/${type}`;
+      if (dependentData) {
+        url += `?artist=${dependentData}`;
+      }
+      const response = await FetchData(url);
       setItems(response);
     };
-    fetchItems();
-  }, [type]);
 
-  const handleSelect = (e) => {
-    const { value } = e.target;
-    if (!value) return;
+    if (type !== "track" || dependentData) {
+      fetchItems();
+    }
+  }, [type, dependentData]);
 
-    const selectedItem = items.find((i) => i._id === value);
+  const handleChange = (selectedOption) => {
+    if (!selectedOption) return;
+
+    const selectedItem = items.find(
+      (item) => item._id === selectedOption.value
+    );
     if (!selectedItem) return;
 
-    let isDuplicate =
-      data[type] != []
-        ? data[type].some((item) => item._id === selectedItem._id)
-        : null;
+    let isDuplicate = data[type].some((item) => item._id === selectedItem._id);
 
     if (!isDuplicate) {
       set({
@@ -32,44 +38,85 @@ export default function SelectForm({ data, set, type, label }) {
     }
   };
 
-  const handleRemove = (item) => {
-    const updatedItems = data[type].filter((i) => i._id !== item._id);
+  const handleRemove = (itemToRemove) => {
+    const updatedItems = data[type].filter(
+      (item) => item._id !== itemToRemove._id
+    );
     set({ ...data, [type]: updatedItems });
   };
+
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "rgb(31 41 55)",
+      border: 0,
+      boxShadow:
+        "0 1px 3px 0 rgba(118, 109, 244, 1), 0 1px 2px -1px rgba(118, 109, 244, 1)",
+      borderRadius: "0.375rem",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      marginTop: 8,
+      padding: 0,
+      backgroundColor: "rgb(31 41 55)",
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      boxShadow:
+        "0 1px 3px 0 rgba(118, 109, 244, 1), 0 1px 2px -1px rgba(118, 109, 244, 1)",
+      borderRadius: "0.375rem",
+      backgroundColor: "rgb(31 41 55)",
+    }),
+    option: (provided) => ({
+      ...provided,
+      backgroundColor: "rgb(31 41 55)",
+      border: 2,
+      margin: 0,
+      "&:hover": {
+        backgroundColor: "#0d6efd",
+        color: "white",
+      },
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "rgb(250 250 250)",
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: "rgb(250 250 250)",
+    }),
+  };
+
   return (
     <div className="mt-4">
       <label className="block text-sm font-medium">{label}</label>
-      <select
-        className="mt-1 block w-full p-2 cursor-pointer rounded-md bg-gray-800 shadow shadow-[#766df4] focus:outline-none"
-        onChange={handleSelect}
-      >
-        <option value="" className="focus:outline-none">
-          Select a {label.toLowerCase()}
-        </option>
-        {items.map((item) => (
-          <option key={item._id} value={item._id}>
-            {item.artist || item.category}
-          </option>
-        ))}
-      </select>
+      <Select
+        options={items.map((item) => ({
+          value: item._id,
+          label: item.category || item.title || item.artist,
+        }))}
+        onChange={handleChange}
+        placeholder={`Select a ${label.toLowerCase()}`}
+        styles={customStyles}
+        instanceId={type}
+      ></Select>
       <div className="mt-4">
-        {data[type] != []
-          ? data[type].map((item, index) => (
-              <span
-                key={index}
-                className="inline-block bg-gray-800 text-gray-200 shadow shadow-[#766df4] border-0 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
-              >
-                {item.artist || item.category}
-                <button
-                  type="button"
-                  className="ml-2"
-                  onClick={() => handleRemove(item)}
-                >
-                  &#10005;
-                </button>
-              </span>
-            ))
-          : null}
+        {data[type].map((item, index) => (
+          <span
+            key={index}
+            className="inline-block bg-gray-800 text-gray-200 shadow shadow-[#766df4] border-0 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
+          >
+            {item.category || item.title || item.artist}
+            <button
+              type="button"
+              className="ml-2"
+              onClick={() => handleRemove(item)}
+            >
+              &#10005;
+            </button>
+          </span>
+        ))}
       </div>
     </div>
   );

@@ -26,6 +26,7 @@ const fetchDataAndSongs = async (endpoints, query, setStates, addSongs) => {
     ];
 
     const songDataArray = await FetchData(`api/track`, "", "POST", {
+      action: "fetch",
       ids: allTrackIds,
     });
 

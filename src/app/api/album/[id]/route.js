@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
 
   try {
     const album = await Album.findById(params.id)
-      .populate("list")
+      .populate("track")
       .populate("artist")
       .populate("category");
     if (!album) {
@@ -28,7 +28,6 @@ export async function DELETE(request, { params }) {
     if (!album) {
       return new Response("Album not found", { status: 404 });
     }
-    await Track.deleteMany({ album_id: album._id });
     return new Response(JSON.stringify(album), { status: 200 });
   } catch (error) {
     console.error("Error:", error.message);
@@ -40,42 +39,22 @@ export async function PUT(request, { params }) {
   await connectToDatabase();
 
   try {
-    const updatedData = await request.json();
+    const { id } = params;
+    const body = await request.json();
+    const { track: trackIds, cover: albumCover } = body;
 
-    if (updatedData.list) {
-      const trackPromises = updatedData.list.map(async (trackData) => {
-        let track;
-        const trackUpdateData = {
-          ...trackData,
-          cover: updatedData.cover,
-          artist: updatedData.artist,
-          album_id: updatedData._id,
-        };
+    const updatedAlbum = await Album.findByIdAndUpdate(id, body, { new: true });
 
-        if (trackData._id) {
-          track = await Track.findByIdAndUpdate(
-            trackData._id,
-            trackUpdateData,
-            {
-              new: true,
-            }
-          );
-        } else {
-          track = new Track(trackUpdateData);
-          track = await track.save();
-        }
-
-        return track._id;
-      });
-
-      const trackIds = await Promise.all(trackPromises);
-      updatedData.list = trackIds;
+    if (!updatedAlbum) {
+      return new Response("Album not found", { status: 404 });
     }
-    let updatedAlbum = await Album.findByIdAndUpdate(params.id, updatedData, {
-      new: true,
-    });
 
-    updatedAlbum = await Album.findById(params.id).populate("list");
+    if (Array.isArray(trackIds) && trackIds.length > 0) {
+      await Track.updateMany(
+        { _id: { $in: trackIds } },
+        { $set: { cover: albumCover, album_id: id } }
+      );
+    }
 
     return new Response(JSON.stringify(updatedAlbum), { status: 200 });
   } catch (error) {

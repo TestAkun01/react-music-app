@@ -16,11 +16,12 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@vercel/speed-insights": "^1.0.12",
     "mongoose": "^8.4.4",
-    "next": "14.2.4",
+    "next": "^14.2.5",
     "next-auth": "^4.24.7",
     "prop-types": "^15.8.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-select": "^5.8.0",
     "ytdl-core": "^4.11.5"
   },
   "devDependencies": {

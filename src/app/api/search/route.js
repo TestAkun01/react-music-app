@@ -20,7 +20,11 @@ export async function GET(request) {
     const totalPages = Math.ceil(totalSongs / limit);
     const skip = (page - 1) * limit;
 
-    const songs = await Album.find(dbQuery).skip(skip).limit(limit).exec();
+    const songs = await Album.find(dbQuery)
+      .skip(skip)
+      .limit(limit)
+      .populate("category")
+      .exec();
 
     const pagination = {
       currentPage: page,

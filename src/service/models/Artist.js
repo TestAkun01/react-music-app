@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 
 const artistSchema = new mongoose.Schema(
   {
-    name: {
+    artist: {
+      type: String,
+    },
+    image_url: {
       type: String,
     },
   },

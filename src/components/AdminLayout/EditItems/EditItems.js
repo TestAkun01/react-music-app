@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import FetchData from "@/components/FetchData/FetchData";
 import AlbumForm from "./AlbumForm";
 import TrackForm from "./TrackForm";
+import ArtistForm from "./ArtistForm";
 
 export default function EditItems({ id, type }) {
   const [formData, setFormData] = useState(
@@ -14,9 +15,10 @@ export default function EditItems({ id, type }) {
           release_date: "",
           category: [],
           cover: "",
-          list: [],
+          track: [],
         }
-      : {
+      : type === "track"
+      ? {
           title: "",
           artist: [],
           album_id: "",
@@ -24,15 +26,18 @@ export default function EditItems({ id, type }) {
           duration: "",
           file_url: "",
         }
+      : {
+          artist: "",
+          image_url: "",
+        }
   );
-  const [deletedData, setDeletedData] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
   async function setForm() {
     const response = await FetchData(`api/${type}/${id}`);
-    const data = response.data ? response.data : response;
-    setFormData(data);
+    console.log(response);
+    setFormData(response);
   }
 
   useEffect(() => {
@@ -48,13 +53,14 @@ export default function EditItems({ id, type }) {
           !formData.release_date ||
           formData.category.length === 0 ||
           !formData.cover ||
-          formData.list.length === 0)) ||
+          formData.track.length === 0)) ||
       (type === "track" &&
         (!formData.title ||
-          !formData.artist ||
+          !formData.artist.length === 0 ||
           !formData.album_id ||
           !formData.cover ||
-          !formData.file_url))
+          !formData.file_url)) ||
+      (type === "artist" && (!formData.artist || !formData.image_url))
     ) {
       alert("Harap lengkapi semua field sebelum mengirimkan data.");
       return;
@@ -94,11 +100,17 @@ export default function EditItems({ id, type }) {
           handleSubmit={handleSubmit}
           isSubmitting={isSubmitting}
           message={message}
-          deletedData={deletedData}
-          setDeletedData={setDeletedData}
+        />
+      ) : type === "track" ? (
+        <TrackForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          message={message}
         />
       ) : (
-        <TrackForm
+        <ArtistForm
           formData={formData}
           setFormData={setFormData}
           handleSubmit={handleSubmit}

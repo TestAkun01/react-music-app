@@ -5,20 +5,28 @@ import Link from "next/link";
 import AdminLayout from "@/components/AdminLayout";
 import FetchData from "@/components/FetchData/FetchData";
 import LayoutTable from "@/components/LayoutTable";
+import { notFound } from "next/navigation";
 
 export default function Page({ params }) {
   const { type } = params;
+
+  const validTypes = ["album", "track", "artist"];
+
+  if (!validTypes.includes(type)) {
+    notFound();
+  }
   const [data, setData] = useState([]);
 
   const getData = async () => {
     try {
       const newData = await FetchData(`api/${type}`, `limit=-1`);
       const data = newData.data ? newData.data : newData;
+
       const modifiedData = data.map((item) => {
-        const artistName = Array.isArray(item.artist)
-          ? item.artist.map((artist) => artist.artist).join(" & ")
-          : item.artist;
         if (type === "album") {
+          const artistName = Array.isArray(item.artist)
+            ? item.artist.map((artist) => artist.artist).join(" & ")
+            : item.artist;
           const category = Array.isArray(item.category)
             ? item.category.map((cat) => cat.category).join(", ")
             : item.category;
@@ -28,10 +36,15 @@ export default function Page({ params }) {
             artist: artistName,
           };
         } else if (type === "track") {
+          const artistName = Array.isArray(item.artist)
+            ? item.artist.map((artist) => artist.artist).join(" & ")
+            : item.artist;
           return {
             ...item,
             artist: artistName,
           };
+        } else if (type === "artist") {
+          return item;
         }
       });
       setData(modifiedData);
@@ -58,7 +71,7 @@ export default function Page({ params }) {
             Refresh Data
           </button>
           <Link
-            href={`/admin/add-item`}
+            href={`/admin/add/${type}`}
             className="block bg-blue-500 text-white px-10 py-1 rounded-full"
           >
             Add {type?.charAt(0).toUpperCase() + type?.slice(1)}

@@ -1,111 +1,104 @@
 "use client";
 
 import React, { useState } from "react";
-import InputForm from "../InputForm";
-import SelectForm from "../SelectForm";
-import InputList from "../InputList";
+import TrackForm from "../EditItems/TrackForm";
+import ArtistForm from "../EditItems/ArtistForm";
+import AlbumForm from "../EditItems/AlbumForm";
 import FetchData from "@/components/FetchData/FetchData";
 
-export default function AddItems() {
-  const [formData, setFormData] = useState({
-    title: "",
-    artist: "",
-    release_date: "",
-    category: [],
-    cover: "",
-    list: [],
-  });
-
+export default function AddItems({ type }) {
+  const [formData, setFormData] = useState(
+    type === "album"
+      ? {
+          title: "",
+          artist: [],
+          release_date: "",
+          category: [],
+          cover: "",
+          track: [],
+        }
+      : type === "track"
+      ? {
+          title: "",
+          artist: [],
+          album_id: "",
+          cover: "",
+          duration: "",
+          file_url: "",
+        }
+      : {
+          artist: "",
+          image_url: "",
+        }
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (
-      !formData.title ||
-      !formData.artist ||
-      !formData.release_date ||
-      formData.category.length === 0 ||
-      !formData.cover ||
-      formData.list.length === 0
+      (type === "album" &&
+        (!formData.title ||
+          formData.artist.length === 0 ||
+          !formData.release_date ||
+          formData.category.length === 0 ||
+          !formData.cover ||
+          formData.track.length === 0)) ||
+      (type === "track" &&
+        (!formData.title ||
+          !formData.artist.length === 0 ||
+          !formData.file_url)) ||
+      (type === "artist" && (!formData.artist || !formData.image_url))
     ) {
       alert("Harap lengkapi semua field sebelum mengirimkan data.");
       return;
     }
-
     setIsSubmitting(true);
     setMessage("");
 
     try {
-      const response = await FetchData(`api/album`, "", "POST", formData);
-
+      const response = await FetchData(`api/${type}`, "", "POST", formData);
       if (!response) {
         throw new Error("Network response was not ok");
       }
 
-      alert("Song added successfully!");
-      setFormData({
-        title: "",
-        artist: [],
-        release_date: "",
-        category: [],
-        cover: "",
-        list: [],
-      });
-      setMessage("Song added successfully!");
+      alert("Item added successfully");
+      setMessage("Item added successfully");
     } catch (error) {
-      console.error("Error adding song:", error);
-      setMessage("Error adding song. Please try again.");
+      console.error("Error adding item:", error);
+      setMessage("Failed to add item. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <InputForm
-        title={"Title"}
-        target={"title"}
-        data={formData}
-        set={setFormData}
-      />
-      <SelectForm
-        data={formData}
-        set={setFormData}
-        type="artist"
-        label="Artist"
-      />
-      <InputForm
-        title={"Release date"}
-        target={"release_date"}
-        type="date"
-        data={formData}
-        set={setFormData}
-      />
-      <SelectForm
-        data={formData}
-        set={setFormData}
-        type="category"
-        label="Category"
-      />
-      <InputForm
-        title={"Cover Url"}
-        target={"cover"}
-        type="url"
-        data={formData}
-        set={setFormData}
-      />
-      <InputList data={formData} set={setFormData} />
-      <div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Submitting..." : "Add Item"}
-        </button>
-      </div>
-      {message && <p>{message}</p>}
-    </form>
+    <div className="space-y-4">
+      {type === "album" ? (
+        <AlbumForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          message={message}
+        />
+      ) : type === "track" ? (
+        <TrackForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          message={message}
+        />
+      ) : (
+        <ArtistForm
+          formData={formData}
+          setFormData={setFormData}
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          message={message}
+        />
+      )}
+    </div>
   );
 }
