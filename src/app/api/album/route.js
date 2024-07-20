@@ -3,21 +3,19 @@ import Album from "@/service/models/Album";
 import Artist from "@/service/models/Artist";
 import Category from "@/service/models/Category";
 import Track from "@/service/models/Track";
+
 export async function GET(request) {
   await connectToDatabase();
 
   const url = new URL(request.url);
   const limit = parseInt(url.searchParams.get("limit")) || 10;
   const page = parseInt(url.searchParams.get("page")) || 1;
-  const latest = url.searchParams.get("latest") === "1";
   const categories = url.searchParams.get("category") || "";
 
   try {
     let query = Album.find({});
 
-    if (latest) {
-      query = query.sort({ release_date: -1 });
-    }
+    query = query.sort({ release_date: -1 });
 
     if (categories && categories !== "All") {
       const category = await Category.findOne({ category: categories });

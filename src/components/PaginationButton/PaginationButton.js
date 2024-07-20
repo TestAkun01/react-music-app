@@ -47,14 +47,14 @@ export default function PaginationButton({
         <button
           key="first"
           onClick={handleFirstPage}
-          className="px-4 py-2 mx-1 rounded text-white"
+          className={`px-4 py-2 mx-1 rounded text-white hover:bg-blue-700 transition-all duration-300`}
         >
           1
         </button>
       );
       if (startPage > 2) {
         pageNumbers.push(
-          <span key="dots-start" className="text-white">
+          <span key="dots-start" className="text-white cursor-default">
             {" "}
             . . .{" "}
           </span>

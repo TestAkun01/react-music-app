@@ -5,7 +5,6 @@ export default function LinkNavbar() {
   const pathName = usePathname();
   const navigation = [
     { name: "Home", href: "/", current: pathName === "/" },
-    { name: "Latest", href: "/latest", current: pathName === "/latest" },
     {
       name: "Category",
       href: "/category/All",

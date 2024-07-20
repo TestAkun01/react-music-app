@@ -22,7 +22,7 @@ export default function InputForm({
         name={target}
         value={data[target] ? data[target] : ""}
         onChange={handleChange}
-        className="mt-1 block w-full p-2 bg-gray-800 shadow shadow-[#766df4] text-neutral-50 rounded-md focus:outline-none"
+        className="mt-1 block w-full p-2 bg-gray-800 text-neutral-50 rounded-md focus:outline-none hover:shadow-md hover:shadow-[#766df4] focus:shadow focus:shadow-[#766df4] transition duration-300 ease-in-out"
         disabled={disable}
       />
     </div>

@@ -128,7 +128,7 @@ export default function Page() {
                   ? mostPlayed.map((item) => (
                       <SongCard
                         key={item._id}
-                        song={songs[item._id]}
+                        track={songs[item._id]}
                         totalPlay={item.play_count}
                       />
                     ))
@@ -136,7 +136,7 @@ export default function Page() {
                   ? like.map((item) => (
                       <SongCard
                         key={item._id}
-                        song={songs[item.trackId]}
+                        track={songs[item.trackId]}
                         date={item.likedAt}
                       />
                     ))
@@ -144,7 +144,7 @@ export default function Page() {
                   ? history.map((item) => (
                       <SongCard
                         key={item._id}
-                        song={songs[item._id]}
+                        track={songs[item._id]}
                         date={item.watchedAt}
                       />
                     ))

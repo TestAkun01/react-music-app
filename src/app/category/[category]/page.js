@@ -17,19 +17,16 @@ export default function Page({ params }) {
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   let path = "";
-  let q = "";
   if (category === "All") {
-    path = `api/album`;
-    q = `page=${page}`;
+    path = `api/album?page=${page}`;
   } else {
-    path = `api/album`;
-    q = `category=${category}&page=${page}`;
+    path = `api/album?category=${category}&page=${page}`;
   }
 
   useEffect(() => {
     const fetchData = async () => {
       const [dataSong, dataCategories] = await Promise.all([
-        FetchData(path, q),
+        FetchData(path),
         FetchData(`api/category`),
       ]);
       setSongs(dataSong.data);

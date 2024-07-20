@@ -21,8 +21,8 @@ const CardList = ({ data }) => {
             <Image
               src={album.cover}
               alt={album.title}
-              width={500}
-              height={500}
+              width={300}
+              height={300}
               className="card-list"
             />
             <div className="px-6 py-4">
