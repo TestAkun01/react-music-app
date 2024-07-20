@@ -1,9 +1,6 @@
-// RootLayout.js
-
 import { Poppins } from "next/font/google";
 import "@/style/globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer/Footer";
 import MusicController from "@/components/MusicController/MusicController";
 import { AudioProvider } from "@/components/MusicController/AudioContext";
 import { NextAuthProvider } from "@/components/NextAuthProvider/NextAuthProvider";
@@ -24,8 +21,9 @@ export default function RootLayout({ children }) {
         <NextAuthProvider>
           <AudioProvider>
             <Navbar />
-            <Suspense fallback={<Loading></Loading>}>{children}</Suspense>
-            <Footer />
+            <div className="py-16 pb-16">
+              <Suspense fallback={<Loading></Loading>}>{children}</Suspense>
+            </div>
             <MusicController />
           </AudioProvider>
         </NextAuthProvider>

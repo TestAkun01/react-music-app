@@ -5,6 +5,7 @@ import CategoryButtons from "@/components/CategoryButtons/CategoryButtons";
 import FetchData from "@/components/FetchData/FetchData";
 import Header from "@/components/Header/Header";
 import PaginationButton from "@/components/PaginationButton/PaginationButton";
+import PosterContent from "@/components/PosterContent/PosterContent";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -18,9 +19,9 @@ export default function Page({ params }) {
   const [page, setPage] = useState(1);
   let path = "";
   if (category === "All") {
-    path = `api/album?page=${page}`;
+    path = `api/album?page=${page}&limit=12`;
   } else {
-    path = `api/album?category=${category}&page=${page}`;
+    path = `api/album?category=${category}&limit=12&page=${page}`;
   }
 
   useEffect(() => {
@@ -44,15 +45,26 @@ export default function Page({ params }) {
 
   return (
     <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 min-h-screen">
-      <Header title={`Category: ${decodeURIComponent(category)}`} />
-      <CategoryButtons categories={categories} handle={handleCategorySelect} />
-      <CardList data={songs} />
-
-      <PaginationButton
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+      <div className="grid grid-cols-12 gap-8 divide-x divide-gray-900">
+        <div className="col-span-8">
+          <Header title={`Category: ${decodeURIComponent(category)}`} />
+          <CategoryButtons
+            categories={categories}
+            handle={handleCategorySelect}
+          />
+          <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 max-w-max">
+            <CardList data={songs} />
+          </div>
+          <PaginationButton
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        </div>
+        <div className="col-span-4">
+          <PosterContent />
+        </div>
+      </div>
     </div>
   );
 }

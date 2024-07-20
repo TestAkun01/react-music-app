@@ -18,7 +18,7 @@ const Search = () => {
       <input
         type="text"
         placeholder="Search"
-        className="w-full rounded-md px-3 py-2 text-sm font-medium text-black bg-white focus:outline-none focus:shadow-[0_3px_5px_3px_#756cf4]  transition-shadow duration-300"
+        className="w-full rounded-md px-3 py-2 text-sm font-medium text-black bg-white focus:outline-none focus:shadow-[3px_3px_4px_0_#756cf4] hover:shadow-[3px_3px_4px_0_#756cf4]  transition-shadow duration-300"
         ref={searchRef}
         onKeyDown={handleSearch}
       />

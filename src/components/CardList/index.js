@@ -10,13 +10,13 @@ const CardList = ({ data }) => {
   };
 
   return (
-    <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
+    <>
       {data.map((album) => {
         return (
           <Link
             href={`/song/${album._id}`}
             key={album._id}
-            className="max-w-sm rounded text-neutral-50 flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-shadow duration-300"
+            className="max-w-[200px]  rounded flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-shadow duration-300"
           >
             <Image
               src={album.cover}
@@ -25,12 +25,17 @@ const CardList = ({ data }) => {
               height={300}
               className="card-list"
             />
-            <div className="px-6 py-4">
-              <div className="font-bold text-xl mb-2">
-                <div className="line-clamp-2">{album.title}</div>
+            <div className="px-4 pt-4">
+              <div className="font-semibold text-sm mb-2">
+                <div className="line-clamp-2 text-neutral-50">
+                  {album.title}
+                </div>
+                <div className="line-clamp-2 text-neutral-400">
+                  {album.release_date}
+                </div>
               </div>
             </div>
-            <div className="px-6 pt-4 pb-2">
+            <div className="px-4 pt-4">
               <CategoryButtons
                 categories={album.category}
                 handle={handleRedirect}
@@ -39,7 +44,7 @@ const CardList = ({ data }) => {
           </Link>
         );
       })}
-    </div>
+    </>
   );
 };
 
