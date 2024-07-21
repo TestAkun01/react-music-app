@@ -45,8 +45,8 @@ export default function Page({ params }) {
 
   return (
     <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 min-h-screen">
-      <div className="grid grid-cols-12 gap-8 divide-x divide-gray-900">
-        <div className="col-span-8">
+      <div className="grid md:grid-cols-12 gap-8 md:divide-x divide-gray-900">
+        <div className="md:col-span-8">
           <Header title={`Category: ${decodeURIComponent(category)}`} />
           <CategoryButtons
             categories={categories}
@@ -61,7 +61,7 @@ export default function Page({ params }) {
             onPageChange={setPage}
           />
         </div>
-        <div className="col-span-4">
+        <div className="md:col-span-4">
           <PosterContent />
         </div>
       </div>

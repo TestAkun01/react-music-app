@@ -49,8 +49,8 @@ export default function Page() {
     <div className="min-h-screen">
       <div className="pb-16">
         <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5">
-          <div className="grid grid-cols-12 gap-8 divide-x divide-gray-900">
-            <div className="col-span-8">
+          <div className="grid md:grid-cols-12 gap-8 md:divide-x divide-gray-900">
+            <div className="md:col-span-8">
               <Header title="New Music" />
               <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 max-w-max">
                 <CardList data={latest} />
@@ -64,7 +64,7 @@ export default function Page() {
                 </div>
               ))}
             </div>
-            <div className="col-span-4">
+            <div className="md:col-span-4">
               <PosterContent />
             </div>
           </div>

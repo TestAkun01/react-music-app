@@ -1,43 +1,55 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
+import FetchData from "../FetchData/FetchData";
+import Link from "next/link";
 export default function PosterContent() {
+  const [randomAlbum, setRandomAlbum] = useState([]);
+
+  useEffect(() => {
+    async function getRandomAlbum() {
+      const Response = await FetchData("api/random?limit=5");
+      setRandomAlbum(Response);
+    }
+    getRandomAlbum();
+  }, []);
   return (
-    <div className="fixed w-[350px] text-white ps-8">
-      <div>
-        <Header title={"MyGO!!!!! 6th Live"} />
-        <div className="flex ">
-          <Image
-            src={
-              "https://s3-ap-northeast-1.amazonaws.com/bang-dream-portal/d9482c1f-bd3a-4496-85ea-abc93d1c40a5.jpg"
-            }
-            alt={"Poster MyGO!!!!! 6th Live"}
-            width={230}
-            height={350}
-            className="w-[40%]"
-          />
-          <div className="text-md text-neutral-50 text-semibold ms-4 flex flex-col justify-center">
-            <p>Date : July 27-28, 2024</p>
-            <p>Venue : Musashino Forest Sports Plaza</p>
-          </div>
-        </div>
-      </div>
-      <div>
-        <Header title={"Mugendai Mewtype 1st LIVE"} />
-        <div className="flex ">
-          <Image
-            src={
-              "https://s3-ap-northeast-1.amazonaws.com/bang-dream-portal/b8936cef-7fab-405b-8161-3c8e6a446b6d.png"
-            }
-            alt={"Poster MyGO!!!!! 6th Live"}
-            width={230}
-            height={350}
-            className="w-[40%]"
-          />
-          <div className="text-md text-neutral-50 text-semibold ms-4 flex flex-col justify-center">
-            <p>Date : August 24, 2024</p>
-            <p>Venue : 1000CLUB</p>
-          </div>
+    <div className="w-full md:max-w-[349px] h-full text-white md:ps-8">
+      <div
+        className="md:fixed"
+        style={{ maxWidth: "inherit", width: "inherit" }}
+      >
+        <Header title={"Recomendation"} />
+        <div className="flex flex-col gap-4">
+          {randomAlbum?.map((item) => (
+            <>
+              <Link
+                href={`/song/${item._id}`}
+                className="rounded cursor-pointer transition-all duration-300 hover:bg-gray-900  hover:shadow-md hover:shadow-[#766df4]"
+              >
+                <div className="flex items-center">
+                  <div className="flex items-center gap-x-3">
+                    <Image
+                      src={item.cover}
+                      alt={item.title}
+                      width={200}
+                      height={200}
+                      className="inline-block h-[87px] w-[87px] rounded"
+                    />
+                    <div>
+                      <h6 className="text-sm font-semibold">{item.title}</h6>
+                      <p className="text-sm font-light text-gray-300">
+                        {item.artist.map((data) => data.artist).join(" & ")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+              <hr className="border-gray-800 w-full last:hidden" />
+            </>
+          ))}
         </div>
       </div>
     </div>
