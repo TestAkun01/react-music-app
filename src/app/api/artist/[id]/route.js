@@ -1,5 +1,7 @@
 import { connectToDatabase } from "@/service/db";
 import Artist from "@/service/models/Artist";
+import Album from "@/service/models/Album";
+import Track from "@/service/models/Track";
 
 export async function GET(request, { params }) {
   await connectToDatabase();

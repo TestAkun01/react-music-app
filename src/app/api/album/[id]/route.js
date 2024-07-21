@@ -7,7 +7,13 @@ export async function GET(request, { params }) {
 
   try {
     const album = await Album.findById(params.id)
-      .populate("track")
+      .populate({
+        path: "track",
+        populate: [
+          { path: "album_id", model: "Album" },
+          { path: "artist", model: "Artist" },
+        ],
+      })
       .populate("artist")
       .populate("category");
     if (!album) {

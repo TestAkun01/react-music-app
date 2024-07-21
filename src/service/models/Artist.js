@@ -8,7 +8,11 @@ const artistSchema = new mongoose.Schema(
     image_url: {
       type: String,
     },
+    biography: {
+      type: String,
+    },
   },
+
   { versionKey: false }
 );
 

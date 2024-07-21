@@ -18,6 +18,7 @@ import PauseIcon from "@mui/icons-material/Pause";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeDownIcon from "@mui/icons-material/VolumeDown";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
+import Link from "next/link";
 
 const MusicController = () => {
   const {
@@ -36,7 +37,6 @@ const MusicController = () => {
     loopMode,
   } = useContext(AudioContext);
   const seekBarRef = useRef(null);
-  const router = useRouter();
   const { data: session } = useSession();
   const [tempCurrentTime, setTempCurrentTime] = useState(currentTime);
   const [isSeeking, setIsSeeking] = useState(false);
@@ -78,10 +78,7 @@ const MusicController = () => {
   const togglePlaylist = () => {
     setIsPlaylistOpen(!isPlaylistOpen);
   };
-  const handleRedirect = () => {
-    router.push(`/song/${currentTrack.album_id}`);
-  };
-
+  console.log(currentTrack);
   return (
     <div className="relative">
       {currentTrack && (
@@ -134,12 +131,32 @@ const MusicController = () => {
                 height={300}
                 className="h-[45px] w-auto"
               ></Image>
-              <button
-                onClick={handleRedirect}
-                className="text-white font-medium text-[20px] hover:underline"
-              >
-                {currentTrack.title}
-              </button>
+
+              <div>
+                <div className="text-gray-200 text-base ">
+                  {currentTrack.title}
+                </div>
+                <div className="text-gray-400 text-base truncate">
+                  {currentTrack.artist.map((artist, index) => (
+                    <span key={artist._id}>
+                      <Link
+                        href={`/artist/${artist._id}`}
+                        className="hover:underline"
+                      >
+                        {artist.artist}
+                      </Link>
+                      {index < currentTrack.artist.length - 1 && " & "}
+                    </span>
+                  ))}
+                  <span className="text-white"> &#8226; </span>
+                  <Link
+                    href={`/song/${currentTrack.album_id._id}`}
+                    className="hover:underline"
+                  >
+                    {currentTrack.album_id.title}
+                  </Link>
+                </div>
+              </div>
               {session ? (
                 <LikeButton
                   userId={session.user.email}

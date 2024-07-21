@@ -10,6 +10,7 @@ export async function GET(request) {
   try {
     const url = new URL(request.url);
     const artistQuery = url.searchParams.get("artist");
+    const limit = parseInt(url.searchParams.get("limit")) || 10;
 
     let filter = {};
     if (artistQuery) {
@@ -18,8 +19,12 @@ export async function GET(request) {
       const artistIds = artists.map((artist) => artist._id);
       filter = { artist: { $in: artistIds } };
     }
+    let query = Track.find(filter).populate("artist");
+    if (limit !== -1) {
+      query = query.limit(limit);
+    }
 
-    const tracks = await Track.find(filter).populate("artist").exec();
+    const tracks = await query.exec();
     return new Response(JSON.stringify(tracks), { status: 200 });
   } catch (error) {
     console.error("Error:", error.message);

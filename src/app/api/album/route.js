@@ -11,6 +11,7 @@ export async function GET(request) {
   const limit = parseInt(url.searchParams.get("limit")) || 10;
   const page = parseInt(url.searchParams.get("page")) || 1;
   const categories = url.searchParams.get("category") || "";
+  const artistName = url.searchParams.get("artist") || "";
 
   try {
     let query = Album.find({});
@@ -24,6 +25,15 @@ export async function GET(request) {
       }
       query = query.where("category").in(category._id);
     }
+
+    if (artistName) {
+      const artist = await Artist.findOne({ artist: artistName });
+      if (!artist) {
+        return new Response("Artist not found", { status: 404 });
+      }
+      query = query.where("artist").in(artist._id);
+    }
+
     const skip = (page - 1) * limit;
     const totalAlbums = await Album.countDocuments(query);
 
