@@ -5,7 +5,7 @@ import CategoryButtons from "@/components/CategoryButtons/CategoryButtons";
 import FetchData from "@/components/FetchData/FetchData";
 import Header from "@/components/Header/Header";
 import PaginationButton from "@/components/PaginationButton/PaginationButton";
-import PosterContent from "@/components/PosterContent/PosterContent";
+import SideContent from "@/components/SideContent/SideContent";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -62,7 +62,7 @@ export default function Page({ params }) {
           />
         </div>
         <div className="md:col-span-4">
-          <PosterContent />
+          <SideContent />
         </div>
       </div>
     </div>

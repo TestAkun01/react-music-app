@@ -78,7 +78,7 @@ const MusicController = () => {
   const togglePlaylist = () => {
     setIsPlaylistOpen(!isPlaylistOpen);
   };
-  console.log(currentTrack);
+
   return (
     <div className="relative">
       {currentTrack && (

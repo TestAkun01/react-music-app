@@ -2,6 +2,7 @@
 
 import React from "react";
 import InputForm from "../InputForm";
+import TextArea from "../TextArea";
 
 export default function ArtistForm({
   formData,
@@ -21,6 +22,12 @@ export default function ArtistForm({
       <InputForm
         title={"Image URL"}
         target={"image_url"}
+        data={formData}
+        set={setFormData}
+      />
+      <TextArea
+        title={"Biography"}
+        target={"biography"}
         data={formData}
         set={setFormData}
       />

@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import FetchData from "../FetchData/FetchData";
 import Select from "react-select";
 
-export default function SelectForm({ data, set, type, label, dependentData }) {
+export default function SelectSingle({
+  data,
+  set,
+  type,
+  label,
+  dependentData,
+}) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -23,26 +29,10 @@ export default function SelectForm({ data, set, type, label, dependentData }) {
   const handleChange = (selectedOption) => {
     if (!selectedOption) return;
 
-    const selectedItem = items.find(
-      (item) => item._id === selectedOption.value
-    );
-    if (!selectedItem) return;
-
-    let isDuplicate = data[type].some((item) => item._id === selectedItem._id);
-
-    if (!isDuplicate) {
-      set({
-        ...data,
-        [type]: [...data[type], selectedItem],
-      });
-    }
-  };
-
-  const handleRemove = (itemToRemove) => {
-    const updatedItems = data[type].filter(
-      (item) => item._id !== itemToRemove._id
-    );
-    set({ ...data, [type]: updatedItems });
+    set({
+      ...data,
+      [type]: selectedOption.value,
+    });
   };
 
   const customStyles = {
@@ -100,31 +90,16 @@ export default function SelectForm({ data, set, type, label, dependentData }) {
       <label className="block text-sm font-medium">{label}</label>
       <Select
         options={items.map((item) => ({
-          value: item._id,
-          label: item.category || item.title || item.artist,
+          value: item.type,
+          label: item.type,
         }))}
         onChange={handleChange}
-        placeholder={`Select a ${label.toLowerCase()}`}
+        placeholder={
+          data[type] ? data[type] : `Select a ${label.toLowerCase()}`
+        }
         styles={customStyles}
         instanceId={type}
       ></Select>
-      <div className="mt-4">
-        {data[type].map((item, index) => (
-          <span
-            key={index}
-            className="inline-block bg-gray-800 text-gray-200 shadow shadow-[#766df4] border-0 rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2"
-          >
-            {item.category || item.title || item.artist}
-            <button
-              type="button"
-              className="ml-2"
-              onClick={() => handleRemove(item)}
-            >
-              &#10005;
-            </button>
-          </span>
-        ))}
-      </div>
     </div>
   );
 }

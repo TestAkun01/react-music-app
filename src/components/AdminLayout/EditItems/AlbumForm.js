@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import InputForm from "../InputForm";
 import SelectForm from "../SelectForm";
+import SelectSingle from "../SelectSingle";
 
 export default function AlbumForm({
   formData,
@@ -30,6 +31,12 @@ export default function AlbumForm({
         set={setFormData}
         type="artist"
         label="Artist"
+      />
+      <SelectSingle
+        data={formData}
+        set={setFormData}
+        type={"type"}
+        label={"Type"}
       />
       <InputForm
         title={"Release date"}

@@ -1,4 +1,5 @@
 "use client";
+import AlbumsSection from "@/components/AlbumsSection/AlbumsSection";
 import FetchData from "@/components/FetchData/FetchData";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -17,7 +18,7 @@ export default function Page({ params }) {
         setArtist(artist);
 
         const [albums, tracks] = await Promise.all([
-          FetchData(`api/album?artist=${artist.artist}&limit=5`),
+          FetchData(`api/album?artist=${artist.artist}&limit=-1`),
           FetchData(`api/random/track?artist=${artist.artist}&limit=5`),
         ]);
 
@@ -46,9 +47,8 @@ export default function Page({ params }) {
   return (
     <>
       <div
-        className={`relative flex items-end min-h-[${
-          bioVisible ? "70vh" : "50vh"
-        }] mb-8 transition-all duration-300 ease-in-out`}
+        style={{ minHeight: bioVisible ? "70vh" : "50vh" }}
+        className={`relative flex items-end mb-8 transition-all duration-300 ease-in-out`}
       >
         <div className="absolute inset-0">
           <Image
@@ -56,7 +56,7 @@ export default function Page({ params }) {
             alt={artist.artist}
             layout="fill"
             objectFit="cover"
-            className="opacity-60"
+            className="object-top"
           />
         </div>
         <div
@@ -64,30 +64,36 @@ export default function Page({ params }) {
             bioVisible ? "h-full" : "h-1/3"
           } bg-gradient-to-t from-gray-950 transition-all duration-300 ease-in-out`}
         ></div>
-        <div className="relative text-white xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 w-[70%]">
+        <div className="relative text-white xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 w-[55%]">
           <div className="flex items-center">
-            <p className="text-7xl font-bold">{artist.artist}</p>
-            <img
-              src="https://i.bandori.party/u/asset/rG9qQzRoselia-Icon-tsnAAi.png"
-              className="w-8 h-8 ml-4"
-              alt="Artist Icon"
-            />
+            <p className="text-5xl font-bold">{artist.artist}</p>
           </div>
-          <div
-            className={`font-light text-sm overflow-hidden transition-all duration-500 ease-in-out ${
-              bioVisible ? "opacity-100 max-h-[1000px]" : "opacity-70 max-h-10"
-            } hidden lg:block`}
-            dangerouslySetInnerHTML={{ __html: biographyHtml }}
-          />
-          <button
-            onClick={() => setBioVisible(!bioVisible)}
-            className="mt-4 text-blue-500 hover:underline hidden lg:block"
-          >
-            {bioVisible ? "Show Less" : "Read More"}
-          </button>
+          {artist.biography ? (
+            <>
+              <div
+                className={`font-light py-2 overflow-hidden text-sm transition-all duration-500 ease-in-out ${
+                  bioVisible ? "max-h-[1000px]" : "max-h-10"
+                } hidden lg:block`}
+                dangerouslySetInnerHTML={{ __html: biographyHtml }}
+              />
+              {!bioVisible && artist.biography.length > 200 && (
+                <>
+                  <div className="text-xl text-gray-200 hidden lg:inline">
+                    <span> . . . </span>
+                  </div>
+                  <button
+                    onClick={() => setBioVisible(!bioVisible)}
+                    className="mt-4 text-white hover:underline hidden lg:block"
+                  >
+                    {bioVisible ? "Show Less" : "Read More"}
+                  </button>
+                </>
+              )}
+            </>
+          ) : null}
         </div>
       </div>
-      <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 min-h-screen bg-gray-950 text-white">
+      <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 bg-gray-950 text-white">
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Tracks</h2>
           <div className="flex flex-col divide-y divide-gray-800">
@@ -106,13 +112,13 @@ export default function Page({ params }) {
                   <p className="text-sm font-medium text-gray-300">
                     {track.artist.map((data) => data.artist).join(" & ")}
                   </p>
-                  <p className="text-sm font-medium text-gray-300">
+                  <p className="text-sm font-medium text-gray-300 line-clamp-2">
                     {track.title}
                   </p>
-                  <p className="text-sm font-medium text-gray-300">
+                  <p className="text-sm font-medium text-gray-300 line-clamp-2">
                     {track.album_id.title}
                   </p>
-                  <p className="text-sm text-gray-400 justify-self-end">
+                  <p className="text-sm text-gray-400 justify-self-end line-clamp-2">
                     {track.duration ? track.duration : ". . . ."}
                   </p>
                 </div>
@@ -120,40 +126,20 @@ export default function Page({ params }) {
             ))}
           </div>
         </div>
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Albums</h2>
-          <div className="flex gap-4">
-            {albums.map((album) => (
-              <div
-                key={album._id}
-                className="rounded-lg shadow-md max-w-[200px]"
-              >
-                <Image
-                  src={album.cover}
-                  alt={album.title}
-                  width={800}
-                  height={800}
-                  className="rounded-sm"
-                />
-                <h3 className="text-md font-semibold mt-4">{album.title}</h3>
-                <p className="text-md font-light text-gray-400">
-                  {album.release_date}
-                </p>
-              </div>
-            ))}
-          </div>
+        <AlbumsSection albums={albums} />
+      </div>
+      {artist.biography ? (
+        <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 text-white lg:hidden block">
+          <p className="text-2xl font-semibold mb-4">About</p>
+          <div
+            onClick={() => setBioVisible(!bioVisible)}
+            className={`font-light text-sm cursor-pointer overflow-hidden transition-all duration-500 ease-in-out ${
+              bioVisible ? "max-h-[1000px] opacity-100" : "max-h-20 opacity-70"
+            }`}
+            dangerouslySetInnerHTML={{ __html: biographyHtml }}
+          />
         </div>
-      </div>
-      <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 text-white block md:hidden">
-        <p className="text-2xl font-semibold mb-4">About</p>
-        <div
-          onClick={() => setBioVisible(!bioVisible)}
-          className={`font-light text-sm cursor-pointer overflow-hidden transition-all duration-500 ease-in-out ${
-            bioVisible ? "max-h-[1000px] opacity-100" : "max-h-20 opacity-70"
-          }`}
-          dangerouslySetInnerHTML={{ __html: biographyHtml }}
-        />
-      </div>
+      ) : null}
     </>
   );
 }

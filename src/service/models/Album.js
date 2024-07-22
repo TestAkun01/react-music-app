@@ -11,6 +11,9 @@ const albumSchema = new mongoose.Schema(
         ref: "Artist",
       },
     ],
+    type: {
+      type: String,
+    },
     release_date: {
       type: String,
     },

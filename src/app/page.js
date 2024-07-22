@@ -2,7 +2,7 @@
 import CardList from "@/components/CardList";
 import FetchData from "@/components/FetchData/FetchData";
 import Header from "@/components/Header/Header";
-import PosterContent from "@/components/PosterContent/PosterContent";
+import SideContent from "@/components/SideContent/SideContent";
 import { useState, useEffect } from "react";
 
 export default function Page() {
@@ -65,7 +65,7 @@ export default function Page() {
               ))}
             </div>
             <div className="md:col-span-4">
-              <PosterContent />
+              <SideContent />
             </div>
           </div>
         </div>

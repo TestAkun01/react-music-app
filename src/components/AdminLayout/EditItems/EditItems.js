@@ -12,6 +12,7 @@ export default function EditItems({ id, type }) {
       ? {
           title: "",
           artist: [],
+          type: "",
           release_date: "",
           category: [],
           cover: "",
@@ -29,6 +30,7 @@ export default function EditItems({ id, type }) {
       : {
           artist: "",
           image_url: "",
+          biography: "",
         }
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,6 +52,7 @@ export default function EditItems({ id, type }) {
       (type === "album" &&
         (!formData.title ||
           formData.artist.length === 0 ||
+          !formData.type ||
           !formData.release_date ||
           formData.category.length === 0 ||
           !formData.cover ||

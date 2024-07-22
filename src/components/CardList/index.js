@@ -16,7 +16,7 @@ const CardList = ({ data }) => {
           <Link
             href={`/song/${album._id}`}
             key={album._id}
-            className="max-w-[300px] rounded flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-shadow duration-300"
+            className="max-w-[300px] rounded flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
           >
             <Image
               src={album.cover}
@@ -30,8 +30,21 @@ const CardList = ({ data }) => {
                 <div className="line-clamp-2 text-neutral-50">
                   {album.title}
                 </div>
-                <div className="line-clamp-2 text-neutral-400">
-                  {album.release_date}
+                <div className="text-gray-400">
+                  {album.artist.map((artist, index) => (
+                    <span key={artist._id}>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          router.push(`/artist/${artist._id}`);
+                        }}
+                        className="hover:underline"
+                      >
+                        {artist.artist}
+                      </button>
+                      {index < album.artist.length - 1 && " & "}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
