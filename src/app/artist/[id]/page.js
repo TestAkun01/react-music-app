@@ -1,7 +1,9 @@
 "use client";
 import AlbumsSection from "@/components/AlbumsSection/AlbumsSection";
 import FetchData from "@/components/FetchData/FetchData";
-import Image from "next/image";
+import LongCardList from "@/components/LongCardList/LongCardList";
+import Image from "next/legacy/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export default function Page({ params }) {
@@ -47,24 +49,25 @@ export default function Page({ params }) {
   return (
     <>
       <div
-        style={{ minHeight: bioVisible ? "70vh" : "50vh" }}
+        style={{ minHeight: bioVisible ? "60vh" : "45vh" }}
         className={`relative flex items-end mb-8 transition-all duration-300 ease-in-out`}
       >
         <div className="absolute inset-0">
           <Image
             src={artist.image_url}
             alt={artist.artist}
+            priority={true}
             layout="fill"
             objectFit="cover"
-            className="object-top"
+            className="object-center"
           />
         </div>
         <div
           className={`absolute inset-x-0 bottom-0 ${
-            bioVisible ? "h-full" : "h-1/3"
+            bioVisible ? "h-full" : "h-1/2"
           } bg-gradient-to-t from-gray-950 transition-all duration-300 ease-in-out`}
         ></div>
-        <div className="relative text-white xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 w-[55%]">
+        <div className="relative text-white xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5 w-[55%]">
           <div className="flex items-center">
             <p className="text-5xl font-bold">{artist.artist}</p>
           </div>
@@ -72,14 +75,14 @@ export default function Page({ params }) {
             <>
               <div
                 className={`font-light py-2 overflow-hidden text-sm transition-all duration-500 ease-in-out ${
-                  bioVisible ? "max-h-[1000px]" : "max-h-10"
+                  bioVisible ? "max-h-[1000px]" : "max-h-12"
                 } hidden lg:block`}
                 dangerouslySetInnerHTML={{ __html: biographyHtml }}
               />
-              {!bioVisible && artist.biography.length > 200 && (
+              {artist.biography.length > 200 && (
                 <>
                   <div className="text-xl text-gray-200 hidden lg:inline">
-                    <span> . . . </span>
+                    <span>{bioVisible ? "" : " . . . "}</span>
                   </div>
                   <button
                     onClick={() => setBioVisible(!bioVisible)}
@@ -93,40 +96,22 @@ export default function Page({ params }) {
           ) : null}
         </div>
       </div>
-      <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 bg-gray-950 text-white">
+      <div className="xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 bg-gray-950 text-white">
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">Tracks</h2>
-          <div className="flex flex-col divide-y divide-gray-800">
-            {tracks.map((track) => (
-              <div key={track._id} className="py-4">
-                <div className="rounded-lg grid grid-cols-5 items-center">
-                  <div className="block">
-                    <Image
-                      src={track.cover}
-                      alt={track.title}
-                      width={100}
-                      height={100}
-                      className="h-[60px] w-auto"
-                    />
-                  </div>
-                  <p className="text-sm font-medium text-gray-300">
-                    {track.artist.map((data) => data.artist).join(" & ")}
-                  </p>
-                  <p className="text-sm font-medium text-gray-300 line-clamp-2">
-                    {track.title}
-                  </p>
-                  <p className="text-sm font-medium text-gray-300 line-clamp-2">
-                    {track.album_id.title}
-                  </p>
-                  <p className="text-sm text-gray-400 justify-self-end line-clamp-2">
-                    {track.duration ? track.duration : ". . . ."}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold mb-4">Tracks</h2>
+            <Link
+              href={`/artist/${artist._id}/track`}
+              className="hover:text-[#766df4] hover:underline"
+            >
+              More
+            </Link>
+          </div>
+          <div className="flex flex-col">
+            <LongCardList data={tracks} />
           </div>
         </div>
-        <AlbumsSection albums={albums} />
+        <AlbumsSection albums={albums} artist={artist} />
       </div>
       {artist.biography ? (
         <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 text-white lg:hidden block">

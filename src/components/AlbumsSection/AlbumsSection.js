@@ -1,37 +1,30 @@
 import React from "react";
-import Image from "next/image";
-
-export default function AlbumsSection({ albums }) {
-  const albumsList = albums.filter((album) => album.type === "Album");
-  const epList = albums.filter((album) => album.type === "EP");
-  const singlesList = albums.filter((album) => album.type === "Single");
+import CardAlbum from "../CardAlbum/CardAlbum";
+import Link from "next/link";
+export default function AlbumsSection({ albums, artist }) {
+  const albumsList = albums
+    .filter((album) => album.type === "Album")
+    .slice(0, 6);
+  const epList = albums.filter((album) => album.type === "EP").slice(0, 6);
+  const singlesList = albums
+    .filter((album) => album.type === "Single")
+    .slice(0, 6);
 
   const renderAlbums = (title, list) => (
     <>
       {list.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-          <div className="flex gap-4">
-            {list.map((album) => (
-              <div
-                key={album._id}
-                className="rounded-lg shadow-md max-w-[150px]"
-              >
-                <Image
-                  src={album.cover}
-                  alt={album.title}
-                  width={800}
-                  height={800}
-                  className="rounded-sm"
-                />
-                <h3 className="text-sm font-semibold mt-4 line-clamp-2">
-                  {album.title}
-                </h3>
-                <p className="text-sm font-light text-gray-400">
-                  {album.type} &#8226; {album.release_date.split("-")[0]}
-                </p>
-              </div>
-            ))}
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+            <Link
+              href={`/artist/${artist._id}/${title.toLowerCase().slice(0, -1)}`}
+              className="hover:text-[#766df4] hover:underline"
+            >
+              More
+            </Link>
+          </div>
+          <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+            <CardAlbum data={list} />
           </div>
         </div>
       )}

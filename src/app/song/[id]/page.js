@@ -1,5 +1,3 @@
-// pages/Page.js
-
 "use client";
 
 import Loading from "@/app/loading";
@@ -30,7 +28,7 @@ export default function Page({ params }) {
   };
 
   return (
-    <div className="container mx-auto p-4 w-full min-h-screen text-neutral-50">
+    <div className="mx-auto p-4 w-full min-h-screen text-neutral-50">
       {data ? (
         <div className="max-w-screen-lg mx-auto bg-gray-900 rounded-lg shadow-lg p-4">
           <div className="flex">

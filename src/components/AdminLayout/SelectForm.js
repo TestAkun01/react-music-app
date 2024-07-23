@@ -7,9 +7,9 @@ export default function SelectForm({ data, set, type, label, dependentData }) {
 
   useEffect(() => {
     const fetchItems = async () => {
-      let url = `api/${type}`;
+      let url = `api/${type}?limit=-1`;
       if (dependentData) {
-        url += `?artist=${dependentData}`;
+        url += `&artist=${dependentData}`;
       }
       const response = await FetchData(url);
       setItems(response);

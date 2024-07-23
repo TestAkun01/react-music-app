@@ -12,6 +12,7 @@ export async function GET(request) {
   const page = parseInt(url.searchParams.get("page")) || 1;
   const categories = url.searchParams.get("category") || "";
   const artistName = url.searchParams.get("artist") || "";
+  const type = url.searchParams.get("type") || "";
 
   try {
     let query = Album.find({});
@@ -32,6 +33,10 @@ export async function GET(request) {
         return new Response("Artist not found", { status: 404 });
       }
       query = query.where("artist").in(artist._id);
+    }
+
+    if (type) {
+      query = query.where("type").equals(type);
     }
 
     const skip = (page - 1) * limit;
