@@ -38,7 +38,7 @@ const CardList = ({ data }) => {
                           e.preventDefault();
                           router.push(`/artist/${artist._id}`);
                         }}
-                        className="hover:underline"
+                        className="hover:underline text-start"
                       >
                         {artist.artist}
                       </button>

@@ -65,10 +65,9 @@ export const AudioProvider = ({ children }) => {
 
   const playTrack = (track) => {
     setCurrentTrack(track);
-    if (audioRef.current.src !== track.file_url) {
-      audioRef.current.src = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stream?url=${track.file_url}`;
-    }
-    audioRef.current.play();
+    audioRef.current.src = "";
+    audioRef.current.src = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stream?url=${track.file_url}`;
+    audioRef.current.play().catch(() => setIsPlaying(false));
     setIsPlaying(true);
     setPlaylist([track]);
     session ? handleHistory(track) : null;
@@ -76,10 +75,9 @@ export const AudioProvider = ({ children }) => {
 
   const playTrackFromPlaylist = (track) => {
     setCurrentTrack(track);
-    if (audioRef.current.src !== track.file_url) {
-      audioRef.current.src = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stream?url=${track.file_url}`;
-    }
-    audioRef.current.play();
+    audioRef.current.src = "";
+    audioRef.current.src = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/stream?url=${track.file_url}`;
+    audioRef.current.play().catch(() => setIsPlaying(false));
     setIsPlaying(true);
     const index = playlist.findIndex((item) => item._id === track._id);
     setPlaylistIndex(index);

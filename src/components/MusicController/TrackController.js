@@ -3,6 +3,7 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+import ShareIcon from "@mui/icons-material/Share"; // Import the share icon
 import { AudioContext } from "./AudioContext";
 
 const TrackController = ({ track }) => {
@@ -52,6 +53,20 @@ const TrackController = ({ track }) => {
     addToPlaylist(track);
   };
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: track.title,
+          text: `Check out this track: ${track.title}`,
+          url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/song/${track.album_id._id}`,
+        })
+        .catch(console.error);
+    } else {
+      alert("Sharing is not supported on this browser.");
+    }
+  };
+
   return (
     <div
       className={`track-controller p-2 rounded-lg mb-2${
@@ -61,7 +76,7 @@ const TrackController = ({ track }) => {
       <div className="flex items-center justify-between">
         <span className="text-white">{track.title}</span>
       </div>
-      {currentTrack?._id === track._id && (
+      {currentTrack?._id === track._id ? (
         <div className="flex items-center mt-2">
           <span className="text-white min-w-[57px] text-center">
             {formatTime(tempCurrentTime)}
@@ -82,6 +97,12 @@ const TrackController = ({ track }) => {
             {formatTime(duration)}
           </span>
         </div>
+      ) : (
+        <div className="flex items-center mt-2">
+          <span className="text-white min-w-[57px] text-center">00:00</span>
+          <input type="range" value={0} className="w-full mx-2 h-1" disabled />
+          <span className="text-white min-w-[57px] text-center">00:00</span>
+        </div>
       )}
       <div className="flex items-center gap-2">
         <button onClick={handlePlayTrack} className="text-white">
@@ -93,6 +114,9 @@ const TrackController = ({ track }) => {
         </button>
         <button onClick={handleAddToPlaylist} className="text-white ml-2">
           <PlaylistAddIcon />
+        </button>
+        <button onClick={handleShare} className="text-white ml-2">
+          <ShareIcon />
         </button>
       </div>
     </div>

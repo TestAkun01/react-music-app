@@ -48,24 +48,21 @@ export default function Page({ params }) {
 
   return (
     <>
-      <div
-        style={{ minHeight: bioVisible ? "60vh" : "45vh" }}
-        className={`relative flex items-end mb-8 transition-all duration-300 ease-in-out`}
-      >
-        <div className="absolute inset-0">
+      <div className="relative flex items-start pt-72">
+        <div className="absolute inset-0 overflow-hidden">
           <Image
             src={artist.image_url}
             alt={artist.artist}
             priority={true}
             layout="fill"
             objectFit="cover"
-            className="object-top"
+            className="transition-transform duration-500 ease-in-out"
           />
         </div>
         <div
-          className={`absolute inset-x-0 bottom-0 ${
+          className={`absolute inset-x-0 bottom-0 transition-all duration-500 ease-in-out ${
             bioVisible ? "h-full" : "h-1/2"
-          } bg-gradient-to-t from-gray-950 transition-all duration-300 ease-in-out`}
+          } bg-gradient-to-t from-gray-950`}
         ></div>
         <div className="relative text-white xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5 w-[55%]">
           <div className="flex items-center">
@@ -79,23 +76,24 @@ export default function Page({ params }) {
                 } hidden lg:block`}
                 dangerouslySetInnerHTML={{ __html: biographyHtml }}
               />
-              {artist.biography.length > 200 && (
-                <>
-                  <div className="text-xl text-gray-200 hidden lg:inline">
-                    <span>{bioVisible ? "" : " . . . "}</span>
-                  </div>
-                  <button
-                    onClick={() => setBioVisible(!bioVisible)}
-                    className="mt-4 text-white hover:underline hidden lg:block"
-                  >
-                    {bioVisible ? "Show Less" : "Read More"}
-                  </button>
-                </>
-              )}
+              <div
+                className={`text-xl text-gray-200 hidden lg:block transition-all duration-500 ease-in-out opacity-${
+                  bioVisible ? "0" : "100"
+                }`}
+              >
+                <span> . . . </span>
+              </div>
+              <button
+                onClick={() => setBioVisible(!bioVisible)}
+                className="mt-4 text-white hover:underline hidden lg:block"
+              >
+                {bioVisible ? "Show Less" : "Read More"}
+              </button>
             </>
           ) : null}
         </div>
       </div>
+
       <div className="xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 bg-gray-950 text-white">
         <div className="mt-8">
           <div className="flex justify-between items-center">
