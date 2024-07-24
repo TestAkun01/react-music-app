@@ -59,7 +59,7 @@ export default function Page({ params }) {
             priority={true}
             layout="fill"
             objectFit="cover"
-            className="object-center"
+            className="object-top"
           />
         </div>
         <div

@@ -21,6 +21,7 @@ export async function GET(request) {
     const skip = (page - 1) * limit;
 
     const songs = await Album.find(dbQuery)
+      .sort({ release_date: -1 })
       .skip(skip)
       .limit(limit)
       .populate("category")

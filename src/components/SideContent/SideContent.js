@@ -10,9 +10,16 @@ import { useRouter } from "next/navigation";
 export default function SideContent() {
   const [randomAlbum, setRandomAlbum] = useState([]);
   const router = useRouter();
+
   useEffect(() => {
     async function getRandomAlbum() {
       const today = new Date().toISOString().split("T")[0];
+      const yesterday = new Date(Date.now() - 864e5)
+        .toISOString()
+        .split("T")[0];
+
+      localStorage.removeItem(`randomAlbum-${yesterday}`);
+
       const storedData = localStorage.getItem(`randomAlbum-${today}`);
       if (storedData) {
         setRandomAlbum(JSON.parse(storedData));
@@ -36,9 +43,9 @@ export default function SideContent() {
           {randomAlbum?.map((item) => (
             <div
               key={item._id}
-              className="cursor-pointer transition-all duration-300 hover:bg-gray-900 hover:shadow-md hover:shadow-[#766df4]"
+              className="cursor-pointer rounded transition-all duration-300 hover:bg-gray-900 hover:shadow-md hover:shadow-[#766df4]"
             >
-              <Link href={`/song/${item._id}`} className="rounded">
+              <Link href={`/song/${item._id}`} className="">
                 <div className="flex items-center">
                   <div className="flex items-center">
                     <Image
