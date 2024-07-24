@@ -5,6 +5,7 @@ import CategoryButtons from "@/components/CategoryButtons/CategoryButtons";
 import FetchData from "@/components/FetchData/FetchData";
 import TrackController from "@/components/MusicController/TrackController";
 import Image from "next/legacy/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -80,7 +81,8 @@ export default function Page({ params }) {
                   <p className="mb-2 text-3xl text-center">Artist</p>
                   {data.artist.map((artist) => {
                     return (
-                      <div
+                      <Link
+                        href={`/artist/${artist._id}`}
                         className="flex flex-col items-center my-8"
                         key={artist._id}
                       >
@@ -98,7 +100,7 @@ export default function Page({ params }) {
                         <p className="text-sm font-light my-4">
                           {artist.artist}
                         </p>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>
