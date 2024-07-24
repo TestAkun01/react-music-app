@@ -55,7 +55,7 @@ export default function Page({ params }) {
                   height={350}
                 />
               </div>
-              <div className=" w-full">
+              <div className="w-full m-4">
                 <h1 className="text-3xl mb-2">{data.title}</h1>
                 <p className="mb-4">
                   Artist:{" "}

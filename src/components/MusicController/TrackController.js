@@ -1,9 +1,15 @@
 "use client";
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, {
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
-import ShareIcon from "@mui/icons-material/Share"; // Import the share icon
+import ShareIcon from "@mui/icons-material/Share";
 import { AudioContext } from "./AudioContext";
 
 const TrackController = ({ track }) => {
@@ -27,33 +33,32 @@ const TrackController = ({ track }) => {
     }
   }, [currentTime, isSeeking]);
 
-  const handlePlayTrack = () => {
+  const handlePlayTrack = useCallback(() => {
     if (track === currentTrack) {
       togglePlay();
     } else {
       playTrack(track);
     }
-  };
+  }, [track, currentTrack, togglePlay, playTrack]);
 
-  const handleSeekMouseDown = () => {
+  const handleSeekMouseDown = useCallback(() => {
     setIsSeeking(true);
-  };
+  }, []);
 
-  const handleSeekChange = (e) => {
-    const { value } = e.target;
-    setTempCurrentTime(value);
-  };
+  const handleSeekChange = useCallback((e) => {
+    setTempCurrentTime(e.target.value);
+  }, []);
 
-  const handleSeekMouseUp = () => {
+  const handleSeekMouseUp = useCallback(() => {
     setIsSeeking(false);
     seek(tempCurrentTime);
-  };
+  }, [tempCurrentTime, seek]);
 
-  const handleAddToPlaylist = () => {
+  const handleAddToPlaylist = useCallback(() => {
     addToPlaylist(track);
-  };
+  }, [track, addToPlaylist]);
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     if (navigator.share) {
       navigator
         .share({
@@ -65,52 +70,43 @@ const TrackController = ({ track }) => {
     } else {
       alert("Sharing is not supported on this browser.");
     }
-  };
+  }, [track]);
+
+  const isCurrentTrack = currentTrack?._id === track._id;
 
   return (
     <div
-      className={`track-controller p-2 rounded-lg mb-2${
-        currentTrack?._id === track._id ? " bg-gray-700" : ""
+      className={`track-controller p-2 rounded-lg mb-2 ${
+        isCurrentTrack ? "bg-gray-700" : ""
       }`}
     >
       <div className="flex items-center justify-between">
         <span className="text-white">{track.title}</span>
       </div>
-      {currentTrack?._id === track._id ? (
-        <div className="flex items-center mt-2">
-          <span className="text-white min-w-[57px] text-center">
-            {formatTime(tempCurrentTime)}
-          </span>
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            step={0.01}
-            value={tempCurrentTime}
-            onChange={handleSeekChange}
-            onMouseDown={handleSeekMouseDown}
-            onMouseUp={handleSeekMouseUp}
-            ref={seekBarRef}
-            className="w-full mx-2 h-1 cursor-pointer"
-          />
-          <span className="text-white min-w-[57px] text-center">
-            {formatTime(duration)}
-          </span>
-        </div>
-      ) : (
-        <div className="flex items-center mt-2">
-          <span className="text-white min-w-[57px] text-center">00:00</span>
-          <input type="range" value={0} className="w-full mx-2 h-1" disabled />
-          <span className="text-white min-w-[57px] text-center">00:00</span>
-        </div>
-      )}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center mt-2">
+        <span className="text-white min-w-[57px] text-center">
+          {isCurrentTrack ? formatTime(tempCurrentTime) : "00:00"}
+        </span>
+        <input
+          type="range"
+          min="0"
+          max={isCurrentTrack ? duration : 1}
+          step={0.01}
+          value={isCurrentTrack ? tempCurrentTime : 0}
+          onChange={handleSeekChange}
+          onMouseDown={handleSeekMouseDown}
+          onMouseUp={handleSeekMouseUp}
+          ref={seekBarRef}
+          className="w-full mx-2 h-1 cursor-pointer"
+          disabled={!isCurrentTrack}
+        />
+        <span className="text-white min-w-[57px] text-center">
+          {isCurrentTrack ? formatTime(duration) : "00:00"}
+        </span>
+      </div>
+      <div className="flex items-center gap-2 mt-2">
         <button onClick={handlePlayTrack} className="text-white">
-          {currentTrack?._id === track._id && isPlaying ? (
-            <PauseIcon />
-          ) : (
-            <PlayArrowIcon />
-          )}
+          {isCurrentTrack && isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
         </button>
         <button onClick={handleAddToPlaylist} className="text-white ml-2">
           <PlaylistAddIcon />
