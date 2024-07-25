@@ -41,6 +41,12 @@ export async function GET(request, { params }) {
         { path: "artist" },
         { path: "album_id" },
       ]);
+    } else if (type === "artist") {
+      randomItems = await Artist.aggregate([
+        { $match: query },
+        { $sample: { size: limit } },
+      ]);
+      populateItems = randomItems;
     } else {
       return new Response("Invalid type parameter", { status: 400 });
     }

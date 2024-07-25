@@ -4,6 +4,7 @@ import CardList from "@/components/CardList";
 import CategoryButtons from "@/components/CategoryButtons/CategoryButtons";
 import FetchData from "@/components/FetchData/FetchData";
 import Header from "@/components/Header/Header";
+import Loading from "@/components/Loading/Loading";
 import PaginationButton from "@/components/PaginationButton/PaginationButton";
 import SideContent from "@/components/SideContent/SideContent";
 import { useRouter } from "next/navigation";
@@ -17,6 +18,7 @@ export default function Page({ params }) {
   const [categories, setCategories] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   let path = "";
   if (category === "All") {
     path = `api/album?page=${page}&limit=12`;
@@ -35,13 +37,17 @@ export default function Page({ params }) {
       setCategories(dataCategories);
     };
 
-    fetchData();
+    fetchData().finally(() => setIsLoading(false));
   }, [page]);
 
   const handleCategorySelect = async (category) => {
     router.push(`${category}`);
     setPage(1);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 min-h-screen">

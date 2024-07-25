@@ -16,10 +16,9 @@ export default function Page({ params }) {
       const result = await FetchData(`api/search?q=${q}`);
 
       setFilteredSong(result.data);
-      setIsLoading(false);
     };
 
-    fetchData();
+    fetchData().finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -27,9 +26,7 @@ export default function Page({ params }) {
       <div className="grid md:grid-cols-12 gap-8 md:divide-x divide-gray-900">
         <div className="md:col-span-8">
           <Header title={`Search by ${decodeURIComponent(q)}`} />
-          {isLoading ? (
-            <Loading></Loading>
-          ) : filteredSong.length === 0 ? (
+          {filteredSong.length === 0 ? (
             <div className="flex flex-col items-center text-neutral-50">
               <h1 className="font-bold text-3xl">No results found</h1>
               <p className="text-xl">Try searching for something else</p>

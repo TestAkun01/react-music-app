@@ -5,44 +5,35 @@ import FetchData from "@/components/FetchData/FetchData";
 import Image from "next/legacy/image";
 import React, { useEffect, useState } from "react";
 import { notFound, useRouter } from "next/navigation";
+import Loading from "@/components/Loading/Loading";
 
 export default function Page({ params }) {
   const { id, type } = params;
   const [artist, setArtist] = useState({});
   const [albums, setAlbums] = useState([]);
   const [tracks, setTracks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const artist = await FetchData(`api/artist/${id}`);
-        setArtist(artist);
+      const artist = await FetchData(`api/artist/${id}`);
+      setArtist(artist);
 
-        const [albums, tracks] = await Promise.all([
-          FetchData(`api/album?artist=${artist.artist}&limit=-1`),
-          FetchData(`api/track?artist=${artist.artist}&limit=-1`),
-        ]);
+      const [albums, tracks] = await Promise.all([
+        FetchData(`api/album?artist=${artist.artist}&limit=-1`),
+        FetchData(`api/track?artist=${artist.artist}&limit=-1`),
+      ]);
 
-        setAlbums(albums.data);
-        setTracks(tracks);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+      setAlbums(albums.data);
+      setTracks(tracks);
     }
 
-    fetchData();
+    fetchData().finally(() => setIsLoading(false));
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Loading...
-      </div>
-    );
+  if (isLoading) {
+    return <Loading />;
   }
 
   const renderContent = () => {

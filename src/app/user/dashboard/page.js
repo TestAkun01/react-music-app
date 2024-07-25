@@ -64,6 +64,7 @@ export default function Page() {
       );
     }
   }, [session]);
+
   const handleIsDisplaying = (display) => {
     setIsDisplaying(display);
   };

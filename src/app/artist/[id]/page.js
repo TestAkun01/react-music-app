@@ -1,6 +1,7 @@
 "use client";
 import AlbumsSection from "@/components/AlbumsSection/AlbumsSection";
 import FetchData from "@/components/FetchData/FetchData";
+import Loading from "@/components/Loading/Loading";
 import LongCardList from "@/components/LongCardList/LongCardList";
 import Image from "next/legacy/image";
 import Link from "next/link";
@@ -11,37 +12,27 @@ export default function Page({ params }) {
   const [artist, setArtist] = useState({});
   const [albums, setAlbums] = useState([]);
   const [tracks, setTracks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [bioVisible, setBioVisible] = useState(false);
   useEffect(() => {
     async function fetchData() {
-      try {
-        const artist = await FetchData(`api/artist/${id}`);
-        setArtist(artist);
+      const artist = await FetchData(`api/artist/${id}`);
+      setArtist(artist);
 
-        const [albums, tracks] = await Promise.all([
-          FetchData(`api/album?artist=${artist.artist}&limit=-1`),
-          FetchData(`api/random/track?artist=${artist.artist}&limit=5`),
-        ]);
+      const [albums, tracks] = await Promise.all([
+        FetchData(`api/album?artist=${artist.artist}&limit=-1`),
+        FetchData(`api/random/track?artist=${artist.artist}&limit=5`),
+      ]);
 
-        setAlbums(albums.data);
-        setTracks(tracks);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+      setAlbums(albums.data);
+      setTracks(tracks);
     }
 
-    fetchData();
+    fetchData().finally(() => setIsLoading(false));
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-white">
-        Loading...
-      </div>
-    );
+  if (isLoading) {
+    return <Loading />;
   }
 
   const biographyHtml = artist.biography?.replace(/\n/g, "<br>") || "";
