@@ -22,7 +22,7 @@ const Playlist = ({ tracks }) => {
   return (
     <div className={`bg-gray-800 p-4 min-w-[400px] rounded-lg`}>
       <div className="flex justify-between mb-2">
-        <h3 className="text-white text-semibold text-[28px]">Playlist</h3>
+        <p className="text-white text-semibold text-[28px]">Playlist</p>
         <div className="flex space-x-2">
           <button
             onClick={handleClearPlaylist}

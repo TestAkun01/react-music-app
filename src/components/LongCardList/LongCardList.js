@@ -13,7 +13,7 @@ export default function LongCardList({ data }) {
                 <div className="block">
                   <Image
                     src={track.cover}
-                    alt={track.title}
+                    alt={`Image ${track.title}`}
                     width={100}
                     height={100}
                     className="h-[60px] w-auto"

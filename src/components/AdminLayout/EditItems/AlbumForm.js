@@ -68,7 +68,7 @@ export default function AlbumForm({
       <div>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          className="bg-blue-600 text-md font-semibold text-white px-4 py-2 rounded-md"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting..." : "Save Changes"}

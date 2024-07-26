@@ -34,6 +34,7 @@ export default function TextAreaForm({
         disabled={disable}
         rows="1"
         style={{ resize: "none", overflow: "hidden" }}
+        aria-label={`textarea ${type}`}
       />
     </div>
   );

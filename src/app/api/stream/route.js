@@ -43,7 +43,6 @@ export async function GET(request) {
         },
       });
     } else {
-      // Direct streaming for non-YouTube URLs
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch the media content");

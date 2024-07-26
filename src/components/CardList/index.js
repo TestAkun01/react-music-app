@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import CategoryButtons from "../CategoryButtons/CategoryButtons";
 import { useRouter } from "next/navigation";
@@ -11,52 +11,51 @@ const CardList = ({ data }) => {
 
   return (
     <>
-      {data.map((album) => {
-        return (
-          <Link
-            href={`/song/${album._id}`}
-            key={album._id}
-            className="max-w-[180px] rounded flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
-          >
+      {data.map((album) => (
+        <Link
+          href={`/song/${album._id}`}
+          key={album._id}
+          className="rounded flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
+        >
+          <div className="relative w-full aspect-square">
             <Image
               src={album.cover}
-              alt={album.title}
-              width={300}
-              height={300}
-              className="card-list"
+              alt={`Image ${album.title}`}
+              layout="fill"
+              objectFit="cover"
+              priority="true"
             />
-            <div className="px-4 pt-4">
-              <div className="font-semibold text-sm mb-2">
-                <div className="line-clamp-2 text-neutral-50">
-                  {album.title}
-                </div>
-                <div className="text-gray-400">
-                  {album.artist.map((artist, index) => (
-                    <span key={artist._id}>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          router.push(`/artist/${artist._id}`);
-                        }}
-                        className="hover:underline text-start"
-                      >
-                        {artist.artist}
-                      </button>
-                      {index < album.artist.length - 1 && " & "}
-                    </span>
-                  ))}
-                </div>
+          </div>
+
+          <div className="px-4 pt-4">
+            <div className="font-semibold text-sm mb-2">
+              <div className="line-clamp-2 text-neutral-50">{album.title}</div>
+              <div className="text-gray-400">
+                {album.artist.map((data, index) => (
+                  <div key={index} className="w-full overflow-hidden">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        router.push(`/artist/${data._id}`);
+                      }}
+                      className="hover:underline text-start py-2"
+                    >
+                      {data.artist}
+                    </button>
+                    {index < album.artist.length - 1 && " & "}
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="px-4 pt-4">
-              <CategoryButtons
-                categories={album.category}
-                handle={handleRedirect}
-              ></CategoryButtons>
-            </div>
-          </Link>
-        );
-      })}
+          </div>
+          <div className="px-4 pt-4">
+            <CategoryButtons
+              categories={album.category}
+              handle={handleRedirect}
+            ></CategoryButtons>
+          </div>
+        </Link>
+      ))}
     </>
   );
 };

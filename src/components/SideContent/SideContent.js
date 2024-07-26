@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import FetchData from "../FetchData/FetchData";
@@ -39,40 +39,43 @@ export default function SideContent() {
         style={{ maxWidth: "inherit", width: "inherit" }}
       >
         <Header title={"Recommendation"} />
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-rows-5 gap-4">
           {randomAlbum?.map((item) => (
             <div
               key={item._id}
               className="cursor-pointer rounded transition-all duration-300 hover:bg-gray-900 hover:shadow-md hover:shadow-[#766df4]"
             >
-              <Link href={`/song/${item._id}`} className="">
-                <div className="flex items-center">
-                  <div className="flex items-center">
+              <Link href={`/song/${item._id}`} className="h-full w-full">
+                <div className="flex items-center h-full">
+                  <div className="relative h-full aspect-square">
                     <Image
                       src={item.cover}
-                      alt={item.title}
-                      width={200}
-                      height={200}
-                      className="inline-block h-[82px] w-[82px] rounded"
+                      alt={`Image ${item.title}`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded"
+                      priority="true"
                     />
-                    <div className="px-4">
-                      <p className="text-sm line-clamp-2">{item.title}</p>
-                      <div className="text-sm font-light text-gray-300">
-                        {item.artist.map((artist, index) => (
-                          <span key={artist._id}>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                router.push(`/artist/${artist._id}`);
-                              }}
-                              className="hover:underline"
-                            >
-                              {artist.artist}
-                            </button>
-                            {index < item.artist.length - 1 && " & "}
-                          </span>
-                        ))}
-                      </div>
+                  </div>
+                  <div className="px-4">
+                    <p className="text-sm line-clamp-2">{item.title}</p>
+                    <div className="text-sm font-light text-gray-300">
+                      {item.artist.map((artist, index) => (
+                        <span key={artist._id}>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              router.push(`/artist/${artist._id}`);
+                            }}
+                            className="hover:underline py-2"
+                          >
+                            {artist.artist}
+                          </button>
+                          {index < item.artist.length - 1 && (
+                            <span className="py-2"> & </span>
+                          )}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>

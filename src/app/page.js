@@ -14,8 +14,6 @@ export default function Page() {
   const [randomArtist, setrandomArtist] = useState([]);
   const [categoryAlbums, setCategoryAlbums] = useState({});
 
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchInitialData = async () => {
       const [latestSongs, categoryList, randomArtist] = await Promise.all([
@@ -49,12 +47,8 @@ export default function Page() {
       setCategoryAlbums(albumsByCategoryMap);
     };
 
-    fetchInitialData().finally(() => setIsLoading(false));
+    fetchInitialData();
   }, []);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <div className="min-h-screen">
@@ -74,17 +68,14 @@ export default function Page() {
                     className="flex flex-col items-center my-8 w-full"
                     key={artist._id}
                   >
-                    <div
-                      className="relative w-full"
-                      style={{ paddingBottom: "100%" }}
-                    >
+                    <div className="relative w-full aspect-square">
                       <Image
                         src={artist.image_url}
-                        alt={artist.artist}
+                        alt={`Image ${artist.artist}`}
                         layout="fill"
                         objectFit="cover"
                         className="rounded-full"
-                        quality={100}
+                        priority="true"
                       />
                     </div>
                     <p className="text-sm font-semibold my-4 text-neutral-50">

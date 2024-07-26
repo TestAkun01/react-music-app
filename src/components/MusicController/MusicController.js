@@ -96,6 +96,7 @@ const MusicController = () => {
             ref={seekBarRef}
             className="h-1 w-full cursor-pointer m-0 p-0 absolute"
             disabled={!currentTrack}
+            aria-label="seek-bar"
           />
         </div>
         <div className="flex items-center justify-between mx-8 py-4">
@@ -104,10 +105,15 @@ const MusicController = () => {
               onClick={playPrev}
               className="text-white"
               disabled={!currentTrack}
+              aria-label="prev-button"
             >
               <SkipPreviousIcon />
             </button>
-            <button onClick={togglePlay} className="text-white">
+            <button
+              onClick={togglePlay}
+              className="text-white"
+              aria-label="play-pause-button"
+            >
               {currentTrack ? (
                 isPlaying ? (
                   <PauseIcon sx={{ fontSize: 45 }} />
@@ -122,6 +128,7 @@ const MusicController = () => {
               onClick={playNext}
               className="text-white"
               disabled={!currentTrack}
+              aria-label="next-button"
             >
               <SkipNextIcon />
             </button>
@@ -196,6 +203,7 @@ const MusicController = () => {
                 className={`mx-4 h-1 ${
                   isVolumeHovered ? "opacity-100" : "opacity-0"
                 } transition-opacity duration-200`}
+                aria-label="volume-bar"
               />
               <span className={`text-white cursor-pointer`}>
                 {volume > 0.5 ? (

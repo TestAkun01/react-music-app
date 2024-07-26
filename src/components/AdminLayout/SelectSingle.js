@@ -99,6 +99,7 @@ export default function SelectSingle({
         }
         styles={customStyles}
         instanceId={type}
+        aria-label={`single ${type}`}
       ></Select>
     </div>
   );

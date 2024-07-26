@@ -9,7 +9,7 @@ const Search = () => {
     if (event.key === "Enter" || event.type === "click") {
       event.preventDefault();
       const search = searchRef.current.value.trim();
-      if (search) router.push(`/search/${search}`);
+      if (search) router.push(`/search/${encodeURIComponent(search)}`);
     }
   }
 
@@ -25,6 +25,7 @@ const Search = () => {
       <button
         className="absolute right-0 h-full w-10 flex items-center justify-center"
         onClick={handleSearch}
+        aria-label="search-button"
       >
         <SearchIcon sx={{ fontSize: 28 }} />
       </button>

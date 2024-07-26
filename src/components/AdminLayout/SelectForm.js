@@ -107,6 +107,7 @@ export default function SelectForm({ data, set, type, label, dependentData }) {
         placeholder={`Select a ${label.toLowerCase()}`}
         styles={customStyles}
         instanceId={type}
+        aria-label={`multiple ${type}`}
       ></Select>
       <div className="mt-4">
         {data[type].map((item, index) => (

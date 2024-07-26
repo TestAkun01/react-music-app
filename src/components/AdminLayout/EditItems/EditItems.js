@@ -38,7 +38,6 @@ export default function EditItems({ id, type }) {
 
   async function setForm() {
     const response = await FetchData(`api/${type}/${id}`);
-    console.log(response);
     setFormData(response);
   }
 

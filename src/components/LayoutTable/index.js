@@ -30,8 +30,8 @@ export default function LayoutTable({ data, reloadData, type }) {
 
   return (
     <div className="relative overflow-x-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-50  table-fixed">
+        <thead className="text-xs text-gray-200 uppercase bg-gray-700">
           <tr>
             {columns.map((column, index) => (
               <th key={index} scope="col" className="px-2 py-2 w-[140px]">
@@ -57,13 +57,15 @@ export default function LayoutTable({ data, reloadData, type }) {
               <td className="px-2 py-2 flex justify-between flex-wrap gap-y-2 w-[140px]">
                 <Link
                   href={`/admin/${type}/${row._id}`}
-                  className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 font-medium rounded-full text-sm px-3 py-1"
+                  className="focus:outline-none text-white bg-yellow-600 hover:bg-yellow-700 font-medium rounded-full text-sm px-3 py-1"
+                  aria-label={`edit ${row._id}`}
                 >
                   Edit
                 </Link>
                 <button
-                  className="focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded-full text-sm px-3 py-1"
+                  className="focus:outline-none text-white bg-red-600 hover:bg-red-700 font-medium rounded-full text-sm px-3 py-1"
                   onClick={() => handleDelete(row._id)}
+                  aria-label={`delete ${row._id}`}
                 >
                   Delete
                 </button>

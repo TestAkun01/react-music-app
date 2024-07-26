@@ -30,6 +30,7 @@ export default function InputForm({
         onChange={handleChange}
         className="mt-1 block w-full p-2 bg-gray-800 text-neutral-50 rounded-md focus:outline-none hover:shadow hover:shadow-[#766df4] focus:shadow focus:shadow-[#766df4] transition duration-300 ease-in-out"
         disabled={disable}
+        aria-label={`input ${type}`}
       />
     </div>
   );

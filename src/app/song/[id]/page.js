@@ -46,13 +46,13 @@ export default function Page({ params }) {
         />
       </div>
 
-      <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 min-h-screen text-neutral-50 relative">
+      <div className="xl:mx-40 lg:mx-28 lg:mx-20 sm:mx-20 mx-5 min-h-screen text-neutral-50 relative">
         <div className="w-full rounded-lg shadow-lg p-4 bg-gray-800 bg-opacity-75">
-          <div className="flex">
-            <div className="w-[300px] m-4">
+          <div className="flex lg:flex-row flex-col">
+            <div className="w-[300px] m-4 mx-auto">
               <Image
                 src={data.cover}
-                alt={data.title}
+                alt={`Image ${data.title}`}
                 className="w-full h-auto object-cover"
                 width={350}
                 height={350}
@@ -77,30 +77,31 @@ export default function Page({ params }) {
           <hr className="my-4 border-gray-400" />
           <div>
             <div className="grid grid-cols-12 gap-4">
-              <div className="col-span-2">
-                <p className="mb-2 text-3xl text-center">Artist</p>
-                {data.artist.map((artist) => (
-                  <Link
-                    href={`/artist/${artist._id}`}
-                    className="flex flex-col items-center my-8"
-                    key={artist._id}
-                  >
-                    <div className="relative w-24 h-24  object-cover rounded-full overflow-hidden">
-                      <Image
-                        src={artist.image_url}
-                        alt={artist.artist}
-                        className=""
-                        width={400}
-                        height={400}
-                        objectFit="cover"
-                        quality={100}
-                      />
-                    </div>
-                    <p className="text-sm font-light my-4">{artist.artist}</p>
-                  </Link>
-                ))}
+              <div className="lg:col-span-2 col-span-full">
+                <p className="mb-2 text-3xl">Artist</p>
+                <div className="lg:block flex gap-4 w-full h-full overflow-x-auto">
+                  {data.artist.map((artist) => (
+                    <Link
+                      href={`/artist/${artist._id}`}
+                      className="flex flex-col items-center my-8 w-full min-w-[200px]"
+                      key={artist._id}
+                    >
+                      <div className="relative w-1/2 aspect-square">
+                        <Image
+                          src={artist.image_url}
+                          alt={`Image ${artist.artist}`}
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-full"
+                          priority="true"
+                        />
+                      </div>
+                      <p className="text-sm font-light my-4">{artist.artist}</p>
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="col-span-10">
+              <div className="lg:col-span-10 col-span-full">
                 <p className="mb-2 text-3xl">Track List</p>
                 <div className="overflow-y-auto max-h-96 shadow-inner shadow-gray-700 border border-2 border-gray-700 rounded-lg bg-gray-950 p-4">
                   <ul>

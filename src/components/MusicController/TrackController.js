@@ -99,19 +99,32 @@ const TrackController = ({ track }) => {
           ref={seekBarRef}
           className="w-full mx-2 h-1 cursor-pointer"
           disabled={!isCurrentTrack}
+          aria-label="seek-bar-track"
         />
         <span className="text-white min-w-[57px] text-center">
           {isCurrentTrack ? formatTime(duration) : "00:00"}
         </span>
       </div>
       <div className="flex items-center gap-2 mt-2">
-        <button onClick={handlePlayTrack} className="text-white">
+        <button
+          onClick={handlePlayTrack}
+          className="text-white"
+          aria-label="play-pause-button"
+        >
           {isCurrentTrack && isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
         </button>
-        <button onClick={handleAddToPlaylist} className="text-white ml-2">
+        <button
+          onClick={handleAddToPlaylist}
+          className="text-white ml-2"
+          aria-label="add-to-playlist-button"
+        >
           <PlaylistAddIcon />
         </button>
-        <button onClick={handleShare} className="text-white ml-2">
+        <button
+          onClick={handleShare}
+          className="text-white ml-2"
+          aria-label="share-button"
+        >
           <ShareIcon />
         </button>
       </div>

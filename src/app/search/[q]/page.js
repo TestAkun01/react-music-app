@@ -20,7 +20,9 @@ export default function Page({ params }) {
 
     fetchData().finally(() => setIsLoading(false));
   }, []);
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div className="xl:mx-40 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 min-h-screen">
       <div className="grid md:grid-cols-12 gap-8 md:divide-x divide-gray-900">

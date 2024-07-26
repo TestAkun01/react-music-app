@@ -66,13 +66,13 @@ export default function Page({ params }) {
         <div className="flex gap-4 my-4">
           <button
             onClick={getData}
-            className="bg-blue-500 text-white px-10 py-1 rounded-full"
+            className="bg-blue-700 text-lg text-white px-10 py-1 rounded-full"
           >
             Refresh Data
           </button>
           <Link
             href={`/admin/add/${type}`}
-            className="block bg-blue-500 text-white px-10 py-1 rounded-full"
+            className="bg-blue-700 text-lg text-white px-10 py-1 rounded-full"
           >
             Add {type?.charAt(0).toUpperCase() + type?.slice(1)}
           </Link>

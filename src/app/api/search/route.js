@@ -3,7 +3,7 @@ import Album from "@/service/models/Album";
 
 export async function GET(request) {
   const url = new URL(request.url);
-  const query = url.searchParams.get("q");
+  const query = decodeURIComponent(url.searchParams.get("q"));
   const limit = parseInt(url.searchParams.get("limit")) || 10;
   const page = parseInt(url.searchParams.get("page")) || 1;
 
