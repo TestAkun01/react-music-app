@@ -45,38 +45,39 @@ export default function SideContent() {
               key={item._id}
               className="cursor-pointer rounded transition-all duration-300 hover:bg-gray-900 hover:shadow-md hover:shadow-[#766df4]"
             >
-              <Link href={`/song/${item._id}`} className="h-full w-full">
-                <div className="flex items-center h-full">
-                  <div className="relative h-full aspect-square">
-                    <Image
-                      src={item.cover}
-                      alt={`Image ${item.title}`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded"
-                      priority="true"
-                    />
-                  </div>
-                  <div className="px-4">
-                    <p className="text-sm line-clamp-2">{item.title}</p>
-                    <div className="text-sm font-light text-gray-300">
-                      {item.artist.map((artist, index) => (
-                        <span key={artist._id}>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              router.push(`/artist/${artist._id}`);
-                            }}
-                            className="hover:underline py-2"
-                          >
-                            {artist.artist}
-                          </button>
-                          {index < item.artist.length - 1 && (
-                            <span className="py-2"> & </span>
-                          )}
-                        </span>
-                      ))}
-                    </div>
+              <Link
+                href={`/song/${item._id}`}
+                className="flex items-center h-full w-full p-2"
+              >
+                <div className="relative h-full aspect-square">
+                  <Image
+                    src={item.cover}
+                    alt={`Image ${item.title}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded"
+                    priority="true"
+                  />
+                </div>
+                <div className="px-4">
+                  <p className="text-sm line-clamp-2">{item.title}</p>
+                  <div className="text-sm font-light text-gray-300">
+                    {item.artist.map((artist, index) => (
+                      <span key={artist._id}>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            router.push(`/artist/${artist._id}`);
+                          }}
+                          className="hover:underline py-2"
+                        >
+                          {artist.artist}
+                        </button>
+                        {index < item.artist.length - 1 && (
+                          <span className="py-2"> & </span>
+                        )}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </Link>

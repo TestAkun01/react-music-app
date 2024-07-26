@@ -79,7 +79,7 @@ export default function Page({ params }) {
             <div className="grid grid-cols-12 gap-4">
               <div className="lg:col-span-2 col-span-full">
                 <p className="mb-2 text-3xl">Artist</p>
-                <div className="lg:block flex gap-4 w-full h-full overflow-x-auto">
+                <div className="lg:block flex gap-4 w-full h-full lg:overflow-visible overflow-x-auto">
                   {data.artist.map((artist) => (
                     <Link
                       href={`/artist/${artist._id}`}

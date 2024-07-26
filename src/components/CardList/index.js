@@ -30,20 +30,20 @@ const CardList = ({ data }) => {
           <div className="px-4 pt-4">
             <div className="font-semibold text-sm mb-2">
               <div className="line-clamp-2 text-neutral-50">{album.title}</div>
-              <div className="text-gray-400">
+              <div className="text-gray-400 py-2">
                 {album.artist.map((data, index) => (
-                  <div key={index} className="w-full overflow-hidden">
+                  <span key={index}>
                     <button
                       onClick={(e) => {
                         e.preventDefault();
                         router.push(`/artist/${data._id}`);
                       }}
-                      className="hover:underline text-start py-2"
+                      className="hover:underline text-start break-words max-w-full"
                     >
                       {data.artist}
                     </button>
                     {index < album.artist.length - 1 && " & "}
-                  </div>
+                  </span>
                 ))}
               </div>
             </div>

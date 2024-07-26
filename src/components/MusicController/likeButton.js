@@ -16,7 +16,7 @@ export default function LikeButton({ userId, trackId }) {
           `api/like`,
           `userId=${userId}&trackId=${trackId}`
         );
-        console.log(response);
+
         setLiked(response.length > 0);
       } finally {
         setLoading(false);

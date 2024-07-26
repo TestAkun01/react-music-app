@@ -26,13 +26,12 @@ export default function RootLayout({ children }) {
         <NextAuthProvider>
           <AudioProvider>
             <Navbar />
-            <div className="pt-16 pb-24">
+            <div className="pt-16 lg:pb-24 pb-40">
               <Suspense fallback={<Loading />}>{children}</Suspense>
             </div>
             <MusicController />
           </AudioProvider>
         </NextAuthProvider>
-        {/* Defer or lazy-load SpeedInsights if not critical */}
         <SpeedInsights />
       </body>
     </html>
