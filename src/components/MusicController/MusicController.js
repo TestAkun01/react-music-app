@@ -41,6 +41,21 @@ const MusicController = () => {
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
   const [isVolumeHovered, setIsVolumeHovered] = useState(false);
+  const [isVolumeClicked, setIsVolumeClicked] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+      };
+
+      handleResize(); // Check initial screen size
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   const handleSeekMouseDown = () => {
     setIsSeeking(true);
@@ -56,17 +71,37 @@ const MusicController = () => {
     seek(tempCurrentTime);
   };
 
+  const handleSeekTouchStart = () => {
+    setIsSeeking(true);
+  };
+
+  const handleSeekTouchEnd = (e) => {
+    setIsSeeking(false);
+    seek(tempCurrentTime);
+  };
+
   const handleVolumeChange = (e) => {
+    e.stopPropagation();
     const { value } = e.target;
     setVolume(parseFloat(value));
   };
 
+  const handleVolumeClick = () => {
+    if (isMobile) {
+      setIsVolumeClicked(!isVolumeClicked);
+    }
+  };
+
   const handleVolumeHover = () => {
-    setIsVolumeHovered(true);
+    if (!isMobile) {
+      setIsVolumeHovered(true);
+    }
   };
 
   const handleVolumeLeave = () => {
-    setIsVolumeHovered(false);
+    if (!isMobile) {
+      setIsVolumeHovered(false);
+    }
   };
 
   useEffect(() => {
@@ -92,6 +127,8 @@ const MusicController = () => {
             onChange={handleSeekChange}
             onMouseDown={handleSeekMouseDown}
             onMouseUp={handleSeekMouseUp}
+            onTouchStart={handleSeekTouchStart}
+            onTouchEnd={handleSeekTouchEnd}
             ref={seekBarRef}
             className="h-1 w-full cursor-pointer absolute top-0"
             disabled={!currentTrack}
@@ -201,6 +238,7 @@ const MusicController = () => {
             <div className="flex items-center justify-end h-full ">
               <div
                 className={`text-white cursor-pointer relative`}
+                onClick={handleVolumeClick}
                 onMouseEnter={handleVolumeHover}
                 onMouseLeave={handleVolumeLeave}
               >
@@ -213,7 +251,9 @@ const MusicController = () => {
                 )}
                 <div
                   className={`absolute py-4 px-4 bg-gray-800 border rounded ${
-                    isVolumeHovered ? "opacity-100 block" : "opacity-0 hidden"
+                    isVolumeHovered || isVolumeClicked
+                      ? "opacity-100 block"
+                      : "opacity-0 hidden"
                   } transition-opacity duration-200 flex items-center`}
                   onMouseEnter={handleVolumeHover}
                   onMouseLeave={handleVolumeLeave}
@@ -231,6 +271,7 @@ const MusicController = () => {
                     value={volume}
                     className="h-1"
                     onChange={handleVolumeChange}
+                    onClick={(e) => e.stopPropagation()}
                     aria-label="volume-bar"
                   />
                 </div>
@@ -256,10 +297,10 @@ const MusicController = () => {
         </div>
 
         <div
-          className={`absolute z-0 right-5 duration-500 ease-in-out ${
+          className={`absolute -z-10 sm:w-max sm:h-auto w-full sm:right-5 right-0 duration-500 ease-in-out ${
             isPlaylistOpen
-              ? "translate-y-0 lg:bottom-[100px] bottom-[170px]"
-              : "translate-y-full bottom-[-1000px]"
+              ? "translate-y-[-100%] top-0 sm:-top-5"
+              : "translate-y-full"
           }`}
         >
           <Playlist

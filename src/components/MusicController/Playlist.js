@@ -20,19 +20,19 @@ const Playlist = ({ tracks }) => {
   };
 
   return (
-    <div className={`bg-gray-800 p-4 min-w-[400px] rounded-lg`}>
+    <div className="bg-gray-800 p-4 sm:w-[400px] h-[400px] w-full rounded-lg flex flex-col">
       <div className="flex justify-between mb-2">
         <p className="text-white text-semibold text-[28px]">Playlist</p>
         <div className="flex space-x-2">
           <button
             onClick={handleClearPlaylist}
-            className="text-white  px-2 py-1 rounded  hover:bg-red-500 transition-colors duration-100"
+            className="text-white px-2 py-1 rounded hover:bg-red-500 transition-colors duration-100"
           >
             Clear <ClearAllIcon />
           </button>
         </div>
       </div>
-      <ul className=" h-[410px] overflow-auto border-b border-t">
+      <ul className="flex-1 overflow-auto border-b border-t">
         {tracks.map((track) => (
           <li key={track._id} className="py-2">
             <div

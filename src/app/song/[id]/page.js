@@ -104,9 +104,9 @@ export default function Page({ params }) {
               <div className="lg:col-span-10 col-span-full">
                 <p className="mb-2 text-3xl">Track List</p>
                 <div className="overflow-y-auto max-h-96 shadow-inner shadow-gray-700 border border-2 border-gray-700 rounded-lg bg-gray-950 p-4">
-                  <ul>
+                  <ul className="flex flex-col gap-2">
                     {data.track.map((track) => (
-                      <li key={track._id} className="mb-2">
+                      <li key={track._id}>
                         <TrackController track={track} />
                       </li>
                     ))}

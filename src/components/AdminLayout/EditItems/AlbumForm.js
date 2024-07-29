@@ -13,10 +13,13 @@ export default function AlbumForm({
   message,
 }) {
   const [selectedArtist, setSelectedArtist] = useState("");
+
   useEffect(() => {
-    const artist = formData.artist.map((artist) => artist.artist).join(",");
-    setSelectedArtist(artist);
-  }, [formData.artist]);
+    if (formData.artist) {
+      const artist = formData.artist.map((artist) => artist.artist).join(",");
+      setSelectedArtist(artist);
+    }
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

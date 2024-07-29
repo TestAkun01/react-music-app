@@ -1,7 +1,7 @@
 import { connectToDatabase } from "@/service/db";
 import Album from "@/service/models/Album";
+import Category from "@/service/models/Category";
 import Track from "@/service/models/Track";
-
 export async function GET(request, { params }) {
   await connectToDatabase();
 

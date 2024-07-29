@@ -76,7 +76,7 @@ const TrackController = ({ track }) => {
 
   return (
     <div
-      className={`track-controller p-2 rounded-lg mb-2 ${
+      className={`track-controller p-2 rounded-lg ${
         isCurrentTrack ? "bg-gray-700" : ""
       }`}
     >

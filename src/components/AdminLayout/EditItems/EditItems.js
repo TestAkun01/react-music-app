@@ -20,10 +20,10 @@ export default function EditItems({ id, type }) {
         }
       : type === "track"
       ? {
-          title: "",
-          artist: [],
-          album_id: "",
+          album_id: {},
           cover: "",
+          artist: [],
+          title: "",
           duration: "",
           file_url: "",
         }
@@ -40,7 +40,6 @@ export default function EditItems({ id, type }) {
     const response = await FetchData(`api/${type}/${id}`);
     setFormData(response);
   }
-
   useEffect(() => {
     setForm();
   }, [id]);
