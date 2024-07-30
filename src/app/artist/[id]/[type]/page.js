@@ -71,7 +71,7 @@ export default function Page({ params }) {
   }
   return (
     <>
-      <div className={`relative flex items-end min-h-[45vh]`}>
+      <div className={`relative flex items-end min-h-[45vh] w-full`}>
         <div className="absolute inset-0">
           <Image
             src={artist.image_url}
@@ -85,13 +85,15 @@ export default function Page({ params }) {
         <div
           className={`absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-gray-950`}
         ></div>
-        <div className="relative text-white xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5 w-[55%] mb-20">
+        <div className="relative text-white xl:px-56 lg:px-28 md:px-20 sm:px-20 px-5 lg:w-[55%] w-full mb-20">
           <div className="flex items-center">
-            <p className="text-5xl font-bold">{artist.artist}</p>
+            <p className="text-5xl font-bold break-words w-full">
+              {artist.artist}
+            </p>
           </div>
         </div>
       </div>
-      <div className="text-white xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5">
+      <div className="text-white xl:px-56 lg:px-28 md:px-20 sm:px-20 px-5">
         <div className="flex space-x-4 mb-4">
           <button
             className={`px-4 py-2 rounded ${

@@ -10,7 +10,7 @@ export default function CardAlbum({ data }) {
           <Link
             key={album._id}
             href={`/song/${album._id}`}
-            className="rounded max-w-[200px] hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
+            className="rounded max-w-[200px] mx-auto hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
           >
             <Image
               src={album.cover}

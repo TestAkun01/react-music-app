@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function LinkNavbar() {
+export default function LinkNavbar({ handlerIsOpen }) {
   const pathName = usePathname();
   const navigation = [
     { name: "Home", href: "/", current: pathName === "/" },
@@ -31,7 +31,7 @@ export default function LinkNavbar() {
               : "hover:bg-gray-700 hover:text-white hover:text-[#766df4]"
           }`}
           aria-current={item.current ? "page" : undefined}
-          onClick={(e) => (item.current ? e.preventDefault() : null)}
+          onClick={handlerIsOpen}
         >
           {item.name}
         </Link>

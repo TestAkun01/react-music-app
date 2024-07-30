@@ -15,7 +15,7 @@ const CardList = ({ data }) => {
         <Link
           href={`/song/${album._id}`}
           key={album._id}
-          className="rounded flex flex-col cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
+          className="rounded flex flex-col w-full max-w-[200px] mx-auto cursor-pointer hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
         >
           <div className="relative w-full aspect-square">
             <Image

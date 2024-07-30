@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import React, { useState, createContext, useRef, useEffect } from "react";
 import FetchData from "../FetchData/FetchData";
-
+import { toast } from "react-toastify";
 export const AudioContext = createContext();
 
 export const AudioProvider = ({ children }) => {
@@ -123,12 +123,14 @@ export const AudioProvider = ({ children }) => {
   const seek = (time) => {
     audioRef.current.currentTime = time;
   };
-
   const addToPlaylist = (track) => {
     const trackExists = playlist.some((item) => item._id === track._id);
 
     if (!trackExists) {
       setPlaylist((prevPlaylist) => [...prevPlaylist, track]);
+      toast.success("Track added to playlist!");
+    } else {
+      toast.info("Track already in playlist.");
     }
   };
 

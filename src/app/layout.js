@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import MusicController from "@/components/MusicController/MusicController";
 import { AudioProvider } from "@/components/MusicController/AudioContext";
 import { NextAuthProvider } from "@/components/NextAuthProvider/NextAuthProvider";
+import ToastProvider from "@/components/ToastProvider/ToastProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
 import Loading from "./loading";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
             <div className="pt-16 lg:pb-24 pb-40">
               <Suspense fallback={<Loading />}>{children}</Suspense>
             </div>
+            <ToastProvider />
             <MusicController />
           </AudioProvider>
         </NextAuthProvider>

@@ -52,13 +52,13 @@ export default function Navbar() {
         id="mobile-menu"
       >
         <div className="flex px-2 pb-3 pt-2">
-          <Search></Search>
+          <Search handlerIsOpen={toggleNavbar}></Search>
         </div>
         <div className="flex-shrink-0">
           <UserActionButton></UserActionButton>
         </div>
         <div className="flex flex-col space-y-1 px-2 pb-3 pt-2">
-          <LinkNavbar></LinkNavbar>
+          <LinkNavbar handlerIsOpen={toggleNavbar}></LinkNavbar>
         </div>
       </div>
     </nav>

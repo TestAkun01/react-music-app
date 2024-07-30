@@ -19,7 +19,7 @@ export default function LongCardList({ data }) {
                     className="h-[60px] w-auto"
                   />
                 </div>
-                <p className="text-sm font-medium text-gray-300">
+                <p className="text-sm font-medium text-gray-300 truncate">
                   {track.artist.map((data) => data.artist).join(" & ")}
                 </p>
                 <p className="text-sm font-medium text-gray-300 line-clamp-2">

@@ -50,7 +50,7 @@ const MusicController = () => {
         setIsMobile(window.matchMedia("(max-width: 768px)").matches);
       };
 
-      handleResize(); // Check initial screen size
+      handleResize();
       window.addEventListener("resize", handleResize);
 
       return () => window.removeEventListener("resize", handleResize);
@@ -186,7 +186,7 @@ const MusicController = () => {
             id="Center_bar"
             className="lg:col-span-6 col-span-full lg:order-2 order-3"
           >
-            {currentTrack && (
+            {currentTrack ? (
               <div className="flex items-center gap-4 max-w-full justify-center">
                 <Image
                   src={currentTrack.cover}
@@ -196,7 +196,7 @@ const MusicController = () => {
                   className="h-[45px] w-auto"
                 ></Image>
 
-                <div className="flex flex-col max-w-full overflow-hidden ">
+                <div className="flex flex-col max-w-full overflow-hidden">
                   <div className="text-gray-200 text-base truncate w-full text-left">
                     {currentTrack.title}
                   </div>
@@ -227,6 +227,12 @@ const MusicController = () => {
                     trackId={currentTrack._id}
                   ></LikeButton>
                 ) : null}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <p className="text-gray-500 text-base">
+                  No track is currently playing
+                </p>
               </div>
             )}
           </div>

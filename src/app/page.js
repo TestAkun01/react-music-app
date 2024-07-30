@@ -57,7 +57,7 @@ export default function Page() {
           <div className="grid md:grid-cols-12 gap-8 md:divide-x divide-gray-900">
             <div className="md:col-span-8">
               <Header title="New Music" />
-              <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 max-w-max">
+              <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 w-full">
                 <CardList data={latest} />
               </div>
               <Header title="Artist" />
@@ -65,7 +65,7 @@ export default function Page() {
                 {randomArtist.map((artist) => (
                   <Link
                     href={`/artist/${artist._id}`}
-                    className="flex flex-col items-center my-8 w-full"
+                    className="flex flex-col items-center my-8 max-w-[200px] w-full mx-auto"
                     key={artist._id}
                   >
                     <div className="relative w-full aspect-square">
@@ -88,7 +88,7 @@ export default function Page() {
               {categories.map((cat) => (
                 <div key={cat._id}>
                   <Header title={cat.category} key={cat._id} />
-                  <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 max-w-max">
+                  <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4 w-full">
                     <CardList data={categoryAlbums[cat.category] || []} />
                   </div>
                 </div>

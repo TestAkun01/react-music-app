@@ -2,13 +2,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
-const Search = () => {
+const Search = ({ handlerIsOpen }) => {
   const searchRef = useRef();
   const router = useRouter();
   function handleSearch(event) {
     if (event.key === "Enter" || event.type === "click") {
       event.preventDefault();
       const search = searchRef.current.value.trim();
+      handlerIsOpen();
       if (search) router.push(`/search/${encodeURIComponent(search)}`);
     }
   }

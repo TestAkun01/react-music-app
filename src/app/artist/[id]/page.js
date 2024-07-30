@@ -55,9 +55,11 @@ export default function Page({ params }) {
             bioVisible ? "h-full" : "h-1/2"
           } bg-gradient-to-t from-gray-950`}
         ></div>
-        <div className="relative text-white xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5 w-[55%]">
+        <div className="relative text-white xl:px-56 lg:px-28 md:px-20 sm:px-20 px-5 lg:w-[55%] w-full">
           <div className="flex items-center">
-            <p className="text-5xl font-bold">{artist.artist}</p>
+            <p className="text-5xl font-bold break-words w-full">
+              {artist.artist}
+            </p>
           </div>
           {artist.biography ? (
             <>
@@ -85,7 +87,7 @@ export default function Page({ params }) {
         </div>
       </div>
 
-      <div className="xl:mx-56 lg:mx-28 md:mx-20 sm:mx-20 mx-5 mb-16 bg-gray-950 text-white">
+      <div className="xl:px-56 lg:px-28 md:px-20 sm:px-20 px-5 mb-16 bg-gray-950 text-white">
         <div className="mt-8">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold mb-4">Tracks</h2>
