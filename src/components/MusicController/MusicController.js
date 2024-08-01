@@ -135,43 +135,45 @@ const MusicController = () => {
             aria-label="seek-bar"
           />
         </div>
-        <div className="grid grid-cols-12 mx-8 py-4 lg:gap-0 gap-y-4">
+        <div className="grid grid-cols-12 p-4">
           <div
             id="Left_bar"
-            className="lg:col-span-3 col-span-6 order-1 flex gap-4 lg:gap-8 items-center w-full lg:w-auto"
+            className="lg:col-span-3 col-span-6 flex items-center w-full lg:w-auto"
           >
-            <button
-              onClick={playPrev}
-              className="text-white"
-              disabled={!currentTrack}
-              aria-label="prev-button"
-            >
-              <SkipPreviousIcon />
-            </button>
-            <button
-              onClick={togglePlay}
-              className="text-white"
-              aria-label="play-pause-button"
-            >
-              {currentTrack ? (
-                isPlaying ? (
-                  <PauseIcon sx={{ fontSize: 45 }} />
+            <div className="flex gap-4 items-center">
+              <button
+                onClick={playPrev}
+                className="text-white"
+                disabled={!currentTrack}
+                aria-label="prev-button"
+              >
+                <SkipPreviousIcon />
+              </button>
+              <button
+                onClick={togglePlay}
+                className="text-white"
+                aria-label="play-pause-button"
+              >
+                {currentTrack ? (
+                  isPlaying ? (
+                    <PauseIcon sx={{ fontSize: 45 }} />
+                  ) : (
+                    <PlayArrowIcon sx={{ fontSize: 45 }} />
+                  )
                 ) : (
                   <PlayArrowIcon sx={{ fontSize: 45 }} />
-                )
-              ) : (
-                <PlayArrowIcon sx={{ fontSize: 45 }} />
-              )}
-            </button>
-            <button
-              onClick={playNext}
-              className="text-white"
-              disabled={!currentTrack}
-              aria-label="next-button"
-            >
-              <SkipNextIcon />
-            </button>
-            <div className="text-white m-0 p-0 flex items-center lg:block hidden">
+                )}
+              </button>
+              <button
+                onClick={playNext}
+                className="text-white"
+                disabled={!currentTrack}
+                aria-label="next-button"
+              >
+                <SkipNextIcon />
+              </button>
+            </div>
+            <div className="text-gray-400 text-sm m-0 p-0 flex items-centerf">
               <span className="min-w-[57px] text-center">
                 {formatTime(tempCurrentTime)}
               </span>
@@ -184,7 +186,7 @@ const MusicController = () => {
 
           <div
             id="Center_bar"
-            className="lg:col-span-6 col-span-full lg:order-2 order-3"
+            className="lg:col-span-6 col-span-full lg:order-none order-3 px-8"
           >
             {currentTrack ? (
               <div className="flex items-center gap-4 max-w-full justify-center">
@@ -239,7 +241,7 @@ const MusicController = () => {
 
           <div
             id="Right_bar"
-            className="lg:col-span-3 col-span-6 lg:order-3 order-2 flex items-center gap-4 justify-end"
+            className="lg:col-span-3 col-span-6 lg:order-none order-2 flex items-center gap-4 justify-end"
           >
             <div className="flex items-center justify-end h-full ">
               <div
