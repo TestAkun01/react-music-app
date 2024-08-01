@@ -9,7 +9,7 @@ const Search = ({ handlerIsOpen }) => {
     if (event.key === "Enter" || event.type === "click") {
       event.preventDefault();
       const search = searchRef.current.value.trim();
-      handlerIsOpen();
+      if (handlerIsOpen) handlerIsOpen();
       if (search) router.push(`/search/${encodeURIComponent(search)}`);
     }
   }
