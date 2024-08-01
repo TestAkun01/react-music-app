@@ -7,6 +7,19 @@ import FetchData from "../FetchData/FetchData";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+function cleanUpLocalStorage(today) {
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (
+      key &&
+      key.startsWith("randomAlbum-") &&
+      key !== `randomAlbum-${today}`
+    ) {
+      localStorage.removeItem(key);
+    }
+  }
+}
+
 export default function SideContent() {
   const [randomAlbum, setRandomAlbum] = useState([]);
   const router = useRouter();
@@ -14,16 +27,14 @@ export default function SideContent() {
   useEffect(() => {
     async function getRandomAlbum() {
       const today = new Date().toISOString().split("T")[0];
-      const yesterday = new Date(Date.now() - 864e5)
-        .toISOString()
-        .split("T")[0];
 
-      localStorage.removeItem(`randomAlbum-${yesterday}`);
+      cleanUpLocalStorage(today);
 
       const storedData = localStorage.getItem(`randomAlbum-${today}`);
-      if (storedData != "null") {
+      if (storedData && storedData !== "null") {
         setRandomAlbum(JSON.parse(storedData));
       } else {
+        console.log("test");
         const response = await FetchData("api/random/album?limit=5");
         localStorage.setItem(`randomAlbum-${today}`, JSON.stringify(response));
         setRandomAlbum(response);
