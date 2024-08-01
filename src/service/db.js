@@ -1,4 +1,11 @@
 import mongoose from "mongoose";
+import Album from "./models/Album";
+import Artist from "./models/Artist";
+import Category from "./models/Category";
+import Like from "./models/Like";
+import Track from "./models/Track";
+import Type from "./models/Type";
+import WatchHistory from "./models/WatchHistory";
 
 const uri = `${process.env.NEXT_PUBLIC_CONNECTION_STRING}`;
 let isConnected = false;

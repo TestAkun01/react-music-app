@@ -9,11 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@distube/ytdl-core": "github:distubejs/ytdl-core",
+    "@distube/ytdl-core": "^4.13.7",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.21",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "@vercel/speed-insights": "^1.0.12",
     "mongoose": "^8.4.4",
     "next": "^14.2.5",

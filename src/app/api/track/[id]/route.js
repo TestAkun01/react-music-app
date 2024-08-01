@@ -1,6 +1,4 @@
 import { connectToDatabase } from "@/service/db";
-import Album from "@/service/models/Album";
-import Artist from "@/service/models/Artist";
 import Like from "@/service/models/Like";
 import Track from "@/service/models/Track";
 import WatchHistory from "@/service/models/WatchHistory";
