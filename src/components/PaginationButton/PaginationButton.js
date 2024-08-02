@@ -94,7 +94,7 @@ export default function PaginationButton({
         <button
           key="last"
           onClick={handleLastPage}
-          className="px-4 py-2 mx-1 rounded text-white"
+          className={`px-4 py-2 mx-1 rounded text-white hover:bg-blue-700 transition-all duration-300`}
         >
           {totalPages}
         </button>

@@ -9,13 +9,15 @@ import { notFound } from "next/navigation";
 
 export default function Page({ params }) {
   const { type } = params;
-
   const validTypes = ["album", "track", "artist"];
 
   if (!validTypes.includes(type)) {
     notFound();
   }
+
   const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   const getData = async () => {
     try {
@@ -48,6 +50,7 @@ export default function Page({ params }) {
         }
       });
       setData(modifiedData);
+      setFilteredData(modifiedData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -57,28 +60,48 @@ export default function Page({ params }) {
     getData();
   }, [type]);
 
+  useEffect(() => {
+    const filtered = data.filter((item) =>
+      Object.values(item).some((val) =>
+        String(val).toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilteredData(filtered);
+  }, [searchTerm, data]);
+
   return (
     <AdminLayout>
-      <div className="flex flex-wrap justify-between items-center mb-4">
+      <div className="flex flex-wrap justify-between mb-4 gap-8">
         <h1 className="text-2xl font-bold">
           {type?.charAt(0).toUpperCase() + type?.slice(1)}
         </h1>
-        <div className="flex gap-4 my-4">
+        <div className="mb-4 flex-1">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="py-4 px-2 w-full h-8 text-md text-black rounded-md border border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-300"
+          />
+        </div>
+
+        <div className="flex gap-4 items-start">
           <button
             onClick={getData}
-            className="bg-blue-700 text-lg text-white px-10 py-1 rounded-full"
+            className="bg-blue-700 text-white px-6 py-2 rounded-full text-sm"
           >
             Refresh Data
           </button>
           <Link
             href={`/admin/add/${type}`}
-            className="bg-blue-700 text-lg text-white px-10 py-1 rounded-full"
+            className="bg-blue-700 text-white px-6 py-2 rounded-full text-sm"
           >
             Add {type?.charAt(0).toUpperCase() + type?.slice(1)}
           </Link>
         </div>
       </div>
-      <LayoutTable data={data} reloadData={getData} type={type}></LayoutTable>
+
+      <LayoutTable data={filteredData} reloadData={getData} type={type} />
     </AdminLayout>
   );
 }
