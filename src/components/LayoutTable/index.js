@@ -51,14 +51,20 @@ export default function LayoutTable({ data, reloadData, type }) {
         <table className="w-full text-sm text-left rtl:text-right text-gray-50 table-fixed">
           <thead className="text-xs text-gray-200 uppercase bg-gray-700">
             <tr>
-              {columns.map((column, index) => (
-                <th key={index} scope="col" className="px-2 py-2 w-[140px]">
-                  {column}
-                </th>
-              ))}
-              <th scope="col" className="px-2 py-2 w-[140px]">
-                Actions
-              </th>
+              {data.length === 0 ? (
+                <th className="px-2 py-2">Tabel</th>
+              ) : (
+                <>
+                  {columns.map((column, index) => (
+                    <th key={index} scope="col" className="px-2 py-2 w-[140px]">
+                      {column}
+                    </th>
+                  ))}
+                  <th scope="col" className="px-2 py-2 w-[140px]">
+                    Actions
+                  </th>
+                </>
+              )}
             </tr>
           </thead>
           <tbody>
