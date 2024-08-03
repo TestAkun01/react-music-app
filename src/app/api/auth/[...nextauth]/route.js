@@ -1,9 +1,10 @@
-// app/api/auth/[...nextauth].js
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import { connectToDatabase } from "@/service/db";
+import User from "@/service/models/User";
 
-export const authOption = {
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -15,8 +16,47 @@ export const authOption = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      await connectToDatabase();
+      let existingUser = await User.findOne({ email: user.email });
+      if (!existingUser) {
+        existingUser = new User({
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          role: "user",
+        });
+        await existingUser.save();
+      } else {
+        user.role = existingUser.role;
+      }
+      user.id = existingUser._id;
+      return true;
+    },
+    async session({ session, token }) {
+      session.userId = token.userId;
+      session.userRole = token.userRole;
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.userId = user.id;
+        token.userRole = user.role;
+      } else {
+        await connectToDatabase();
+
+        const existingUser = await User.findById(token.userId);
+
+        if (existingUser) {
+          token.userRole = existingUser.role;
+        }
+      }
+      return token;
+    },
+  },
 };
 
-const handler = NextAuth(authOption);
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

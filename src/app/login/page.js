@@ -1,19 +1,22 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import githubLogo from "/public/Github_logo.png";
 import googleLogo from "/public/Google_logo.png";
+import { useEffect, useState } from "react";
 
 export default function LoginPage() {
   const { data: session } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [message, setMessage] = useState("");
 
-  if (session) {
-    router.push("/");
-    return null;
-  }
+  useEffect(() => {
+    const msg = searchParams.get("message");
+    if (msg) setMessage(msg);
+  }, [searchParams]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-950">
@@ -21,6 +24,7 @@ export default function LoginPage() {
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Login
         </h1>
+        {message && <p className="mb-4 text-red-500 text-center">{message}</p>}
         <hr className="h-px my-8 bg-gray-700 border-0" />
         <div className="flex flex-col space-y-4 w-full h-full">
           <button
@@ -33,7 +37,6 @@ export default function LoginPage() {
                 alt="GitHub Logo"
                 width={200}
                 height={200}
-                layout="fixed"
                 className="w-6 h-6"
               />
             </div>
@@ -49,7 +52,6 @@ export default function LoginPage() {
                 alt="Google Logo"
                 width={200}
                 height={200}
-                layout="fixed"
                 className="w-8 h-8"
               />
             </div>

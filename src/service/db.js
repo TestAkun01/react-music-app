@@ -6,6 +6,7 @@ import Like from "./models/Like";
 import Track from "./models/Track";
 import Type from "./models/Type";
 import WatchHistory from "./models/WatchHistory";
+import User from "./models/User";
 
 const uri = `${process.env.NEXT_PUBLIC_CONNECTION_STRING}`;
 let isConnected = false;
