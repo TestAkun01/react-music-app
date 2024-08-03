@@ -35,20 +35,31 @@ export const authOptions = {
       return true;
     },
     async session({ session, token }) {
-      session.userId = token.userId;
-      session.userRole = token.userRole;
+      session.user = {
+        id: token.userId,
+        name: token.name,
+        email: token.email,
+        image: token.picture,
+        role: token.userRole,
+      };
+      
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
         token.userId = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.picture = user.image;
         token.userRole = user.role;
       } else {
         await connectToDatabase();
-
         const existingUser = await User.findById(token.userId);
 
         if (existingUser) {
+          token.name = existingUser.name;
+          token.email = existingUser.email;
+          token.picture = existingUser.image;
           token.userRole = existingUser.role;
         }
       }
