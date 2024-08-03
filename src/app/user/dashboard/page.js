@@ -55,7 +55,7 @@ export default function Page() {
 
   useEffect(() => {
     if (session) {
-      const userIdQuery = `userId=${session.user.email}`;
+      const userIdQuery = `userId=${session.user?.email}`;
       fetchDataAndSongs(
         ["api/history-watch", "api/like", "api/most-played"],
         userIdQuery,
@@ -74,17 +74,17 @@ export default function Page() {
       <div className="flex md:flex-row flex-col md:gap-16 gap-8">
         <div className="md:mt-16 md:block flex gap-2">
           <Image
-            src={session.user.image}
-            alt={session.user.name}
+            src={session.user?.image}
+            alt={session.user?.name}
             width={200}
             height={200}
             className="md:w-[270px] w-[150px] md:h-[270px] h-[150px] rounded-[50%] border border-2 border-gray-700 md:mb-16"
           />
           <div className="md:block flex flex-col justify-center">
             <p className="md:text-3xl text-xl font-bold">
-              Welcome, {session.user.name}!
+              Welcome, {session.user?.name}!
             </p>
-            <p>{session.user.email}</p>
+            <p>{session.user?.email}</p>
           </div>
         </div>
         <main className="flex-1 p-4">
