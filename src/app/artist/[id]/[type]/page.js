@@ -22,7 +22,7 @@ export default function Page({ params }) {
 
       const [albums, tracks] = await Promise.all([
         FetchData(`api/album?artist=${artist.artist}&limit=-1`),
-        FetchData(`api/track?artist=${artist.artist}&limit=-1`),
+        FetchData(`api/track?artist=${artist.artist}&limit=-1&populateAlbum=1`),
       ]);
 
       setAlbums(albums.data);

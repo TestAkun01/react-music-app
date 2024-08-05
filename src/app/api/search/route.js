@@ -25,6 +25,7 @@ export async function GET(request) {
       .skip(skip)
       .limit(limit)
       .populate("category")
+      .populate("artist")
       .exec();
 
     const pagination = {

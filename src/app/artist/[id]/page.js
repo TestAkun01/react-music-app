@@ -39,7 +39,7 @@ export default function Page({ params }) {
 
   return (
     <>
-      <div className="relative flex items-start pt-72">
+      <div className="relative flex items-start pt-64">
         <div className="absolute inset-0 overflow-hidden">
           <Image
             src={artist.image_url}
@@ -55,7 +55,7 @@ export default function Page({ params }) {
             bioVisible ? "h-full" : "h-1/2"
           } bg-gradient-to-t from-gray-950`}
         ></div>
-        <div className="relative text-white xl:px-56 lg:px-28 md:px-20 sm:px-20 px-5 lg:w-[55%] w-full">
+        <div className="relative text-white xl:px-56 lg:px-28 md:px-20 sm:px-20 px-5 w-full">
           <div className="flex items-center">
             <p className="text-5xl font-bold break-words w-full">
               {artist.artist}

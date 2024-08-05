@@ -10,6 +10,7 @@ export async function GET(request) {
   try {
     const url = new URL(request.url);
     const artistQuery = url.searchParams.get("artist");
+    const PopulateAlbum = url.searchParams.get("populateAlbum");
     const limit = parseInt(url.searchParams.get("limit")) || 10;
 
     let filter = {};
@@ -20,6 +21,11 @@ export async function GET(request) {
       filter = { artist: { $in: artistIds } };
     }
     let query = Track.find(filter).populate("artist");
+
+    if (PopulateAlbum === "1") {
+      query = query.populate("album_id");
+    }
+
     if (limit !== -1) {
       query = query.limit(limit);
     }
