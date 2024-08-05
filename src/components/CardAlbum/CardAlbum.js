@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import React from "react";
 
@@ -10,15 +10,17 @@ export default function CardAlbum({ data }) {
           <Link
             key={album._id}
             href={`/song/${album._id}`}
-            className="rounded max-w-[200px] mx-auto hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
+            className="rounded max-w-[200px] w-full mx-auto hover:shadow-md hover:shadow-[#766df4] transition-all duration-300"
           >
-            <Image
-              src={album.cover}
-              alt={album.title}
-              width={800}
-              height={800}
-              className="rounded-sm"
-            />
+            <div className="relative w-full aspect-square">
+              <Image
+                src={album.cover}
+                alt={`Image ${album.title}`}
+                layout="fill"
+                objectFit="cover"
+                priority="true"
+              />
+            </div>
             <div className="p-2 pb-4">
               <h3 className="text-sm font-semibold line-clamp-2">
                 {album.title}

@@ -58,7 +58,6 @@ export default function EditItems({ id, type }) {
       (type === "track" &&
         (!formData.title ||
           !formData.artist.length === 0 ||
-          !formData.album_id ||
           !formData.cover ||
           !formData.file_url)) ||
       (type === "artist" && (!formData.artist || !formData.image_url))

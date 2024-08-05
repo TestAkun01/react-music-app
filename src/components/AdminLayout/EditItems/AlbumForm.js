@@ -19,7 +19,7 @@ export default function AlbumForm({
       const artist = formData.artist.map((artist) => artist.artist).join(",");
       setSelectedArtist(artist);
     }
-  }, []);
+  }, [formData.artist]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

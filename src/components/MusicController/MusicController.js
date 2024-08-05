@@ -200,7 +200,12 @@ const MusicController = () => {
 
                 <div className="flex flex-col max-w-full overflow-hidden">
                   <div className="text-gray-200 text-base truncate w-full text-left">
-                    {currentTrack.title}
+                    <Link
+                      href={`/song/${currentTrack.album_id._id}`}
+                      className="hover:underline"
+                    >
+                      {currentTrack.title}
+                    </Link>
                   </div>
                   <div className="text-gray-400 text-base truncate w-full text-left">
                     {currentTrack.artist.map((artist, index) => (
@@ -214,13 +219,6 @@ const MusicController = () => {
                         {index < currentTrack.artist.length - 1 && " & "}
                       </span>
                     ))}
-                    <span className="text-white"> &#8226; </span>
-                    <Link
-                      href={`/song/${currentTrack.album_id._id}`}
-                      className="hover:underline"
-                    >
-                      {currentTrack.album_id.title}
-                    </Link>
                   </div>
                 </div>
                 {session ? (
@@ -280,6 +278,8 @@ const MusicController = () => {
                     className="h-1"
                     onChange={handleVolumeChange}
                     onClick={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
+                    onTouchEnd={(e) => e.stopPropagation()}
                     aria-label="volume-bar"
                   />
                 </div>
