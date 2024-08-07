@@ -3,15 +3,29 @@ import path from "path";
 import fs from "fs";
 
 export async function GET(request) {
-  const cookiePath = path.join(process.cwd(), "public", "cookieYoutube.json");
-  const cookieData = fs.readFileSync(cookiePath, "utf-8");
-  const cookie = JSON.parse(cookieData);
-
-  const agent = ytdl.createAgent(cookie);
-
-  const url = new URL(request.url).searchParams.get("url");
-
   try {
+    const cookiePath = path.join(process.cwd(), "public", "cookieYoutube.json");
+
+    if (!fs.existsSync(cookiePath)) {
+      throw new Error("File cookieYoutube.json tidak ditemukan");
+    }
+
+    const cookieData = fs.readFileSync(cookiePath, "utf-8");
+
+    if (!cookieData) {
+      throw new Error("File cookieYoutube.json kosong");
+    }
+
+    const cookie = JSON.parse(cookieData);
+
+    if (!cookie || typeof cookie !== "object") {
+      throw new Error("Data cookie tidak valid");
+    }
+
+    const agent = ytdl.createAgent(cookie);
+
+    const url = new URL(request.url).searchParams.get("url");
+
     if (ytdl.validateURL(url)) {
       const audioStream = ytdl(url, {
         filter: "audioonly",
