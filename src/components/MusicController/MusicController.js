@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState, useEffect } from "react";
 import { AudioContext } from "./AudioContext";
 import Playlist from "./Playlist";
 import LikeButton from "./likeButton";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useSession } from "next-auth/react";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -190,13 +190,14 @@ const MusicController = () => {
           >
             {currentTrack ? (
               <div className="flex items-center gap-4 max-w-full justify-center">
-                <Image
-                  src={currentTrack.cover}
-                  alt={currentTrack.title}
-                  width={300}
-                  height={300}
-                  className="h-[45px] w-auto"
-                ></Image>
+                <div className="w-[45px] aspect-square relative">
+                  <Image
+                    src={currentTrack.album_id.cover}
+                    alt={currentTrack.title}
+                    layout="fill"
+                    objectFit="cover"
+                  ></Image>
+                </div>
 
                 <div className="flex flex-col max-w-full overflow-hidden">
                   <div className="text-gray-200 text-base truncate w-full text-left">

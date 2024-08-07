@@ -49,16 +49,16 @@ export default function Page({ params }) {
       <div className="xl:mx-40 lg:mx-28 lg:mx-20 sm:mx-20 mx-5 min-h-screen text-neutral-50 relative">
         <div className="w-full rounded-lg shadow-lg p-4 bg-gray-800 bg-opacity-75">
           <div className="flex lg:flex-row flex-col">
-            <div className="w-[300px] m-4 mx-auto">
+            <div className="relative w-[300px] aspect-square m-4">
               <Image
                 src={data.cover}
                 alt={`Image ${data.title}`}
-                className="w-full h-auto object-cover"
-                width={350}
-                height={350}
+                layout="fill"
+                objectFit="cover"
+                priority="true"
               />
             </div>
-            <div className="w-full m-4">
+            <div className="w-auto m-4">
               <h1 className="text-3xl mb-2">{data.title}</h1>
               <p className="mb-4">
                 Artist:{" "}
@@ -107,7 +107,7 @@ export default function Page({ params }) {
                   <ul className="flex flex-col gap-2">
                     {data.track.map((track) => (
                       <li key={track._id}>
-                        <TrackController track={track} />
+                        <TrackController track={{ ...track, album_id: data }} />
                       </li>
                     ))}
                   </ul>

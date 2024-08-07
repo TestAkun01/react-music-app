@@ -72,7 +72,7 @@ const TrackController = ({ track }) => {
     }
   }, [track]);
 
-  const isCurrentTrack = currentTrack?._id === track._id;
+  const isCurrentTrack = currentTrack === track;
 
   return (
     <div
