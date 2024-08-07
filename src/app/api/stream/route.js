@@ -1,6 +1,14 @@
 import ytdl from "@distube/ytdl-core";
+import path from "path";
+import fs from "fs";
 
 export async function GET(request) {
+  const cookiePath = path.join(process.cwd(), "public", "cookieYoutube.json");
+  const cookieData = fs.readFileSync(cookiePath, "utf-8");
+  const cookie = JSON.parse(cookieData);
+
+  const agent = ytdl.createAgent(cookie);
+
   const url = new URL(request.url).searchParams.get("url");
 
   try {
@@ -8,6 +16,7 @@ export async function GET(request) {
       const audioStream = ytdl(url, {
         filter: "audioonly",
         quality: "highestaudio",
+        agent,
       });
 
       const chunks = [];
