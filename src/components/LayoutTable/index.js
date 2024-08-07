@@ -7,7 +7,7 @@ import PaginationButton from "../PaginationButton/PaginationButton";
 
 export default function LayoutTable({ data, reloadData, type }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Set the number of items per page
+  const itemsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
   const [currentItems, setCurrentItems] = useState([]);
 

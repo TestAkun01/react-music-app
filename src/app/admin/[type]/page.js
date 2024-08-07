@@ -101,7 +101,7 @@ export default function Page({ params }) {
         </div>
       </div>
 
-      <LayoutTable data={filteredData} reloadData={getData} type={type} />
+      <LayoutTable data={filteredData} reloadData={getData()} type={type} />
     </AdminLayout>
   );
 }
