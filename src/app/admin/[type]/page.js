@@ -22,6 +22,7 @@ export default function Page({ params }) {
   const getData = async () => {
     try {
       const newData = await FetchData(`api/${type}`, `limit=-1`);
+
       const data = newData.data ? newData.data : newData;
 
       const modifiedData = data.map((item) => {
@@ -58,7 +59,7 @@ export default function Page({ params }) {
 
   useEffect(() => {
     getData();
-  }, [type]);
+  }, []);
 
   useEffect(() => {
     const filtered = data.filter((item) =>
@@ -101,7 +102,7 @@ export default function Page({ params }) {
         </div>
       </div>
 
-      <LayoutTable data={filteredData} reloadData={getData()} type={type} />
+      <LayoutTable data={filteredData} reloadData={getData} type={type} />
     </AdminLayout>
   );
 }
