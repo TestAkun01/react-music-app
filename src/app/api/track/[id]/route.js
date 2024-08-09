@@ -25,8 +25,8 @@ export async function DELETE(request, { params }) {
 
   try {
     const response = await Track.findByIdAndDelete(params.id);
-    await Like.deleteMany({ trackId: id });
-    await WatchHistory.deleteMany({ trackId: id });
+    await Like.deleteMany({ trackId: params.id });
+    await WatchHistory.deleteMany({ trackId: params.id });
     if (!response) {
       return new Response("Track not found", { status: 404 });
     }

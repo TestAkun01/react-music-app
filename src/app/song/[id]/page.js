@@ -6,6 +6,7 @@ import FetchData from "@/components/FetchData/FetchData";
 import TrackController from "@/components/MusicController/TrackController";
 import Image from "next/legacy/image";
 import Link from "next/link";
+import CommentSection from "@/components/CommentSection/CommentSection";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -112,6 +113,9 @@ export default function Page({ params }) {
                     ))}
                   </ul>
                 </div>
+              </div>
+              <div className="col-span-full">
+                <CommentSection albumId={id} />
               </div>
             </div>
           </div>

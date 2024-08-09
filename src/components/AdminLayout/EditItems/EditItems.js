@@ -10,27 +10,27 @@ export default function EditItems({ id, type }) {
   const [formData, setFormData] = useState(
     type === "album"
       ? {
-          title: "",
+          title: null,
           artist: [],
-          type: "",
-          release_date: "",
+          type: null,
+          release_date: null,
           category: [],
-          cover: "",
+          cover: null,
           track: [],
         }
       : type === "track"
       ? {
           album_id: {},
-          cover: "",
+          cover: null,
           artist: [],
-          title: "",
-          duration: "",
-          file_url: "",
+          title: null,
+          duration: null,
+          file_url: null,
         }
       : {
-          artist: "",
-          image_url: "",
-          biography: "",
+          artist: null,
+          image_url: null,
+          biography: null,
         }
   );
   const [isSubmitting, setIsSubmitting] = useState(false);

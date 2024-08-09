@@ -10,27 +10,27 @@ export default function AddItems({ type }) {
   const [formData, setFormData] = useState(
     type === "album"
       ? {
-          title: "",
+          title: null,
           artist: [],
-          type: "",
-          release_date: "",
+          type: null,
+          release_date: null,
           category: [],
-          cover: "",
+          cover: null,
           track: [],
         }
       : type === "track"
       ? {
-          title: "",
+          title: null,
           artist: [],
-          album_id: "",
-          cover: "",
-          duration: "",
-          file_url: "",
+          album_id: null,
+          cover: null,
+          duration: null,
+          file_url: null,
         }
       : {
-          artist: "",
-          image_url: "",
-          biography: "",
+          artist: null,
+          image_url: null,
+          biography: null,
         }
   );
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -34,6 +34,7 @@ export default function LayoutTable({ data, reloadData, type }) {
       try {
         const response = await FetchData(`api/${type}/${id}`, "", "DELETE");
         if (response) {
+          alert(`${type} with ID ${id}deleted successfully.`);
           reloadData();
         } else {
           throw new Error("Failed to delete item");

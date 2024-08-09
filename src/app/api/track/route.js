@@ -57,9 +57,6 @@ export async function POST(request) {
       return new Response(JSON.stringify(tracks), { status: 200 });
     }
 
-    if (body.album_id === "") {
-      body.album_id = null;
-    }
     const newTrack = new Track(body);
 
     await newTrack.save();

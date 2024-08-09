@@ -1,10 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const trackSchema = new mongoose.Schema(
   {
     album_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Album",
+      default: null,
     },
     cover: { type: String },
     artist: [
