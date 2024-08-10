@@ -18,7 +18,8 @@ export async function GET(request) {
 
     const comments = await Comment.find(query)
       .sort({ createdAt: -1 })
-      .populate("userId");
+      .populate("userId")
+      .populate({ path: "replies.userId" });
     return new Response(JSON.stringify(comments), { status: 200 });
   } catch (error) {
     console.error("Error:", error.message);

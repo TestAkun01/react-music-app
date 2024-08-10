@@ -12,6 +12,14 @@ export default function CommentSection({ albumId }) {
   const [isSend, setIsSend] = useState(false);
   const [comments, setComments] = useState([]);
   const [activeCommentId, setActiveCommentId] = useState(null);
+  const [replyText, setReplyText] = useState("");
+  const [replyCommentId, setReplyCommentId] = useState(null);
+
+  const fetchComments = async () => {
+    await FetchData(`/api/comment?albumId=${albumId}`).then((data) => {
+      setComments(data);
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,16 +31,23 @@ export default function CommentSection({ albumId }) {
     }).then(() => {
       setIsSend((prev) => !prev);
       setText("");
+      fetchComments();
+    });
+  };
+
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
+    await FetchData(`/api/comment/${replyCommentId}/reply`, "", "POST", {
+      userId: session.user.id,
+      text: replyText,
+    }).then(() => {
+      setReplyText("");
+      setReplyCommentId(null);
+      fetchComments();
     });
   };
 
   useEffect(() => {
-    const fetchComments = async () => {
-      await FetchData(`/api/comment?albumId=${albumId}`).then((data) => {
-        setComments(data);
-      });
-    };
-
     fetchComments();
   }, [albumId]);
 
@@ -40,48 +55,62 @@ export default function CommentSection({ albumId }) {
     setActiveCommentId(activeCommentId === commentId ? null : commentId);
   };
 
-  const handleReply = (commentId) => {
-    // Implement reply functionality
+  const handleReplyClick = (commentId) => {
+    setReplyCommentId((prevId) => (prevId === commentId ? null : commentId));
   };
 
-  const handleEdit = (commentId) => {
-    // Implement edit functionality
+  const handleEdit = async (commentId) => {
+    const newText = prompt("Edit your comment:");
+    if (newText) {
+      await FetchData(`/api/comment/${commentId}`, "", "PUT", { text: newText })
+        .then(() => {
+          fetchComments();
+        })
+        .catch((error) => {
+          console.error("Failed to update comment:", error);
+        });
+    }
   };
 
-  const handleRemove = (commentId) => {
-    // Implement remove functionality
+  const handleRemove = async (commentId) => {
+    const confirmDelete = confirm(
+      "Are you sure you want to delete this comment?"
+    );
+    if (confirmDelete) {
+      await FetchData(`/api/comment/${commentId}`, "", "DELETE")
+        .then(() => {
+          fetchComments();
+        })
+        .catch((error) => {
+          console.error("Failed to delete comment:", error);
+        });
+    }
   };
 
-  const handleReport = (commentId) => {
-    // Implement report functionality
-  };
   return (
     <div className="w-full">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-lg lg:text-3xl text-gray-900 dark:text-white">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-lg lg:text-3xl text-gray-900 dark:text-white">
           Discussion ({comments.length})
         </h2>
       </div>
       {session ? (
         <form onSubmit={handleSubmit} className="mb-6">
           <div className="py-2 px-4 mb-4 rounded-lg rounded-t-lg border bg-gray-800 border-gray-700">
-            <label for="comment" className="sr-only">
-              Your comment
-            </label>
             <textarea
-              id="comment"
               rows="6"
+              value={text}
               onChange={(e) => setText(e.target.value)}
-              className={`px-0 w-full text-sm border-0 focus:ring-0 focus:outline-none text-white placeholder-gray-400 bg-gray-800 ${
-                isSend ? "disable" : ""
-              }`}
+              className={`w-full text-sm border-0 focus:ring-0 focus:outline-none text-white placeholder-gray-400 bg-gray-800`}
               placeholder="Write a comment..."
               required
             ></textarea>
           </div>
           <button
             type="submit"
-            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-900 hover:bg-blue-800"
+            className={`inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-900 hover:bg-blue-800 ${
+              isSend ? "disable" : ""
+            }`}
           >
             Post comment
           </button>
@@ -91,15 +120,15 @@ export default function CommentSection({ albumId }) {
       )}
       <hr className="my-4 border-gray-400" />
 
-      <div className="my-4 w-full">
+      <div className="my-4 w-full space-y-2">
         {comments?.map((comment) => (
           <article
             key={comment._id}
             className="p-6 text-base rounded-lg bg-gray-900"
           >
             <footer className="flex justify-between items-center mb-2">
-              <div className="flex items-center">
-                <p className="inline-flex items-center mr-3 text-sm text-white font-semibold">
+              <div className="flex items-center gap-x-4">
+                <div className="inline-flex items-center text-sm text-white font-semibold">
                   <div className="relative mr-2 w-8 h-8 rounded-full overflow-hidden">
                     <Image
                       src={comment.userId.image}
@@ -108,11 +137,11 @@ export default function CommentSection({ albumId }) {
                     />
                   </div>
                   {comment.userId.email}
-                </p>
+                </div>
                 <p className="text-sm text-gray-400">
                   <time
-                    pubdate
-                    datetime={comment.createdAt}
+                    pubdate={"true"}
+                    dateTime={comment.createdAt}
                     title={new Date(comment.createdAt).toLocaleDateString()}
                   >
                     {new Date(comment.createdAt).toLocaleDateString()}
@@ -166,7 +195,7 @@ export default function CommentSection({ albumId }) {
               <div className="flex items-center mt-4 space-x-4">
                 <button
                   type="button"
-                  onClick={() => handleReply(comment._id)}
+                  onClick={() => handleReplyClick(comment._id)}
                   className="flex items-center text-sm hover:underline text-gray-400 font-medium"
                 >
                   <ReplyIcon />
@@ -174,6 +203,57 @@ export default function CommentSection({ albumId }) {
                 </button>
               </div>
             )}
+
+            {/* Reply Form */}
+            {replyCommentId === comment._id && (
+              <form onSubmit={handleReplySubmit} className="mt-2">
+                <div className="py-2 px-4 mb-4 rounded-lg rounded-t-lg border bg-gray-800 border-gray-700">
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    placeholder="Write a reply..."
+                    required
+                    className={`w-full text-sm border-0 focus:ring-0 focus:outline-none text-white placeholder-gray-400 bg-gray-800`}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className={`inline-flex items-center py-2.5 px-4 text-xs font-medium text-center bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-900 hover:bg-blue-800`}
+                >
+                  Post Reply
+                </button>
+              </form>
+            )}
+
+            {/* Display Replies */}
+            <div className="ml-8 mt-4">
+              {comment.replies.map((reply) => (
+                <div key={reply._id} className="mb-8">
+                  <div className="flex items-center gap-x-4 mb-2">
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2">
+                      <Image
+                        src={reply.userId.image}
+                        alt={reply.userId.email}
+                        layout={"fill"}
+                      />
+                    </div>
+                    <p className="text-white font-semibold">
+                      {reply.userId.email}
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      <time
+                        pubdate={"true"}
+                        dateTime={comment.createdAt}
+                        title={new Date(comment.createdAt).toLocaleDateString()}
+                      >
+                        {new Date(comment.createdAt).toLocaleDateString()}
+                      </time>
+                    </p>
+                  </div>
+                  <p className="text-gray-400">{reply.text}</p>
+                </div>
+              ))}
+            </div>
           </article>
         ))}
       </div>
