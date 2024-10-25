@@ -4,7 +4,13 @@ import fs from "fs";
 
 export async function GET(request) {
   try {
-    const cookiePath = path.join(process.cwd(), "public", "cookieYoutube.json");
+    const cookiePath = path.join(
+      process.cwd(),
+      "src",
+      "app",
+      "api",
+      "cookieYoutube.json"
+    );
 
     if (!fs.existsSync(cookiePath)) {
       throw new Error("File cookieYoutube.json tidak ditemukan");

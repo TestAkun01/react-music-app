@@ -38,7 +38,7 @@ export default function PaginationButton({
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    const maxPageNumbers = 5;
+    const maxPageNumbers = 3;
     const startPage = Math.max(1, currentPage - Math.floor(maxPageNumbers / 2));
     const endPage = Math.min(totalPages, startPage + maxPageNumbers - 1);
 
@@ -105,7 +105,7 @@ export default function PaginationButton({
   };
 
   return (
-    <div className="flex justify-center items-center mt-8">
+    <div className="flex justify-center items-center mt-8 md:text-base text-xs">
       {currentPage !== 1 ? (
         <button
           className={`px-4 py-2 mx-2 transition-all duration-300 text-white rounded hover:bg-blue-700`}

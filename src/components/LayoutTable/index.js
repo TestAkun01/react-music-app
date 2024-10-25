@@ -48,7 +48,7 @@ export default function LayoutTable({ data, reloadData, type }) {
 
   return (
     <div>
-      <div className="relative overflow-x-auto">
+      <div className="w-full overflow-scroll">
         <table className="w-full text-sm text-left rtl:text-right text-gray-50 table-fixed">
           <thead className="text-xs text-gray-200 uppercase bg-gray-700">
             <tr>

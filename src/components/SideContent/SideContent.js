@@ -34,7 +34,6 @@ export default function SideContent() {
       if (storedData && storedData !== "null") {
         setRandomAlbum(JSON.parse(storedData));
       } else {
-        console.log("test");
         const response = await FetchData("api/random/album?limit=5");
         localStorage.setItem(`randomAlbum-${today}`, JSON.stringify(response));
         setRandomAlbum(response);
@@ -50,7 +49,7 @@ export default function SideContent() {
         style={{ maxWidth: "inherit", width: "inherit" }}
       >
         <Header title={"Recommendation"} />
-        <div className="grid grid-rows-5 gap-2">
+        <div className="grid grid-rows-5 gap-4">
           {randomAlbum?.map((item) => (
             <div
               key={item._id}
@@ -58,7 +57,7 @@ export default function SideContent() {
             >
               <Link
                 href={`/song/${item._id}`}
-                className="flex items-center h-full w-full p-1"
+                className="flex items-center h-full w-full p-2"
               >
                 <div className="relative h-full aspect-square">
                   <Image

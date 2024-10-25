@@ -7,7 +7,7 @@ import TrackController from "@/components/MusicController/TrackController";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import CommentSection from "@/components/CommentSection/CommentSection";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }) {
@@ -20,7 +20,10 @@ export default function Page({ params }) {
     const fetchData = async () => {
       const path = `api/album/${id}`;
       const data = await FetchData(path);
-      setData(data);
+      if (data === null) {
+        notFound();
+      }
+      setData(data ?? {});
     };
 
     fetchData().finally(() => setIsLoading(false));
