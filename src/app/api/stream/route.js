@@ -4,7 +4,7 @@ import fs from "fs";
 
 export async function GET(request) {
   try {
-    const cookiePath = [
+    const cookieData = [
       {
         domain: ".youtube.com",
         expirationDate: 1757611350.36027,
@@ -253,13 +253,6 @@ export async function GET(request) {
         id: 17,
       },
     ];
-
-    if (!fs.existsSync(cookiePath)) {
-      throw new Error("File cookieYoutube.json tidak ditemukan");
-    }
-
-    const cookieData = fs.readFileSync(cookiePath, "utf-8");
-
     if (!cookieData) {
       throw new Error("File cookieYoutube.json kosong");
     }
