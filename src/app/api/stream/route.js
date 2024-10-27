@@ -257,13 +257,11 @@ export async function GET(request) {
       throw new Error("File cookieYoutube.json kosong");
     }
 
-    const cookie = JSON.parse(cookieData);
-
-    if (!cookie || typeof cookie !== "object") {
+    if (!cookieData || typeof cookieData !== "object") {
       throw new Error("Data cookie tidak valid");
     }
 
-    const agent = ytdl.createAgent(cookie);
+    const agent = ytdl.createAgent(cookieData);
 
     const url = new URL(request.url).searchParams.get("url");
 
