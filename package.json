@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.21",
     "@vercel/speed-insights": "^1.0.12",
-    "mongoose": "^8.4.4",
+    "mongoose": "^8.8.3",
     "next": "^14.2.16",
     "next-auth": "^4.24.10",
     "prop-types": "^15.8.1",
